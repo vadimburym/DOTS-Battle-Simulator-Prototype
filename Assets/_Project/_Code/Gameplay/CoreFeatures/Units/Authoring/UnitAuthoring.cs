@@ -1,15 +1,18 @@
 using _Project._Code.Gameplay.CoreFeatures.Entities.Components;
+using _Project._Code.Gameplay.CoreFeatures.Entities.Systems;
 using Unity.Entities;
-using Unity.Mathematics;
 using UnityEngine;
 
 namespace _Project._Code.Gameplay.CoreFeatures.Units.Authoring
 {
     public sealed class UnitAuthoring : MonoBehaviour
     {
+        [Header("References")] 
+        public GameObject SelectedView;
+        
         [Header("Default Data")]
         public float Speed = 0f;
-        public float3 Direction = float3.zero; 
+        public float RotationSpeed = 0f;
         
         public sealed class Baker : Baker<UnitAuthoring>
         {
@@ -19,8 +22,14 @@ namespace _Project._Code.Gameplay.CoreFeatures.Units.Authoring
                 AddComponent(entity, new MovementComponent
                 {
                     Speed = authoring.Speed,
-                    Direction = authoring.Direction,
+                    RotationSpeed = authoring.RotationSpeed
                 });
+                AddComponent(entity, new TargetPosition());
+                AddComponent(entity, new Selected {
+                    SelectedView = GetEntity(authoring.SelectedView, TransformUsageFlags.Dynamic),
+                    ShowScale = authoring.SelectedView.transform.localScale.x
+                });
+                SetComponentEnabled<Selected>(entity, false);
             }
         }
     }

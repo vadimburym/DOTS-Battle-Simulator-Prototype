@@ -6,6 +6,7 @@ using _Project._Code.Infrastructure;
 using _Project._Code.Infrastructure.EcsContext;
 using _Project._Code.Infrastructure.EntitiesExtensions;
 using _Project._Code.Infrastructure.StaticData._Root;
+using UnityEngine;
 using VContainer;
 using VContainer.Unity;
 
@@ -15,6 +16,7 @@ namespace _Project._Code.GameApp
     {
         public StaticDataService StaticDataService;
         public SubSceneAwaiter BootstrapSubSceneAwaiter;
+        public GameObject CameraGameObject;
         
         public static BootstrapContext Instance;
         
@@ -52,6 +54,7 @@ namespace _Project._Code.GameApp
             builder.Register<SceneLoadService>(Lifetime.Singleton).As<ISceneLoadService>();
             builder.Register<AddressableService>(Lifetime.Singleton).As<IAddressableService>();
             builder.Register<EntityPrefabService>(Lifetime.Singleton).As<IEntityPrefabService>();
+            builder.Register<InputService>(Lifetime.Singleton).As<IInputService>();
             builder.RegisterInstance(new EcsContext<LocalSystemsGroup>()).As<IEcsContext>();
         }
         

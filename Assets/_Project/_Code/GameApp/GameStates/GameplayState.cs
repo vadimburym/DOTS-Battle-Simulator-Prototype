@@ -65,6 +65,7 @@ namespace _Project._Code.GameApp.GameStates
             _entryPoint = _localContextService.Container.Resolve<GameplayEntryPoint>();
             _entryPoint.Start();
             GC.Collect();
+            BootstrapContext.Instance.CameraGameObject.SetActive(false);
             _sceneLoadService.SetActiveCurrentScene();
             _isStarted = true;
         }
