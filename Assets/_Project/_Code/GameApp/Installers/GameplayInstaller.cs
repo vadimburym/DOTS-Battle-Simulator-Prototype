@@ -13,8 +13,9 @@ namespace _Project._Code.GameApp.Installers
         public static void RegisterEcsSystems(IEcsContextBuilder builder)
         {
             builder.Register<MovementSystem>();
-            builder.RegisterManaged<MoveCommandSystem>();
+            builder.RegisterManaged<ClickToMoveSelectedSystem>();
             builder.Register<SelectedViewSystem>();
+            builder.Register<MoveCommandSystem>();
             builder.RegisterManaged<SelectionSystem>();
         }
         
