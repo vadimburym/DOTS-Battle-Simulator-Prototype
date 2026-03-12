@@ -191,7 +191,7 @@ GameObject:
   - component: {fileID: 4915754198381700034}
   - component: {fileID: 6850891967283961673}
   - component: {fileID: 3748281658093761717}
-  - component: {fileID: 5268956702362234467}
+  - component: {fileID: 1263618087300856303}
   m_Layer: 0
   m_Name: Footman
   m_TagString: Untagged
@@ -238,7 +238,7 @@ CapsuleCollider:
   m_PrefabInstance: {fileID: 0}
   m_PrefabAsset: {fileID: 0}
   m_GameObject: {fileID: 8364555645895950353}
-  m_Material: {fileID: 0}
+  m_Material: {fileID: 13400000, guid: 919ca3737aaf95b48a71ba3b5666fc91, type: 2}
   m_IncludeLayers:
     serializedVersion: 2
     m_Bits: 0
@@ -254,7 +254,7 @@ CapsuleCollider:
   m_Height: 2
   m_Direction: 1
   m_Center: {x: 0, y: 1, z: 0}
---- !u!54 &5268956702362234467
+--- !u!54 &1263618087300856303
 Rigidbody:
   m_ObjectHideFlags: 0
   m_CorrespondingSourceObject: {fileID: 0}
