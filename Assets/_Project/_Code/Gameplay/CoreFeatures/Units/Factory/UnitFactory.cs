@@ -38,7 +38,7 @@ namespace _Project._Code.Gameplay.CoreFeatures.Units.Factory
             var entityManager = _ecsContext.EntityManager; //TODO ECB
             
             entityManager.SetComponentData(entity, LocalTransform.FromPosition(position));
-            entityManager.SetComponentData(entity, new TargetPosition{ Value = position });
+            entityManager.SetComponentData(entity, new TargetPosition{ Position = position });
             
             return entity;
         }

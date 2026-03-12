@@ -5,6 +5,7 @@ namespace _Project._Code.Gameplay.CoreFeatures.Entities.Components
 {
     public struct TargetPosition : IComponentData
     {
-        public float3 Value;
+        public float3 Position;
+        public float StoppingRadius;
     }
 }
