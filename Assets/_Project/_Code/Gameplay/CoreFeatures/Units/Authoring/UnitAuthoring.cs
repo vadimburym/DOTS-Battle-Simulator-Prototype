@@ -1,6 +1,7 @@
 using _Project._Code.Gameplay.CoreFeatures.Entities.Components;
 using _Project._Code.Gameplay.CoreFeatures.Entities.Systems;
 using Unity.Entities;
+using Unity.Mathematics;
 using UnityEngine;
 
 namespace _Project._Code.Gameplay.CoreFeatures.Units.Authoring
@@ -10,9 +11,14 @@ namespace _Project._Code.Gameplay.CoreFeatures.Units.Authoring
         [Header("References")] 
         public GameObject SelectedView;
         
-        [Header("Default Data")]
+        [Header("Movement")]
         public float Speed = 0f;
         public float RotationSpeed = 0f;
+        
+        [Header("Body")]
+        public byte Team = 0;
+        public byte FootprintX = 1;
+        public byte FootprintY = 1;
         
         public sealed class Baker : Baker<UnitAuthoring>
         {
@@ -30,6 +36,17 @@ namespace _Project._Code.Gameplay.CoreFeatures.Units.Authoring
                     ShowScale = authoring.SelectedView.transform.localScale.x
                 });
                 SetComponentEnabled<Selected>(entity, false);
+                AddComponent(entity, new UnitBody {
+                    Team = authoring.Team,
+                    FootprintX = (byte)math.max(1, authoring.FootprintX),
+                    FootprintY = (byte)math.max(1, authoring.FootprintY)
+                });
+                AddComponent(entity, new GridNavigationState {
+                    OccupiedCell = int2.zero,
+                    ReservedCell = int2.zero,
+                    HasOccupiedCell = 0,
+                    HasReservedCell = 0
+                });
             }
         }
     }

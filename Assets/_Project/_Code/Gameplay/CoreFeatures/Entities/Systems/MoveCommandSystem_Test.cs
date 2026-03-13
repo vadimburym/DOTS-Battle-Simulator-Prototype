@@ -8,46 +8,50 @@ using Unity.Transforms;
 namespace _Project._Code.Gameplay.CoreFeatures.Entities.Systems
 {
     [DisableAutoCreation]
-    [UpdateAfter(typeof(GridRuntimeMapSystem))]
     [BurstCompile]
-    public partial struct MoveCommandSystem : ISystem
+    public partial struct MoveCommandSystem_Test : ISystem
     {
         private const float DefaultStoppingRadius = 0.1f;
         
-        private const int SlotSpacingCells = 1;
-        private const int RowSpacingCells = 1;
+        private const float SlotSpacing = 1.6f;
+        private const float RowSpacing = 1.6f;
 
         private const int MaxValidationRings = 128;
         private const float PreserveShapeThreshold = 6f;
 
-        [BurstCompile]
+        private NativeParallelHashMap<int2, Entity> _occupiedMap;
+        private NativeParallelHashMap<int2, Entity> _reservedMap;
+
         public void OnCreate(ref SystemState state)
         {
             state.RequireForUpdate<BattlefieldGridSingleton>();
-            state.RequireForUpdate<GridRuntimeMapSingleton>();
+
+            _occupiedMap = new NativeParallelHashMap<int2, Entity>(16384, Allocator.Persistent);
+            _reservedMap = new NativeParallelHashMap<int2, Entity>(16384, Allocator.Persistent);
         }
 
+        public void OnDestroy(ref SystemState state)
+        {
+            if (_occupiedMap.IsCreated)
+                _occupiedMap.Dispose();
+
+            if (_reservedMap.IsCreated)
+                _reservedMap.Dispose();
+        }
+        
         [BurstCompile]
         public void OnUpdate(ref SystemState state)
         {
             var entityManager = state.EntityManager;
-
             var gridSingleton = SystemAPI.GetSingleton<BattlefieldGridSingleton>();
             ref var grid = ref gridSingleton.Value.Value;
 
-            var maps = SystemAPI.GetSingleton<GridRuntimeMapSingleton>();
-            var occupiedMap = maps.OccupiedMap;
-            var reservedMap = maps.ReservedMap;
+            RebuildRuntimeMaps(ref state);
 
             var requestsToDestroy = new NativeList<Entity>(Allocator.Temp);
 
-            foreach (var (
-                         request,
-                         targets,
-                         requestEntity) in
-                     SystemAPI.Query<
-                             RefRO<MoveCommandRequest>,
-                             DynamicBuffer<MoveCommandTarget>>()
+            foreach (var (request, targets, requestEntity) in
+                     SystemAPI.Query<RefRO<MoveCommandRequest>, DynamicBuffer<MoveCommandTarget>>()
                          .WithEntityAccess())
             {
                 int requestedCount = targets.Length;
@@ -101,74 +105,62 @@ namespace _Project._Code.Gameplay.CoreFeatures.Entities.Systems
                 }
 
                 float3 destination = request.ValueRO.Destination;
-                int2 destinationCell = BattlefieldGridUtils.WorldToCell(ref grid, destination);
 
                 float3 groupCenter = float3.zero;
                 for (int i = 0; i < validCount; i++)
                     groupCenter += transforms[i].Position;
                 groupCenter /= validCount;
 
-                float3 forward3 = destination - groupCenter;
-                forward3.y = 0f;
-                forward3 = math.normalizesafe(forward3, new float3(0f, 0f, 1f));
+                float3 forward = destination - groupCenter;
+                forward.y = 0f;
+                forward = math.normalizesafe(forward, new float3(0f, 0f, 1f));
 
-                float2 forward2 = math.normalizesafe(new float2(forward3.x, forward3.z), new float2(0f, 1f));
-                float2 right2 = new float2(forward2.y, -forward2.x);
+                float3 right = math.normalizesafe(math.cross(math.up(), forward), new float3(1f, 0f, 0f));
 
                 float selectionRadius = 0f;
                 for (int i = 0; i < validCount; i++)
                 {
                     float d = math.distance(groupCenter, transforms[i].Position);
-                    selectionRadius = math.max(selectionRadius, d / grid.CellSize);
+                    selectionRadius = math.max(selectionRadius, d);
                 }
-
-                // Для каждого юнита ищем ближайшую валидную клетку.
+                
                 for (int i = 0; i < validCount; i++)
                 {
-                    int footprintX = math.max(1, unitBodies[i].FootprintX);
-                    int footprintY = math.max(1, unitBodies[i].FootprintY);
+                    float3 currentPos = transforms[i].Position;
 
                     float preserveFactor = selectionRadius <= PreserveShapeThreshold
                         ? math.saturate(1f - (selectionRadius / PreserveShapeThreshold))
                         : 0f;
 
-                    float2 currentOffsetWorld = new float2(
-                        transforms[i].Position.x - groupCenter.x,
-                        transforms[i].Position.z - groupCenter.z);
+                    float3 preferredOffset = (currentPos - groupCenter) * preserveFactor;
+                    preferredOffset.y = 0f;
+                    float3 preferredPos = destination + preferredOffset;
 
-                    float2 currentOffsetCells = currentOffsetWorld / grid.CellSize;
-                    float2 preferredOffsetCells = currentOffsetCells * preserveFactor;
+                    int footprintX = math.max(1, unitBodies[i].FootprintX);
+                    int footprintY = math.max(1, unitBodies[i].FootprintY);
 
-                    float2 preferredCellPos = new float2(destinationCell.x, destinationCell.y) + preferredOffsetCells;
-
-                    if (TryFindNearestValidCellForUnit(
+                    if (TryFindNearestValidSlotForUnit(
                             ref grid,
-                            occupiedMap,
-                            reservedMap,
                             entities[i],
-                            destinationCell,
-                            preferredCellPos,
+                            destination,
+                            right,
+                            forward,
+                            preferredPos,
                             footprintX,
                             footprintY,
+                            out float3 reservedWorldPos,
                             out int2 reservedCell))
                     {
                         BattlefieldGridUtils.ReserveArea(
-                            reservedMap,
+                            _reservedMap,
                             entities[i],
                             reservedCell,
                             footprintX,
                             footprintY);
 
-                        float3 worldCenter = BattlefieldGridUtils.FootprintToWorldCenter(
-                            ref grid,
-                            reservedCell,
-                            footprintX,
-                            footprintY,
-                            transforms[i].Position.y);
-
                         targetPositions[i] = new TargetPosition
                         {
-                            Position = worldCenter,
+                            Position = reservedWorldPos,
                             StoppingRadius = DefaultStoppingRadius
                         };
 
@@ -207,110 +199,156 @@ namespace _Project._Code.Gameplay.CoreFeatures.Entities.Systems
         }
 
         [BurstCompile]
-        private bool TryFindNearestValidCellForUnit(
+        private void RebuildRuntimeMaps(ref SystemState state)
+        {
+            _occupiedMap.Clear();
+            _reservedMap.Clear();
+
+            int unitCount = SystemAPI.QueryBuilder()
+                .WithAll<GridNavigationState, UnitBody>()
+                .Build()
+                .CalculateEntityCount();
+
+            int desiredCapacity = math.max(1024, unitCount * 4);
+
+            if (_occupiedMap.Capacity < desiredCapacity)
+                _occupiedMap.Capacity = desiredCapacity;
+
+            if (_reservedMap.Capacity < desiredCapacity)
+                _reservedMap.Capacity = desiredCapacity;
+
+            foreach (var (gridState, body, entity) in
+                     SystemAPI.Query<RefRO<GridNavigationState>, RefRO<UnitBody>>()
+                         .WithEntityAccess())
+            {
+                int footprintX = math.max(1, body.ValueRO.FootprintX);
+                int footprintY = math.max(1, body.ValueRO.FootprintY);
+
+                if (gridState.ValueRO.HasOccupiedCell != 0)
+                {
+                    BattlefieldGridUtils.OccupyArea(
+                        _occupiedMap,
+                        entity,
+                        gridState.ValueRO.OccupiedCell,
+                        footprintX,
+                        footprintY);
+                }
+
+                if (gridState.ValueRO.HasReservedCell != 0)
+                {
+                    BattlefieldGridUtils.ReserveArea(
+                        _reservedMap,
+                        entity,
+                        gridState.ValueRO.ReservedCell,
+                        footprintX,
+                        footprintY);
+                }
+            }
+        }
+
+        [BurstCompile]
+        private bool TryFindNearestValidSlotForUnit(
             ref BattlefieldGridBlob grid,
-            NativeParallelHashMap<int2, Entity> occupiedMap,
-            NativeParallelHashMap<int2, Entity> reservedMap,
             Entity entity,
-            int2 destinationCell,
-            float2 preferredCellPos,
+            float3 destination,
+            float3 right,
+            float3 forward,
+            float3 preferredPos,
             int footprintX,
             int footprintY,
+            out float3 reservedWorldPos,
             out int2 reservedCell)
         {
+            reservedWorldPos = default;
             reservedCell = default;
-
-            // ring = 0: сама точка назначения
-            if (TryTakeCell(
+            
+            if (TryTakeCandidate(
                     ref grid,
-                    occupiedMap,
-                    reservedMap,
                     entity,
-                    destinationCell,
+                    destination,
+                    preferredPos,
                     footprintX,
                     footprintY,
+                    ref reservedWorldPos,
                     ref reservedCell))
             {
                 return true;
             }
 
-            // Дальше расширяемся кольцами от destination.
             for (int ring = 1; ring <= MaxValidationRings; ring++)
             {
                 bool foundInThisRing = false;
-                int2 ringBestCell = default;
-                float ringBestDistSq = float.MaxValue;
+                float3 bestWorldPos = default;
+                int2 bestCell = default;
+                float bestDistSq = float.MaxValue;
 
                 int x = -ring;
                 int y = -ring;
 
                 for (; x < ring; x++)
                 {
-                    EvaluateCellInRing(
+                    EvaluateCandidateInRing(
                         ref grid,
-                        occupiedMap,
-                        reservedMap,
                         entity,
-                        destinationCell + new int2(x * SlotSpacingCells, y * RowSpacingCells),
-                        preferredCellPos,
+                        destination + right * (x * SlotSpacing) + forward * (y * RowSpacing),
+                        preferredPos,
                         footprintX,
                         footprintY,
                         ref foundInThisRing,
-                        ref ringBestCell,
-                        ref ringBestDistSq);
+                        ref bestWorldPos,
+                        ref bestCell,
+                        ref bestDistSq);
                 }
 
                 for (; y < ring; y++)
                 {
-                    EvaluateCellInRing(
+                    EvaluateCandidateInRing(
                         ref grid,
-                        occupiedMap,
-                        reservedMap,
                         entity,
-                        destinationCell + new int2(x * SlotSpacingCells, y * RowSpacingCells),
-                        preferredCellPos,
+                        destination + right * (x * SlotSpacing) + forward * (y * RowSpacing),
+                        preferredPos,
                         footprintX,
                         footprintY,
                         ref foundInThisRing,
-                        ref ringBestCell,
-                        ref ringBestDistSq);
+                        ref bestWorldPos,
+                        ref bestCell,
+                        ref bestDistSq);
                 }
 
                 for (; x > -ring; x--)
                 {
-                    EvaluateCellInRing(
+                    EvaluateCandidateInRing(
                         ref grid,
-                        occupiedMap,
-                        reservedMap,
                         entity,
-                        destinationCell + new int2(x * SlotSpacingCells, y * RowSpacingCells),
-                        preferredCellPos,
+                        destination + right * (x * SlotSpacing) + forward * (y * RowSpacing),
+                        preferredPos,
                         footprintX,
                         footprintY,
                         ref foundInThisRing,
-                        ref ringBestCell,
-                        ref ringBestDistSq);
+                        ref bestWorldPos,
+                        ref bestCell,
+                        ref bestDistSq);
                 }
 
                 for (; y > -ring; y--)
                 {
-                    EvaluateCellInRing(
+                    EvaluateCandidateInRing(
                         ref grid,
-                        occupiedMap,
-                        reservedMap,
                         entity,
-                        destinationCell + new int2(x * SlotSpacingCells, y * RowSpacingCells),
-                        preferredCellPos,
+                        destination + right * (x * SlotSpacing) + forward * (y * RowSpacing),
+                        preferredPos,
                         footprintX,
                         footprintY,
                         ref foundInThisRing,
-                        ref ringBestCell,
-                        ref ringBestDistSq);
+                        ref bestWorldPos,
+                        ref bestCell,
+                        ref bestDistSq);
                 }
 
                 if (foundInThisRing)
                 {
-                    reservedCell = ringBestCell;
+                    reservedWorldPos = bestWorldPos;
+                    reservedCell = bestCell;
                     return true;
                 }
             }
@@ -319,65 +357,68 @@ namespace _Project._Code.Gameplay.CoreFeatures.Entities.Systems
         }
 
         [BurstCompile]
-        private bool TryTakeCell(
+        private bool TryTakeCandidate(
             ref BattlefieldGridBlob grid,
-            NativeParallelHashMap<int2, Entity> occupiedMap,
-            NativeParallelHashMap<int2, Entity> reservedMap,
             Entity entity,
-            int2 candidateCell,
+            float3 candidateWorld,
+            float3 preferredPos,
             int footprintX,
             int footprintY,
+            ref float3 reservedWorldPos,
             ref int2 reservedCell)
         {
-            if (!BattlefieldGridUtils.IsAreaWalkable(ref grid, candidateCell, footprintX, footprintY))
+            int2 anchorCell = BattlefieldGridUtils.WorldToCell(ref grid, candidateWorld);
+
+            if (!BattlefieldGridUtils.IsAreaWalkable(ref grid, anchorCell, footprintX, footprintY))
                 return false;
 
             if (!BattlefieldGridUtils.IsAreaFree(
-                    occupiedMap,
-                    reservedMap,
-                    candidateCell,
+                    _occupiedMap,
+                    _reservedMap,
+                    anchorCell,
                     footprintX,
                     footprintY,
                     entity))
                 return false;
 
-            reservedCell = candidateCell;
+            reservedWorldPos = candidateWorld;
+            reservedCell = anchorCell;
             return true;
         }
 
         [BurstCompile]
-        private void EvaluateCellInRing(
+        private void EvaluateCandidateInRing(
             ref BattlefieldGridBlob grid,
-            NativeParallelHashMap<int2, Entity> occupiedMap,
-            NativeParallelHashMap<int2, Entity> reservedMap,
             Entity entity,
-            int2 candidateCell,
-            float2 preferredCellPos,
+            float3 candidateWorld,
+            float3 preferredPos,
             int footprintX,
             int footprintY,
             ref bool found,
+            ref float3 bestWorldPos,
             ref int2 bestCell,
             ref float bestDistSq)
         {
-            if (!BattlefieldGridUtils.IsAreaWalkable(ref grid, candidateCell, footprintX, footprintY))
+            int2 anchorCell = BattlefieldGridUtils.WorldToCell(ref grid, candidateWorld);
+
+            if (!BattlefieldGridUtils.IsAreaWalkable(ref grid, anchorCell, footprintX, footprintY))
                 return;
 
             if (!BattlefieldGridUtils.IsAreaFree(
-                    occupiedMap,
-                    reservedMap,
-                    candidateCell,
+                    _occupiedMap,
+                    _reservedMap,
+                    anchorCell,
                     footprintX,
                     footprintY,
                     entity))
                 return;
 
-            float2 candidatePos = candidateCell;
-            float d = math.lengthsq(preferredCellPos - candidatePos);
-
+            float d = math.distancesq(preferredPos, candidateWorld);
             if (d < bestDistSq)
             {
                 bestDistSq = d;
-                bestCell = candidateCell;
+                bestWorldPos = candidateWorld;
+                bestCell = anchorCell;
                 found = true;
             }
         }

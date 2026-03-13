@@ -1,4 +1,5 @@
 using _Project._Code.Core.Contracts;
+using _Project._Code.Gameplay.CoreFeatures;
 using _Project._Code.Gameplay.CoreFeatures.Entities.Systems;
 using _Project._Code.Gameplay.CoreFeatures.Units.Factory;
 using _Project._Code.Gameplay.CoreFeatures.Units.Systems;
@@ -16,6 +17,8 @@ namespace _Project._Code.GameApp.Installers
             builder.RegisterManaged<ClickToMoveSelectedSystem>();
             builder.Register<SelectedViewSystem>();
             builder.Register<MoveCommandSystem>();
+            builder.Register<GridRuntimeMapSystem>();
+            builder.Register<GridOccupancySyncSystem>();
             builder.RegisterManaged<SelectionSystem>();
         }
         
