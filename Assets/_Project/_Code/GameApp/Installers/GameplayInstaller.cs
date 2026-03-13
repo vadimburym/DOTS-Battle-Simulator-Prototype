@@ -13,13 +13,16 @@ namespace _Project._Code.GameApp.Installers
     {
         public static void RegisterEcsSystems(IEcsContextBuilder builder)
         {
+            //---Entities
             builder.Register<MovementSystem>();
-            builder.RegisterManaged<ClickToMoveSelectedSystem>();
-            builder.Register<SelectedViewSystem>();
             builder.Register<MoveCommandSystem>();
+            builder.Register<SelectedViewSystem>();
+            builder.RegisterManaged<SelectionSystem>();
+            builder.RegisterManaged<ClickToMoveSelectedSystem>();
+            //---BattlefieldGrid
             builder.Register<GridRuntimeMapSystem>();
             builder.Register<GridOccupancySyncSystem>();
-            builder.RegisterManaged<SelectionSystem>();
+            builder.Register<GridReservationCleanupSystem>();
         }
         
         public static void Register(IContainerBuilder builder)

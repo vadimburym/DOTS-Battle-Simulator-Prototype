@@ -97,6 +97,27 @@ namespace _Project._Code.Gameplay.CoreFeatures
             }
         }
 
+        public static void ReleaseArea(
+            NativeParallelHashMap<int2, Entity> reservedMap,
+            Entity entity,
+            int2 originCell,
+            int footprintX,
+            int footprintY)
+        {
+            for (int y = 0; y < footprintY; y++)
+            {
+                for (int x = 0; x < footprintX; x++)
+                {
+                    int2 cell = originCell + new int2(x, y);
+
+                    if (reservedMap.TryGetValue(cell, out var reservedBy) && reservedBy == entity)
+                    {
+                        reservedMap.Remove(cell);
+                    }
+                }
+            }
+        }
+        
         public static void OccupyArea(
             NativeParallelHashMap<int2, Entity> occupiedMap,
             Entity entity,
