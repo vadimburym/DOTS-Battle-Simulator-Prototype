@@ -47,6 +47,8 @@ namespace _Project._Code.Gameplay.CoreFeatures.Units.Authoring
                     HasOccupiedCell = 0,
                     HasReservedCell = 0
                 });
+                AddComponent<GridReservationReached>(entity);
+                SetComponentEnabled<GridReservationReached>(entity, false);
             }
         }
     }
