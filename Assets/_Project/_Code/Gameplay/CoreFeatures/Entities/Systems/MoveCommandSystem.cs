@@ -152,6 +152,16 @@ namespace _Project._Code.Gameplay.CoreFeatures.Entities.Systems
                             footprintY,
                             out int2 reservedCell))
                     {
+                        if (gridStates[i].HasReservedCell != 0)
+                        {
+                            BattlefieldGridUtils.ReleaseArea(
+                                reservedMap,
+                                entities[i],
+                                gridStates[i].ReservedCell,
+                                footprintX,
+                                footprintY);
+                        }
+
                         BattlefieldGridUtils.ReserveArea(
                             reservedMap,
                             entities[i],
