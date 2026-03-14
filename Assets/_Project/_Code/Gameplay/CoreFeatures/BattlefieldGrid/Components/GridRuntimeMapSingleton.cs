@@ -7,6 +7,5 @@ namespace _Project._Code.Gameplay.CoreFeatures
     public struct GridRuntimeMapSingleton : IComponentData
     {
         public NativeParallelHashMap<int2, Entity> OccupiedMap;
-        public NativeParallelHashMap<int2, Entity> ReservedMap;
     }
 }

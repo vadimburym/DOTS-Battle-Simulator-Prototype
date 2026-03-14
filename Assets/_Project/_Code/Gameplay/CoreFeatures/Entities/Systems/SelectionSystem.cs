@@ -1,5 +1,6 @@
 using _Project._Code.Gameplay.CoreFeatures.Entities.Behaviours;
 using _Project._Code.Gameplay.CoreFeatures.Entities.Components;
+using _Project._Code.Gameplay.CoreFeatures.Units.Components;
 using Unity.Entities;
 using Unity.Mathematics;
 using Unity.Transforms;
@@ -38,7 +39,7 @@ namespace _Project._Code.Gameplay.CoreFeatures.Entities.Systems
             float2 max = _selectionResult.ScreenMax;
             
             foreach (var (localTransform, entity)
-                     in SystemAPI.Query<RefRO<LocalTransform>>().WithPresent<Selected>().WithEntityAccess())
+                     in SystemAPI.Query<RefRO<LocalTransform>>().WithAll<MyTeamTag>().WithPresent<Selected>().WithEntityAccess())
             {
                 float2 unitScreenPosition = (Vector2)camera.WorldToScreenPoint(localTransform.ValueRO.Position);
                 bool inside = math.all(unitScreenPosition >= min & unitScreenPosition <= max);

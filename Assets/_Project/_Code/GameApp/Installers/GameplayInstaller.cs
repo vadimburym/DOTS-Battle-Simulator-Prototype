@@ -1,6 +1,8 @@
 using _Project._Code.Core.Contracts;
 using _Project._Code.Gameplay.CoreFeatures;
+using _Project._Code.Gameplay.CoreFeatures.Entities.AiSystems;
 using _Project._Code.Gameplay.CoreFeatures.Entities.Systems;
+using _Project._Code.Gameplay.CoreFeatures.EyeSensorGrid.Systems;
 using _Project._Code.Gameplay.CoreFeatures.Units.Factory;
 using _Project._Code.Gameplay.CoreFeatures.Units.Systems;
 using _Project._Code.Infrastructure.EcsContext;
@@ -20,9 +22,13 @@ namespace _Project._Code.GameApp.Installers
             builder.RegisterManaged<SelectionSystem>();
             builder.RegisterManaged<ClickToMoveSelectedSystem>();
             //---BattlefieldGrid
-            builder.Register<GridRuntimeMapSystem>();
-            builder.Register<GridOccupancySyncSystem>();
-            builder.Register<GridReservationCleanupSystem>();
+            builder.Register<GridMovingCellSyncSystem>();
+            //---AiStates
+            builder.Register<AttackStateSystem>();
+            builder.Register<ChaseStateSystem>();
+            //---EyeSensor
+            builder.Register<EyeSensorGridSystem>();
+            builder.Register<EyeSensorSystem>();
         }
         
         public static void Register(IContainerBuilder builder)

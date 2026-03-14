@@ -230,6 +230,16 @@ MonoBehaviour:
   SelectedView: {fileID: 4890105889000459466}
   Speed: 2.5
   RotationSpeed: 5
+  Team: 0
+  FootprintX: 1
+  FootprintY: 1
+  AttackInterval: 3
+  AttackRangeCells: 2
+  Damage: 5
+  DetectRadius: 10
+  ChaseRadius: 15
+  UpdateNearestInterval: 2
+  ScanInterval: 0.2
 --- !u!136 &3748281658093761717
 CapsuleCollider:
   m_ObjectHideFlags: 0
