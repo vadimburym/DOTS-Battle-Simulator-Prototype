@@ -1,10 +1,12 @@
 using _Project._Code.Core.Keys;
 using _Project._Code.Gameplay.CoreFeatures.Entities.Components;
+using _Project._Code.Gameplay.CoreFeatures.Units.Components;
 using _Project._Code.Infrastructure;
 using _Project._Code.Infrastructure.EcsContext;
 using _Project._Code.Infrastructure.StaticData._Root;
 using _Project._Code.Infrastructure.StaticData.Units;
 using _Project._Code.Locale;
+using Cysharp.Threading.Tasks;
 using Unity.Entities;
 using Unity.Mathematics;
 using Unity.Transforms;
@@ -30,15 +32,19 @@ namespace _Project._Code.Gameplay.CoreFeatures.Units.Factory
             _ecsContext = ecsContext;
         }
 
-        public Entity Create(UnitId unitId, float3 position)
+        public Entity Create(UnitId unitId, float3 position, byte team)
         {
             var unitData = _addressableService.GetLoadedObject<UnitConfig>(_staticData.GetUnitData(unitId));
             var entityPrefab = _entityPrefabService.GetEntityPrefab(unitData.EntityPoolId);
-            var entity = _ecsContext.EntityManager.Instantiate(entityPrefab);
             var entityManager = _ecsContext.EntityManager; //TODO ECB
+            var entity = entityManager.Instantiate(entityPrefab);
             
             entityManager.SetComponentData(entity, LocalTransform.FromPosition(position));
             entityManager.SetComponentData(entity, new TargetPosition{ Position = position });
+            entityManager.SetComponentData(entity, new Team { Value = team });
+            
+            if (team == 0)
+                entityManager.SetComponentEnabled<MyTeamTag>(entity, true);
             
             return entity;
         }

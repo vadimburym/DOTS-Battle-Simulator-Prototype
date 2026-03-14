@@ -17,8 +17,9 @@ namespace _Project._Code.Gameplay.CoreFeatures.Entities.Systems
             [BurstCompile]
             public void Execute(
                 ref LocalTransform localTransform,
-                in MovementComponent movement,
-                in TargetPosition targetPosition)
+                in MovementStats movement,
+                in TargetPosition targetPosition,
+                ref IsMovingTag isMoving)
             {
                 float3 toTarget = targetPosition.Position - localTransform.Position;
                 toTarget.y = 0f;
@@ -26,7 +27,11 @@ namespace _Project._Code.Gameplay.CoreFeatures.Entities.Systems
                 float stoppingRadiusSq = stoppingRadius * stoppingRadius;
                 float distSq = math.lengthsq(toTarget);
                 if (distSq <= stoppingRadiusSq)
+                {
+                    isMoving.IsMoving = 0;
                     return;
+                }
+                isMoving.IsMoving = 1;
                 float3 dir = math.normalizesafe(toTarget, new float3(0f, 0f, 1f));
                 quaternion desiredRotation = quaternion.LookRotationSafe(dir, math.up());
 

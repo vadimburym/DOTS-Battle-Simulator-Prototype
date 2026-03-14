@@ -6,6 +6,6 @@ namespace _Project._Code.Gameplay.CoreFeatures.Units.Factory
 {
     public interface IUnitFactory
     {
-        Entity Create(UnitId unitId, float3 position);
+        Entity Create(UnitId unitId, float3 position, byte team);
     }
 }

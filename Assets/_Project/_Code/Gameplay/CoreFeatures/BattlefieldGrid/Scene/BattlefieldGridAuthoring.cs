@@ -1,5 +1,6 @@
 using Unity.Collections;
 using Unity.Entities;
+using Unity.Mathematics;
 using UnityEngine;
 
 namespace _Project._Code.Gameplay.CoreFeatures
