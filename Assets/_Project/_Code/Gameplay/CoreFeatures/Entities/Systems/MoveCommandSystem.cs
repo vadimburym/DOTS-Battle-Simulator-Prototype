@@ -18,7 +18,7 @@ namespace _Project._Code.Gameplay.CoreFeatures.Entities.Systems
         private const int MaxValidationRings = 128;
         private const float PreserveShapeThreshold = 6f;
 
-        private BattlefieldGridUtils Utils;
+        private BattlefieldGridUtils GridUtils;
 
         [BurstCompile]
         public void OnCreate(ref SystemState state)
@@ -31,16 +31,14 @@ namespace _Project._Code.Gameplay.CoreFeatures.Entities.Systems
         public void OnUpdate(ref SystemState state)
         {
             var entityManager = state.EntityManager;
-
-            var gridSingleton = SystemAPI.GetSingleton<BattlefieldGridSingleton>();
-            ref var grid = ref gridSingleton.Value.Value;
-
-            var mapsRw = SystemAPI.GetSingletonRW<GridRuntimeMapSingleton>();
-            var occupiedMap = mapsRw.ValueRW.OccupiedMap;
-
+            ref var gridBlob = ref SystemAPI.GetSingleton<BattlefieldGridSingleton>().Value.Value;
+            ref var occupiedMap = ref SystemAPI.GetSingletonRW<GridRuntimeMapSingleton>().ValueRW.OccupiedMap;
             var requestsToDestroy = new NativeList<Entity>(Allocator.Temp);
-
-            foreach (var (request, targets, requestEntity) in
+            
+            foreach (var (
+                         request,
+                         targets,
+                         requestEntity) in
                      SystemAPI.Query<
                              RefRO<MoveCommandRequest>,
                              DynamicBuffer<MoveCommandTarget>>()
@@ -64,20 +62,20 @@ namespace _Project._Code.Gameplay.CoreFeatures.Entities.Systems
 
                 for (int i = 0; i < targets.Length; i++)
                 {
-                    Entity e = targets[i].Value;
+                    var entity = targets[i].Value;
 
-                    if (!entityManager.Exists(e)) continue;
-                    if (!entityManager.HasComponent<LocalTransform>(e)) continue;
-                    if (!entityManager.HasComponent<TargetPosition>(e)) continue;
-                    if (!entityManager.HasComponent<Footprint>(e)) continue;
-                    if (!entityManager.HasComponent<GridNavigationState>(e)) continue;
-
-                    entities[validCount] = e;
-                    transforms[validCount] = entityManager.GetComponentData<LocalTransform>(e);
-                    targetPositions[validCount] = entityManager.GetComponentData<TargetPosition>(e);
-                    footprints[validCount] = entityManager.GetComponentData<Footprint>(e);
-                    gridStates[validCount] = entityManager.GetComponentData<GridNavigationState>(e);
-
+                    if (!entityManager.Exists(entity)) continue;
+                    if (!entityManager.HasComponent<LocalTransform>(entity)) continue;
+                    if (!entityManager.HasComponent<TargetPosition>(entity)) continue;
+                    if (!entityManager.HasComponent<Footprint>(entity)) continue;
+                    if (!entityManager.HasComponent<GridNavigationState>(entity)) continue;
+                    
+                    entities[validCount] = entity;
+                    transforms[validCount] = entityManager.GetComponentData<LocalTransform>(entity);
+                    targetPositions[validCount] = entityManager.GetComponentData<TargetPosition>(entity);
+                    footprints[validCount] = entityManager.GetComponentData<Footprint>(entity);
+                    gridStates[validCount] = entityManager.GetComponentData<GridNavigationState>(entity);
+                    
                     validCount++;
                 }
 
@@ -92,23 +90,19 @@ namespace _Project._Code.Gameplay.CoreFeatures.Entities.Systems
                     requestsToDestroy.Add(requestEntity);
                     continue;
                 }
+                
+                var destinationCell = GridUtils.WorldToCell(ref gridBlob,  request.ValueRO.Destination);
 
-                float3 destination = request.ValueRO.Destination;
-                int2 destinationCell = Utils.WorldToCell(ref grid, destination);
-
-                float3 groupCenter = float3.zero;
-
+                var groupCenter = float3.zero;
                 for (int i = 0; i < validCount; i++)
                     groupCenter += transforms[i].Position;
-
                 groupCenter /= validCount;
 
                 float selectionRadius = 0f;
-
                 for (int i = 0; i < validCount; i++)
                 {
                     float d = math.distance(groupCenter, transforms[i].Position);
-                    selectionRadius = math.max(selectionRadius, d / grid.CellSize);
+                    selectionRadius = math.max(selectionRadius, d / gridBlob.CellSize);
                 }
 
                 for (int i = 0; i < validCount; i++)
@@ -121,18 +115,18 @@ namespace _Project._Code.Gameplay.CoreFeatures.Entities.Systems
                             ? math.saturate(1f - (selectionRadius / PreserveShapeThreshold))
                             : 0f;
 
-                    float2 currentOffsetWorld = new float2(
+                    var currentOffsetWorld = new float2(
                         transforms[i].Position.x - groupCenter.x,
                         transforms[i].Position.z - groupCenter.z);
 
-                    float2 currentOffsetCells = currentOffsetWorld / grid.CellSize;
-                    float2 preferredOffsetCells = currentOffsetCells * preserveFactor;
+                    var currentOffsetCells = currentOffsetWorld / gridBlob.CellSize;
+                    var preferredOffsetCells = currentOffsetCells * preserveFactor;
 
-                    float2 preferredCellPos =
+                    var preferredCellPos =
                         new float2(destinationCell.x, destinationCell.y) + preferredOffsetCells;
 
                     if (!TryFindNearestValidOccupiedCellForUnit(
-                            ref grid,
+                            ref gridBlob,
                             occupiedMap,
                             entities[i],
                             destinationCell,
@@ -152,7 +146,7 @@ namespace _Project._Code.Gameplay.CoreFeatures.Entities.Systems
                     {
                         if (hadOld)
                         {
-                            Utils.ReleaseAreaDirect(
+                            GridUtils.ReleaseAreaDirect(
                                 occupiedMap,
                                 entities[i],
                                 oldOccupiedCell,
@@ -160,7 +154,7 @@ namespace _Project._Code.Gameplay.CoreFeatures.Entities.Systems
                                 footprintY);
                         }
 
-                        Utils.OccupyAreaDirect(
+                        GridUtils.OccupyAreaDirect(
                             occupiedMap,
                             entities[i],
                             newOccupiedCell,
@@ -172,8 +166,8 @@ namespace _Project._Code.Gameplay.CoreFeatures.Entities.Systems
                         gridStates[i] = gs;
                     }
 
-                    float3 worldCenter = Utils.FootprintToWorldCenter(
-                        ref grid,
+                    float3 worldCenter = GridUtils.FootprintToWorldCenter(
+                        ref gridBlob,
                         newOccupiedCell,
                         footprintX,
                         footprintY,
@@ -223,16 +217,12 @@ namespace _Project._Code.Gameplay.CoreFeatures.Entities.Systems
         {
             occupiedCell = default;
 
-            if (TryTakeCell(
-                    ref grid,
-                    occupiedMap,
-                    entity,
-                    destinationCell,
-                    footprintX,
-                    footprintY,
-                    ref occupiedCell))
+            if (GridUtils.IsAreaFree(ref grid, occupiedMap, destinationCell, footprintX, footprintY, entity))
+            {
+                occupiedCell = destinationCell;
                 return true;
-
+            }
+            
             for (int ring = 1; ring <= MaxValidationRings; ring++)
             {
                 bool found = false;
@@ -311,32 +301,7 @@ namespace _Project._Code.Gameplay.CoreFeatures.Entities.Systems
 
             return false;
         }
-
-        [BurstCompile]
-        private bool TryTakeCell(
-            ref BattlefieldGridBlob grid,
-            NativeParallelHashMap<int2, Entity> occupiedMap,
-            Entity entity,
-            int2 candidateCell,
-            int footprintX,
-            int footprintY,
-            ref int2 occupiedCell)
-        {
-            if (!Utils.IsAreaWalkable(ref grid, candidateCell, footprintX, footprintY))
-                return false;
-
-            if (!Utils.IsAreaFreeInOccupiedMap(
-                    occupiedMap,
-                    candidateCell,
-                    footprintX,
-                    footprintY,
-                    entity))
-                return false;
-
-            occupiedCell = candidateCell;
-            return true;
-        }
-
+        
         [BurstCompile]
         private void EvaluateCellInRing(
             ref BattlefieldGridBlob grid,
@@ -350,17 +315,8 @@ namespace _Project._Code.Gameplay.CoreFeatures.Entities.Systems
             ref int2 bestCell,
             ref float bestDistSq)
         {
-            if (!Utils.IsAreaWalkable(ref grid, candidateCell, footprintX, footprintY))
+            if (!GridUtils.IsAreaFree(ref grid, occupiedMap, candidateCell, footprintX, footprintY, entity))
                 return;
-
-            if (!Utils.IsAreaFreeInOccupiedMap(
-                    occupiedMap,
-                    candidateCell,
-                    footprintX,
-                    footprintY,
-                    entity))
-                return;
-
             float2 candidatePos = candidateCell;
             float d = math.lengthsq(preferredCellPos - candidatePos);
 

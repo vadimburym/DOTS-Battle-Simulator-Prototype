@@ -43,7 +43,7 @@ namespace _Project._Code.Gameplay.CoreFeatures
             int2 originCell,
             int footprintX,
             int footprintY,
-            float y)
+            float y = 0f)
         {
             float centerX = originCell.x + footprintX * 0.5f;
             float centerY = originCell.y + footprintY * 0.5f;
@@ -77,25 +77,8 @@ namespace _Project._Code.Gameplay.CoreFeatures
         
         [BurstCompile]
         [MethodImpl(MethodImplOptions.AggressiveInlining)]
-        public bool IsAreaWalkable(
+        public bool IsAreaFree(
             ref BattlefieldGridBlob grid,
-            int2 originCell,
-            int footprintX,
-            int footprintY)
-        {
-            for (int y = 0; y < footprintY; y++)
-                for (int x = 0; x < footprintX; x++)
-                {
-                    var cell = originCell + new int2(x, y);
-                    if (!IsWalkable(ref grid, cell))
-                        return false;
-                }
-            return true;
-        }
-        
-        [BurstCompile]
-        [MethodImpl(MethodImplOptions.AggressiveInlining)]
-        public bool IsAreaFreeInOccupiedMap(
             NativeParallelHashMap<int2, Entity> occupiedMap,
             int2 originCell,
             int footprintX,
@@ -106,6 +89,8 @@ namespace _Project._Code.Gameplay.CoreFeatures
                 for (int x = 0; x < footprintX; x++)
                 {
                     var cell = originCell + new int2(x, y);
+                    if (!IsWalkable(ref grid, cell))
+                        return false;
                     if (occupiedMap.TryGetValue(cell, out var occupiedBy) && occupiedBy != self)
                         return false;
                 }
@@ -123,9 +108,7 @@ namespace _Project._Code.Gameplay.CoreFeatures
         {
             for (int y = 0; y < footprintY; y++)
                 for (int x = 0; x < footprintX; x++)
-                {
                     occupiedMap.TryAdd(originCell + new int2(x, y), entity);
-                }
         }
 
         [BurstCompile]
