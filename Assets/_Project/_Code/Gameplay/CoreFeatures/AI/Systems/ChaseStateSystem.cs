@@ -355,17 +355,9 @@ namespace _Project._Code.Gameplay.CoreFeatures.Entities.AiSystems
                 ref float bestAlignment,
                 ref float bestPreferredDistSq)
             {
-                if (!Utils.IsAreaWalkable(ref grid, candidateCell, footprintX, footprintY))
+                if (!Utils.IsAreaFree(ref grid, occupiedMap, candidateCell, footprintX, footprintY, self))
                     return;
-
-                if (!Utils.IsAreaFreeInOccupiedMap(
-                        occupiedMap,
-                        candidateCell,
-                        footprintX,
-                        footprintY,
-                        self))
-                    return;
-
+                
                 float2 offset = (float2)candidateCell - (float2)targetMovingCell;
                 float offsetLenSq = math.lengthsq(offset);
                 if (offsetLenSq < 0.0001f)

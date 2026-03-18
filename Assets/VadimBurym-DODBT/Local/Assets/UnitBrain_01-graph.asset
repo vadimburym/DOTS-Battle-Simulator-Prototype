@@ -1,0 +1,58 @@
+%YAML 1.1
+%TAG !u! tag:unity3d.com,2011:
+--- !u!114 &11400000
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 0}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: 14627dfdb24d4be0bc005970e5642721, type: 3}
+  m_Name: UnitBrain_01-graph
+  m_EditorClassIdentifier: VadimBurym.DodBehaviourTree.Editor::BtGraphAsset
+  CompiledAsset: {fileID: 11400000, guid: 3c23cc30ef01bec4aa2caba437ea4ce9, type: 2}
+  GuidsByCompiledId:
+  - 562e6417cd774fbc9ae02b783f47424d
+  - f5e9948166614716bfe9a41fee9213d7
+  CreationDate: 18.03.2026 21:28:19
+  LastModifiedDate: 18.03.2026 21:29:45
+  CompiledVersion: 18.03.2026 21:29:45
+  NodesCount: 2
+  LeafNodesCount: 1
+  NotActualCompiledVersion: 0
+  RootNode:
+    Guid: d96a9aa175f94bee998bab161ac3a2b6
+    Position: {x: 0, y: 0}
+    ChildrenGuid: 562e6417cd774fbc9ae02b783f47424d
+  Nodes:
+  - Guid: 562e6417cd774fbc9ae02b783f47424d
+    Kind: 4
+    Position: {x: 0, y: 123}
+    Title: Selector
+    ParentGuid: d96a9aa175f94bee998bab161ac3a2b6
+  - Guid: f5e9948166614716bfe9a41fee9213d7
+    Kind: 2
+    Position: {x: 0, y: 259}
+    Title: Test
+    ParentGuid: 562e6417cd774fbc9ae02b783f47424d
+  LeafNodes:
+  - Guid: f5e9948166614716bfe9a41fee9213d7
+    Leaf:
+      rid: 1545528936509472841
+  SequenceNodes: []
+  MemorySequenceNodes: []
+  SelectorNodes:
+  - Guid: 562e6417cd774fbc9ae02b783f47424d
+    ChildrenGuids:
+    - f5e9948166614716bfe9a41fee9213d7
+  MemorySelectorNodes: []
+  ParallelNodes: []
+  references:
+    version: 2
+    RefIds:
+    - rid: 1545528936509472841
+      type: {class: TestLeaf, ns: _Project._Code.Gameplay.CoreFeatures.AI.BtLeafs, asm: Assembly-CSharp}
+      data:
+        _testCooldown: 10

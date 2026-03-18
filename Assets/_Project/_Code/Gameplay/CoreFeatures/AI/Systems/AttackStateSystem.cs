@@ -71,7 +71,6 @@ namespace _Project._Code.Gameplay.CoreFeatures.Entities.AiSystems
                 
                 if (MovementLookup[owner].IsMoving != 0)
                     return;
-
                 int range = math.max(1, AttackStatsLookup[owner].AttackRangeCells);
                 int dist = Utils.CellDistanceChebyshev(
                     ownerGrid.OccupiedCell,

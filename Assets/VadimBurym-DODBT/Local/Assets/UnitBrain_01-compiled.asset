@@ -1,0 +1,35 @@
+%YAML 1.1
+%TAG !u! tag:unity3d.com,2011:
+--- !u!114 &11400000
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 0}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: 526ae62ac9b84af3a0d5d5f6f1b45f06, type: 3}
+  m_Name: UnitBrain_01-compiled
+  m_EditorClassIdentifier: VadimBurym.DodBehaviourTree::VadimBurym.DodBehaviourTree.BehaviourTreeAsset
+  InternalGUID: 1438794c732437d478ea786e112bec84
+  RootIndex: 0
+  Nodes:
+  - Id: 1
+    DataIndex: 0
+    ParentIndex: 0
+  - Id: 0
+    DataIndex: 0
+    ParentIndex: 0
+  SelectorNodes:
+  - FirstChild: 1
+    ChildCount: 1
+  SequenceNodes: []
+  MemorySelectorNodes: []
+  MemorySequenceNodes: []
+  ParallelNodes: []
+  Leafs:
+  - LeafId: 0
+    Int0: 10
+    Float0: 0
+    Byte0: 0
