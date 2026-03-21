@@ -228,6 +228,7 @@ MonoBehaviour:
   m_Name: 
   m_EditorClassIdentifier: Assembly-CSharp::_Project._Code.Gameplay.CoreFeatures.Units.Authoring.UnitAuthoring
   SelectedView: {fileID: 4890105889000459466}
+  BehaviourTreeId: 1
   Speed: 2.5
   RotationSpeed: 5
   Team: 0

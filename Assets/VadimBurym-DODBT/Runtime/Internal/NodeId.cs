@@ -9,7 +9,7 @@ using System;
 namespace VadimBurym.DodBehaviourTree
 {
     [Serializable]
-    internal enum NodeId : byte
+    public enum NodeId : byte
     {
         Leaf = 0,
         Selector = 1,

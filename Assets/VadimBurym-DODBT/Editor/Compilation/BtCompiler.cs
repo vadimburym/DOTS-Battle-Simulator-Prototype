@@ -33,6 +33,17 @@ internal static class BtCompiler
             var error = CompileNode(node, asset);
             if (!string.IsNullOrEmpty(error)) return error;
         }
+
+        for (int i = 0; i < _guidsByCompiled.Count; i++)
+        {
+            var guid = _guidsByCompiled[i];
+            var node = asset.FindHeader(guid);
+            var parent = _guidsByCompiled.FindIndex(s => s == node.ParentGuid);
+            var nodeData = _nodes[i];
+            nodeData.ParentIndex = parent != -1 ? (ushort)parent : (ushort)0xFFFF;
+            _nodes[i] = nodeData;
+        }
+        
         compiled.SetupCompiledTree(
             _nodes.ToArray(),
             0,
@@ -89,7 +100,8 @@ internal static class BtCompiler
                 if (memorySequenceChildren.Count == 0) return "One of your MemorySequences does not have children.";
                 _nodes.Add(new Node {
                     Id = NodeId.MemorySequence,
-                    DataIndex = Convert(_memorySequenceNodes.Count) });
+                    DataIndex = Convert(_memorySequenceNodes.Count)
+                });
                 _memorySequenceNodes.Add(new MemorySequenceNode {
                     FirstChild = Convert(_nodes.Count + _nodesQueue.Count),
                     ChildCount = (byte)memorySequenceChildren.Count,

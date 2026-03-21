@@ -14,3 +14,4 @@ MonoBehaviour:
   m_EditorClassIdentifier: Assembly-CSharp::_Project._Code.Infrastructure.StaticData._Root.StaticDataService
   MemoryPoolPipeline: {fileID: 11400000, guid: 1682ede3aea2bd945b081da73be7b33b, type: 2}
   UnitsStaticData: {fileID: 11400000, guid: 4ca809a91d4f5564398556c044216129, type: 2}
+  BehaviourTreeStaticData: {fileID: 11400000, guid: 297f787e197092543bd27f07d7f04eb7, type: 2}

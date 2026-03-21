@@ -23,9 +23,11 @@ namespace _Project._Code.GameApp.Installers
             builder.RegisterManaged<ClickToMoveSelectedSystem>();
             //---BattlefieldGrid
             builder.Register<GridMovingCellSyncSystem>();
-            //---AiStates
+            //---AI
             builder.Register<AttackStateSystem>();
             builder.Register<ChaseStateSystem>();
+            builder.Register<BehaviourTreeTickSystem>();
+            builder.RegisterManaged<BehaviourTreeInitSystem>();
             //---EyeSensor
             builder.Register<EyeSensorGridSystem>();
             builder.Register<EyeSensorSystem>();
