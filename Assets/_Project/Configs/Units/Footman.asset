@@ -14,4 +14,15 @@ MonoBehaviour:
   m_EditorClassIdentifier: Assembly-CSharp::_Project._Code.Infrastructure.StaticData.Units.UnitConfig
   UnitId: 1
   EntityPoolId: 1
-  Speed: 2
+  BehaviourTreeId: 1
+  Speed: 4
+  RotationSpeed: 5
+  FootprintX: 1
+  FootprintY: 1
+  AttackInterval: 3
+  AttackRangeCells: 2
+  Damage: 5
+  DetectRadius: 10
+  ChaseRadius: 15
+  UpdateNearestInterval: 3
+  ScanInterval: 0.3

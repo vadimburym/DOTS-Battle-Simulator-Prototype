@@ -15,6 +15,13 @@ MonoBehaviour:
   m_GroupName: Units
   m_GUID: d4460d82a18ec77468d7e8926fef070e
   m_SerializeEntries:
+  - m_GUID: 3c23cc30ef01bec4aa2caba437ea4ce9
+    m_Address: Assets/VadimBurym-DODBT/Local/Assets/UnitBrain_01-compiled.asset
+    m_ReadOnly: 0
+    m_SerializedLabels:
+    - gameplay
+    - preload
+    FlaggedDuringContentUpdateRestriction: 0
   - m_GUID: 819afd06752f77042b63353161fb12e0
     m_Address: Assets/_Project/Configs/Units/Footman.asset
     m_ReadOnly: 0

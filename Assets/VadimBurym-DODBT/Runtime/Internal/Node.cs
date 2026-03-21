@@ -9,7 +9,7 @@ using System;
 namespace VadimBurym.DodBehaviourTree
 {
     [Serializable]
-    internal struct Node
+    public struct Node
     {
         public NodeId Id;
 #if DODBT_SMALL_SIZE

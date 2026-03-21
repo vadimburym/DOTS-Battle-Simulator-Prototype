@@ -17,19 +17,185 @@ MonoBehaviour:
   Nodes:
   - Id: 1
     DataIndex: 0
+    ParentIndex: 65535
+  - Id: 2
+    DataIndex: 0
+    ParentIndex: 0
+  - Id: 3
+    DataIndex: 0
+    ParentIndex: 0
+  - Id: 2
+    DataIndex: 1
+    ParentIndex: 0
+  - Id: 3
+    DataIndex: 1
     ParentIndex: 0
   - Id: 0
     DataIndex: 0
-    ParentIndex: 0
+    ParentIndex: 1
+  - Id: 0
+    DataIndex: 1
+    ParentIndex: 1
+  - Id: 0
+    DataIndex: 2
+    ParentIndex: 1
+  - Id: 2
+    DataIndex: 2
+    ParentIndex: 2
+  - Id: 2
+    DataIndex: 3
+    ParentIndex: 2
+  - Id: 2
+    DataIndex: 4
+    ParentIndex: 2
+  - Id: 1
+    DataIndex: 1
+    ParentIndex: 3
+  - Id: 0
+    DataIndex: 3
+    ParentIndex: 3
+  - Id: 4
+    DataIndex: 0
+    ParentIndex: 4
+  - Id: 0
+    DataIndex: 4
+    ParentIndex: 8
+  - Id: 0
+    DataIndex: 5
+    ParentIndex: 8
+  - Id: 0
+    DataIndex: 6
+    ParentIndex: 9
+  - Id: 0
+    DataIndex: 7
+    ParentIndex: 9
+  - Id: 0
+    DataIndex: 8
+    ParentIndex: 10
+  - Id: 0
+    DataIndex: 9
+    ParentIndex: 10
+  - Id: 2
+    DataIndex: 5
+    ParentIndex: 11
+  - Id: 0
+    DataIndex: 10
+    ParentIndex: 11
+  - Id: 0
+    DataIndex: 11
+    ParentIndex: 13
+  - Id: 0
+    DataIndex: 12
+    ParentIndex: 13
+  - Id: 0
+    DataIndex: 13
+    ParentIndex: 20
+  - Id: 2
+    DataIndex: 6
+    ParentIndex: 20
+  - Id: 0
+    DataIndex: 14
+    ParentIndex: 25
+  - Id: 0
+    DataIndex: 15
+    ParentIndex: 25
   SelectorNodes:
   - FirstChild: 1
+    ChildCount: 4
+  - FirstChild: 20
+    ChildCount: 2
+  SequenceNodes:
+  - FirstChild: 5
+    ChildCount: 3
+  - FirstChild: 11
+    ChildCount: 2
+  - FirstChild: 14
+    ChildCount: 2
+  - FirstChild: 16
+    ChildCount: 2
+  - FirstChild: 18
+    ChildCount: 2
+  - FirstChild: 24
+    ChildCount: 2
+  - FirstChild: 26
+    ChildCount: 2
+  MemorySelectorNodes:
+  - FirstChild: 8
+    ChildCount: 3
+    PickRandom: 1
+    ResetOnAbort: 0
+  - FirstChild: 13
     ChildCount: 1
-  SequenceNodes: []
-  MemorySelectorNodes: []
-  MemorySequenceNodes: []
+    PickRandom: 0
+    ResetOnAbort: 0
+  MemorySequenceNodes:
+  - FirstChild: 22
+    ChildCount: 2
+    ResetOnFailure: 0
+    ResetOnAbort: 0
   ParallelNodes: []
   Leafs:
-  - LeafId: 0
-    Int0: 10
+  - LeafId: 1
+    Int0: 0
     Float0: 0
     Byte0: 0
+  - LeafId: 0
+    Int0: 1
+    Float0: 0
+    Byte0: 2
+  - LeafId: 0
+    Int0: 2
+    Float0: 0
+    Byte0: 3
+  - LeafId: 0
+    Int0: 4
+    Float0: 0
+    Byte0: 1
+  - LeafId: 0
+    Int0: 0
+    Float0: 0
+    Byte0: 2
+  - LeafId: 0
+    Int0: 0
+    Float0: 0
+    Byte0: 3
+  - LeafId: 0
+    Int0: 0
+    Float0: 0
+    Byte0: 2
+  - LeafId: 0
+    Int0: 0
+    Float0: 0
+    Byte0: 3
+  - LeafId: 0
+    Int0: 0
+    Float0: 0
+    Byte0: 2
+  - LeafId: 0
+    Int0: 0
+    Float0: 0
+    Byte0: 3
+  - LeafId: 0
+    Int0: 0
+    Float0: 0
+    Byte0: 2
+  - LeafId: 0
+    Int0: 5
+    Float0: 0
+    Byte0: 2
+  - LeafId: 0
+    Int0: 6
+    Float0: 0
+    Byte0: 1
+  - LeafId: 0
+    Int0: 0
+    Float0: 0
+    Byte0: 2
+  - LeafId: 0
+    Int0: 0
+    Float0: 0
+    Byte0: 2
+  - LeafId: 0
+    Int0: 0
+    Float0: 0
+    Byte0: 3

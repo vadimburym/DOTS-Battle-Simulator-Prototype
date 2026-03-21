@@ -450,7 +450,6 @@ namespace VadimBurym.DodBehaviourTree
             AbortSubtree(entity, ref blob, nodeStates, leafStates, (ushort)blob.RootIndex, leafContext);
         }
         
-        
         [BurstCompile]
         private void AbortSubtree(
             Entity entity,

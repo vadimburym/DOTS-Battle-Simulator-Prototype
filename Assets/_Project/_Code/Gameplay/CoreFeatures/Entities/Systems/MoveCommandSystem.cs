@@ -18,7 +18,7 @@ namespace _Project._Code.Gameplay.CoreFeatures.Entities.Systems
         private const int MaxValidationRings = 128;
         private const float PreserveShapeThreshold = 6f;
 
-        private BattlefieldGridUtils GridUtils;
+        //private BattlefieldGridUtils GridUtils;
 
         [BurstCompile]
         public void OnCreate(ref SystemState state)
@@ -90,8 +90,9 @@ namespace _Project._Code.Gameplay.CoreFeatures.Entities.Systems
                     requestsToDestroy.Add(requestEntity);
                     continue;
                 }
-                
-                var destinationCell = GridUtils.WorldToCell(ref gridBlob,  request.ValueRO.Destination);
+
+                var destination = request.ValueRO.Destination;
+                var destinationCell = BattlefieldGridUtils.WorldToCell(ref gridBlob, destination);
 
                 var groupCenter = float3.zero;
                 for (int i = 0; i < validCount; i++)
@@ -146,7 +147,7 @@ namespace _Project._Code.Gameplay.CoreFeatures.Entities.Systems
                     {
                         if (hadOld)
                         {
-                            GridUtils.ReleaseAreaDirect(
+                            BattlefieldGridUtils.ReleaseAreaDirect(
                                 occupiedMap,
                                 entities[i],
                                 oldOccupiedCell,
@@ -154,7 +155,7 @@ namespace _Project._Code.Gameplay.CoreFeatures.Entities.Systems
                                 footprintY);
                         }
 
-                        GridUtils.OccupyAreaDirect(
+                        BattlefieldGridUtils.OccupyAreaDirect(
                             occupiedMap,
                             entities[i],
                             newOccupiedCell,
@@ -166,7 +167,7 @@ namespace _Project._Code.Gameplay.CoreFeatures.Entities.Systems
                         gridStates[i] = gs;
                     }
 
-                    float3 worldCenter = GridUtils.FootprintToWorldCenter(
+                    float3 worldCenter = BattlefieldGridUtils.FootprintToWorldCenter(
                         ref gridBlob,
                         newOccupiedCell,
                         footprintX,
@@ -217,7 +218,7 @@ namespace _Project._Code.Gameplay.CoreFeatures.Entities.Systems
         {
             occupiedCell = default;
 
-            if (GridUtils.IsAreaFree(ref grid, occupiedMap, destinationCell, footprintX, footprintY, entity))
+            if (BattlefieldGridUtils.IsAreaFree(ref grid, occupiedMap, destinationCell, footprintX, footprintY, entity))
             {
                 occupiedCell = destinationCell;
                 return true;
@@ -315,7 +316,7 @@ namespace _Project._Code.Gameplay.CoreFeatures.Entities.Systems
             ref int2 bestCell,
             ref float bestDistSq)
         {
-            if (!GridUtils.IsAreaFree(ref grid, occupiedMap, candidateCell, footprintX, footprintY, entity))
+            if (!BattlefieldGridUtils.IsAreaFree(ref grid, occupiedMap, candidateCell, footprintX, footprintY, entity))
                 return;
             float2 candidatePos = candidateCell;
             float d = math.lengthsq(preferredCellPos - candidatePos);
