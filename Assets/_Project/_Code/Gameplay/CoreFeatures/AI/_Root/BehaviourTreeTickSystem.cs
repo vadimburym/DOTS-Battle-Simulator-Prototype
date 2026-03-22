@@ -53,24 +53,8 @@ namespace _Project._Code.Gameplay.CoreFeatures.Entities.AiSystems
         [BurstCompile]
         public void OnUpdate(ref SystemState state)
         {
-            /*
             var trees = SystemAPI.GetSingleton<BehaviourTreeSingleton>().Blobs;
-            var context = new BtContext();
-            foreach (var (
-                         aiBrain,
-                         nodeStates,
-                         leafStates,
-                         agent)
-                     in SystemAPI.Query<
-                         RefRW<AiBrain>,
-                         DynamicBuffer<NodeStateElement>,
-                         DynamicBuffer<LeafStateElement>>()
-                         .WithEntityAccess())
-            {
-                var treeBlob = trees[aiBrain.ValueRO.BlobId];
-                _runner.Tick(agent, ref treeBlob.Value, ref _random, nodeStates, leafStates, context);
-            }
-            */
+            
             _eyeSensorLookup.Update(ref state);
             _localTransformLookup.Update(ref state);
             _attackStatsLookup.Update(ref state);
@@ -88,11 +72,27 @@ namespace _Project._Code.Gameplay.CoreFeatures.Entities.AiSystems
                 GridNavigationStateLookup = _gridNavigationStateLookup,
             };
             
+            /*
+            foreach (var (
+                         aiBrain,
+                         nodeStates,
+                         leafStates,
+                         agent)
+                     in SystemAPI.Query<
+                         RefRW<AiBrain>,
+                         DynamicBuffer<NodeStateElement>,
+                         DynamicBuffer<LeafStateElement>>()
+                         .WithEntityAccess())
+            {
+                var treeBlob = trees[aiBrain.ValueRO.BlobId];
+                _runner.Tick(agent, ref treeBlob.Value, ref _random, nodeStates, leafStates, context);
+            }
+            */
+            
             _aiBrainHandle.Update(ref state);
             _nodeStateHandle.Update(ref state);
             _leafStateHandle.Update(ref state);
             _entityHandle.Update(ref state);
-            var trees = SystemAPI.GetSingleton<BehaviourTreeSingleton>().Blobs;
             var job = new BehaviourTreeTickChunkJob
             {
                 Runner = _runner,

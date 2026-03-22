@@ -18,8 +18,6 @@ namespace _Project._Code.Gameplay.CoreFeatures.Entities.Systems
         private const int MaxValidationRings = 128;
         private const float PreserveShapeThreshold = 6f;
 
-        //private BattlefieldGridUtils GridUtils;
-
         [BurstCompile]
         public void OnCreate(ref SystemState state)
         {

@@ -53,8 +53,7 @@ namespace _Project._Code.Gameplay.CoreFeatures.EyeSensorGrid.Systems
             [ReadOnly] public NativeParallelMultiHashMap<int2, Entity> Command1Grid;
             [ReadOnly] public ComponentLookup<LocalTransform> TransformLookup;
             [ReadOnly] public ComponentLookup<Team> TeamLookup;
-
-            [BurstCompile]
+            
             private void Execute(
                 Entity self,
                 ref EyeSensor sensorState,

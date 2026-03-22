@@ -36,7 +36,7 @@ namespace _Project._Code.Gameplay.CoreFeatures.AI.BtLeafs
         
         public static NodeStatus OnTick(ref Entity agent, in LeafData leafData, ref LeafStateElement leafState, in BtContext leafContext)
         {
-            //TODO Вынести distance в sensor
+            //TODO: now - GREEN, refactoring: вынести логику в сенсор
             var enemy = leafContext.EyeSensorLookup[agent].DetectedEntity;
             var agentPosition = leafContext.LocalTransformLookup[agent].Position;
             var enemyPosition = leafContext.LocalTransformLookup[enemy].Position;

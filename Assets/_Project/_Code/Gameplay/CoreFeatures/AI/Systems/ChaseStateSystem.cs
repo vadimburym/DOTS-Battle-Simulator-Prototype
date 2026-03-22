@@ -48,7 +48,6 @@ namespace _Project._Code.Gameplay.CoreFeatures.Entities.AiSystems
             state.Dependency = new ChaseStateJob
             {
                 DeltaTime = SystemAPI.Time.DeltaTime,
-                //Utils = new BattlefieldGridUtils(),
                 GridRef = gridRef,
                 OccupiedMap = mapsRw.ValueRW.OccupiedMap,
                 GridLookup = _gridLookup,
@@ -63,7 +62,6 @@ namespace _Project._Code.Gameplay.CoreFeatures.Entities.AiSystems
         public partial struct ChaseStateJob : IJobEntity
         {
             public float DeltaTime;
-            //public BattlefieldGridUtils Utils;
 
             [ReadOnly] public BlobAssetReference<BattlefieldGridBlob> GridRef;
             public NativeParallelHashMap<int2, Entity> OccupiedMap;

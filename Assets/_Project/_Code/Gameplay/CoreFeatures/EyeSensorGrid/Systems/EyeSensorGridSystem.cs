@@ -72,7 +72,6 @@ namespace _Project._Code.Gameplay.CoreFeatures.EyeSensorGrid.Systems
             public NativeParallelMultiHashMap<int2, Entity>.ParallelWriter Command0Writer;
             public NativeParallelMultiHashMap<int2, Entity>.ParallelWriter Command1Writer;
             
-            [BurstCompile]
             private void Execute(
                 Entity entity,
                 in LocalTransform transform,
