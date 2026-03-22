@@ -8,6 +8,7 @@ namespace _Project._Code.Gameplay.CoreFeatures.AI._Root
     public struct BtContext
     {
         public EntityCommandBuffer.ParallelWriter Ecb;
+        
         [ReadOnly] public ComponentLookup<EyeSensor> EyeSensorLookup;
         [ReadOnly] public ComponentLookup<LocalTransform> LocalTransformLookup;
         [ReadOnly] public ComponentLookup<AttackStats> AttackStatsLookup;

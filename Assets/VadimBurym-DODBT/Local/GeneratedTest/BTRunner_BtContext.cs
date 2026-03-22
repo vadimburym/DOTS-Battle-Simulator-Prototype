@@ -32,7 +32,6 @@ namespace VadimBurym.DodBehaviourTree.Generated
                 {
                     case NodeId.Leaf:
                     {
-                        //ref var leafState = ref leafStates.ElementAt(nodeState.LeafStateIndex);
                         var leafState = leafStates[nodeState.LeafStateIndex];
                         var leafData = blob.Leafs[nodeData.DataIndex];
                         
@@ -160,7 +159,6 @@ namespace VadimBurym.DodBehaviourTree.Generated
                 {
                     case NodeId.Leaf:
                     {
-                        //ref var leafState = ref leafStates.ElementAt(nodeState.LeafStateIndex);
                         var leafState = leafStates[nodeState.LeafStateIndex];
                         if (leafState.IsEntered != 0)
                         {
@@ -168,7 +166,7 @@ namespace VadimBurym.DodBehaviourTree.Generated
                             var leafData = blob.Leafs[nodeData.DataIndex];
                             LeafTables_BtContext.AbortLeaf(leafData.LeafId, ref entity, in leafData, ref leafState, in leafContext);
                         }
-                        //leafStates[nodeState.LeafStateIndex] = leafState;
+                        leafStates[nodeState.LeafStateIndex] = leafState;
                         break;
                     }
                     case NodeId.Selector:
