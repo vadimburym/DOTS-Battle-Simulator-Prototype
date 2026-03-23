@@ -1,5 +1,6 @@
 using _Project._Code.Core.Contracts;
 using _Project._Code.Gameplay.CoreFeatures;
+using _Project._Code.Gameplay.CoreFeatures.AI._Root;
 using _Project._Code.Gameplay.CoreFeatures.Entities.AiSystems;
 using _Project._Code.Gameplay.CoreFeatures.Entities.Systems;
 using _Project._Code.Gameplay.CoreFeatures.EyeSensorGrid.Systems;
@@ -7,6 +8,7 @@ using _Project._Code.Gameplay.CoreFeatures.Units.Factory;
 using _Project._Code.Gameplay.CoreFeatures.Units.Systems;
 using _Project._Code.Infrastructure.EcsContext;
 using _Project._Code.Locale;
+using _Project._Code.Locale.EdgeScrollCamera;
 using VContainer;
 
 namespace _Project._Code.GameApp.Installers
@@ -23,14 +25,17 @@ namespace _Project._Code.GameApp.Installers
             builder.RegisterManaged<ClickToMoveSelectedSystem>();
             //---BattlefieldGrid
             builder.Register<GridMovingCellSyncSystem>();
-            //---AI
-            builder.Register<AttackStateSystem>();
-            builder.Register<ChaseStateSystem>();
-            builder.Register<BehaviourTreeTickSystem>();
-            builder.RegisterManaged<BehaviourTreeInitSystem>();
             //---EyeSensor
             builder.Register<EyeSensorGridSystem>();
             builder.Register<EyeSensorSystem>();
+            builder.Register<SeeToDetectedSystem>();
+            //---AICore
+            builder.RegisterManaged<BehaviourTreeInitSystem>();
+            builder.Register<LeafStateWriteSystem>();
+            builder.Register<BehaviourTreeTickSystem>();
+            //---AIStates
+            builder.Register<AttackStateSystem>();
+            builder.Register<ChaseStateSystem>();
         }
         
         public static void Register(IContainerBuilder builder)
@@ -44,6 +49,7 @@ namespace _Project._Code.GameApp.Installers
             builder.Register<SaveLoadService>(Lifetime.Singleton).As<ISaveLoadService>();
             builder.Register<MemoryPoolService>(Lifetime.Singleton).As<IMemoryPoolService>();
             builder.Register<MemoryPoolWarmUpSystem>(Lifetime.Singleton).As<IWarmUp>();
+            builder.Register<EdgeScrollCameraSystem>(Lifetime.Singleton).As<ILateTick>();
         }
         
         private static void RegisterUnits(IContainerBuilder builder)

@@ -8,5 +8,7 @@ namespace _Project._Code.Infrastructure
         bool IsMainActionUp { get; }
         bool IsSecondActionDown { get; }
         bool TryGetMouseToWorldPosition(out Vector3 worldPosition);
+        Vector2 MousePosition { get; }
+        float Scroll { get; }
     }
 }

@@ -7,6 +7,8 @@ namespace _Project._Code.Infrastructure
         public bool IsMainActionDown => Input.GetMouseButtonDown(0);
         public bool IsMainActionUp => Input.GetMouseButtonUp(0);
         public bool IsSecondActionDown => Input.GetMouseButtonDown(1);
+        public Vector2 MousePosition => Input.mousePosition;
+        public float Scroll => Input.mouseScrollDelta.y;
         
         public bool TryGetMouseToWorldPosition(out Vector3 worldPosition)
         {

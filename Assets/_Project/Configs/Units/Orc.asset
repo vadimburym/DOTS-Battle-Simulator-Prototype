@@ -1,0 +1,28 @@
+%YAML 1.1
+%TAG !u! tag:unity3d.com,2011:
+--- !u!114 &11400000
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 0}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: edd0735b28c04f65b1fab5916a24c6a6, type: 3}
+  m_Name: Orc
+  m_EditorClassIdentifier: Assembly-CSharp::_Project._Code.Infrastructure.StaticData.Units.UnitConfig
+  UnitId: 2
+  EntityPoolId: 2
+  BehaviourTreeId: 1
+  Speed: 4
+  RotationSpeed: 5
+  FootprintX: 1
+  FootprintY: 1
+  AttackInterval: 3
+  AttackRangeCells: 2
+  Damage: 5
+  DetectRadius: 10
+  ChaseRadius: 15
+  UpdateNearestInterval: 3
+  ScanInterval: 0.3

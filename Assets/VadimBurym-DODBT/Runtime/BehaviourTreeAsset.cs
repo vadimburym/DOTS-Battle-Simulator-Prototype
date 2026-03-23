@@ -49,7 +49,6 @@ namespace VadimBurym.DodBehaviourTree
                 ecb.AppendToBuffer(entity, new NodeStateElement {
                     CachedStatus = 0,
                     Cursor = 0xFF,
-                    IsEntered = 0,
                     LeafStateIndex = isLeaf ? leafIndex : None,
                     MemoryCursor = 0xFF,
                     TmpA = 0,
@@ -59,6 +58,8 @@ namespace VadimBurym.DodBehaviourTree
             }
             for (int i = 0; i < Leafs.Length; i++)
                 ecb.AppendToBuffer(entity, new LeafStateElement {
+                    IsEntered = 0,
+                    BufferIndex = (ushort)i,
                     StateEntity = Entity.Null
                 });
         }

@@ -21,13 +21,15 @@ namespace _Project._Code.Gameplay.CoreFeatures.Units.Authoring
                 var entity = GetEntity(TransformUsageFlags.Dynamic);
                 AddComponent<MovementStats>(entity);
                 AddComponent<TargetPosition>(entity);
-                AddComponent(entity, new Selected {
+                AddComponent(entity, new SelectedTag {
                     SelectedView = GetEntity(authoring.SelectedView, TransformUsageFlags.Dynamic),
                     ShowScale = authoring.SelectedView.transform.localScale.x
                 });
-                SetComponentEnabled<Selected>(entity, false);
+                SetComponentEnabled<SelectedTag>(entity, false);
                 AddComponent<MyTeamTag>(entity);
                 SetComponentEnabled<MyTeamTag>(entity, false);
+                AddComponent<SeeToDetectedTag>(entity);
+                SetComponentEnabled<SeeToDetectedTag>(entity, false);
                 AddComponent<Footprint>(entity);
                 AddComponent(entity, new GridNavigationState {
                     OccupiedCell = int2.zero,

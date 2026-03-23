@@ -21,6 +21,9 @@ namespace VadimBurym.DodBehaviourTree.Generated
                 case 1: return IsEnemyDetectedLeaf.OnTick(ref agent, leaf, ref leafState, leafContext);
                 case 2: return DistanceToEnemyThresholdLeaf.OnTick(ref agent, leaf, ref leafState, leafContext);
                 case 3: return InAttackRangeLeaf.OnTick(ref agent, leaf, ref leafState, leafContext);
+                case 4: return ChaseEnemyLeaf.OnTick(ref agent, leaf, ref leafState, leafContext);
+                case 5: return IsMovingLeaf.OnTick(ref agent, leaf, ref leafState, leafContext);
+                case 6: return AttackEnemyLeaf.OnTick(ref agent, leaf, ref leafState, leafContext);
             }
             return NodeStatus.None;
         }
@@ -30,7 +33,8 @@ namespace VadimBurym.DodBehaviourTree.Generated
             ref Entity agent,
             in LeafData leaf,
             ref LeafStateElement leafState,
-            in BtContext leafContext)
+            in BtContext leafContext,
+            int sortKey)
         {
             switch (leafId)
             {
@@ -38,6 +42,9 @@ namespace VadimBurym.DodBehaviourTree.Generated
                 case 1: IsEnemyDetectedLeaf.OnEnter(ref agent, leaf, ref leafState, leafContext); break;
                 case 2: DistanceToEnemyThresholdLeaf.OnEnter(ref agent, leaf, ref leafState, leafContext); break;
                 case 3: InAttackRangeLeaf.OnEnter(ref agent, leaf, ref leafState, leafContext); break;
+                case 4: ChaseEnemyLeaf.OnEnter(ref agent, leaf, ref leafState, leafContext, sortKey); break;
+                case 5: IsMovingLeaf.OnEnter(ref agent, leaf, ref leafState, leafContext); break;
+                case 6: AttackEnemyLeaf.OnEnter(ref agent, leaf, ref leafState, leafContext, sortKey); break;
             }
         }
         
@@ -46,7 +53,8 @@ namespace VadimBurym.DodBehaviourTree.Generated
             ref Entity agent,
             in LeafData leaf,
             ref LeafStateElement leafState,
-            in BtContext leafContext)
+            in BtContext leafContext,
+            int sortKey)
         {
             switch (leafId)
             {
@@ -54,6 +62,9 @@ namespace VadimBurym.DodBehaviourTree.Generated
                 case 1: IsEnemyDetectedLeaf.OnExit(ref agent, leaf, ref leafState, leafContext); break;
                 case 2: DistanceToEnemyThresholdLeaf.OnExit(ref agent, leaf, ref leafState, leafContext); break;
                 case 3: InAttackRangeLeaf.OnExit(ref agent, leaf, ref leafState, leafContext); break;
+                case 4: ChaseEnemyLeaf.OnExit(ref agent, leaf, ref leafState, leafContext, sortKey); break;
+                case 5: IsMovingLeaf.OnExit(ref agent, leaf, ref leafState, leafContext); break;
+                case 6: AttackEnemyLeaf.OnExit(ref agent, leaf, ref leafState, leafContext, sortKey); break;
             }
         }
         
@@ -62,7 +73,8 @@ namespace VadimBurym.DodBehaviourTree.Generated
             ref Entity agent,
             in LeafData leaf,
             ref LeafStateElement leafState,
-            in BtContext leafContext)
+            in BtContext leafContext,
+            int sortKey)
         {
             switch (leafId)
             {
@@ -70,6 +82,9 @@ namespace VadimBurym.DodBehaviourTree.Generated
                 case 1: IsEnemyDetectedLeaf.OnAbort(ref agent, leaf, ref leafState, leafContext); break;
                 case 2: DistanceToEnemyThresholdLeaf.OnAbort(ref agent, leaf, ref leafState, leafContext); break;
                 case 3: InAttackRangeLeaf.OnAbort(ref agent, leaf, ref leafState, leafContext); break;
+                case 4: ChaseEnemyLeaf.OnAbort(ref agent, leaf, ref leafState, leafContext, sortKey); break;
+                case 5: IsMovingLeaf.OnAbort(ref agent, leaf, ref leafState, leafContext); break;
+                case 6: AttackEnemyLeaf.OnAbort(ref agent, leaf, ref leafState, leafContext, sortKey); break;
             }
         }
     }

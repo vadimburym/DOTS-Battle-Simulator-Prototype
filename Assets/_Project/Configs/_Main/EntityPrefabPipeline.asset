@@ -13,5 +13,7 @@ MonoBehaviour:
   m_Name: EntityPrefabPipeline
   m_EditorClassIdentifier: Assembly-CSharp::_Project._Code.Infrastructure.EntityPrefabPipeline
   EntityMemoryPools:
+  - PoolId: 2
+    Asset: {fileID: 8364555645895950353, guid: d62b0f5390022314d9835bd3bb2cc8af, type: 3}
   - PoolId: 1
     Asset: {fileID: 8364555645895950353, guid: 2bbfb9163e8991a4d8e9a795a97d2901, type: 3}

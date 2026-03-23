@@ -19,6 +19,7 @@ namespace _Project._Code.GameApp.GameStates
         private const string GAMEPLAY_NAME = "GameplayContext";
         private readonly string[] GAMEPLAY_ADDRESSABLE_LABELS = { "gameplay", "preload" };
         private const int GAMEPLAY_SCENE_IDX = 2;
+        private readonly EntityPoolId[] PrefabsToLoad = { EntityPoolId.Footman, EntityPoolId.Orc };
         
         private readonly ILocalContextService _localContextService;
         private readonly IEcsContext _localEcsContext;
@@ -46,7 +47,7 @@ namespace _Project._Code.GameApp.GameStates
         public void Enter() => EnterAsync().Forget();
         private async UniTask EnterAsync()
         {
-            await _entityPrefabService.LoadAsync(EntityPoolId.Footman); //TODO в StaticData определить EntityPoolId[] и передать
+            await _entityPrefabService.LoadAsync(PrefabsToLoad); //TODO в StaticData определить EntityPoolId[] и передать
             await _addressableService.LoadObjectsByLabelsAsync(GAMEPLAY_ADDRESSABLE_LABELS, Addressables.MergeMode.Intersection);
             await _sceneLoadService.LoadSceneAsync(GAMEPLAY_SCENE_IDX);
             await _sceneLoadService.FindFirstComponentInRoots<SubSceneAwaiter>().WaitUntilSubSceneReady();

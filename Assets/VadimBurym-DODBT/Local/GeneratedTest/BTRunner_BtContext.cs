@@ -16,7 +16,8 @@ namespace VadimBurym.DodBehaviourTree.Generated
             ref Random rng,
             DynamicBuffer<NodeStateElement> nodeStates,
             DynamicBuffer<LeafStateElement> leafStates,
-            in BtContext leafContext)
+            in BtContext leafContext,
+            int sortKey)
         {
             var pc = blob.RootIndex;
             var childStatus = NodeStatus.Running;
@@ -37,13 +38,13 @@ namespace VadimBurym.DodBehaviourTree.Generated
                         
                         if (leafState.IsEntered == 0)
                         {
-                            LeafTables_BtContext.EnterLeaf(leafData.LeafId, ref entity, in leafData, ref leafState, in leafContext);
+                            LeafTables_BtContext.EnterLeaf(leafData.LeafId, ref entity, in leafData, ref leafState, in leafContext, sortKey);
                             leafState.IsEntered = 1;
                         }
                         var status = LeafTables_BtContext.TickLeaf(leafData.LeafId, ref entity, in leafData, ref leafState, in leafContext);
                         if (status != NodeStatus.Running)
                         {
-                            LeafTables_BtContext.ExitLeaf(leafData.LeafId, ref entity, in leafData, ref leafState, in leafContext);
+                            LeafTables_BtContext.ExitLeaf(leafData.LeafId, ref entity, in leafData, ref leafState, in leafContext, sortKey);
                             leafState.IsEntered = 0;
                         }
                         
@@ -122,7 +123,7 @@ namespace VadimBurym.DodBehaviourTree.Generated
                     }
                 }
                 if (abortingNode != None)
-                    AbortSubtree(entity, ref blob, nodeStates, leafStates, abortingNode, leafContext);
+                    AbortSubtree(entity, ref blob, nodeStates, leafStates, abortingNode, leafContext, sortKey);
                 nodeStates[nodeStatePc] = nodeState;
             }
             return childStatus;
@@ -133,9 +134,10 @@ namespace VadimBurym.DodBehaviourTree.Generated
             ref BehaviourTreeBlob blob,
             DynamicBuffer<NodeStateElement> nodeStates,
             DynamicBuffer<LeafStateElement> leafStates,
-            in BtContext leafContext)
+            in BtContext leafContext,
+            int sortKey)
         {
-            AbortSubtree(entity, ref blob, nodeStates, leafStates, (ushort)blob.RootIndex, leafContext);
+            AbortSubtree(entity, ref blob, nodeStates, leafStates, (ushort)blob.RootIndex, leafContext, sortKey);
         }
         
         private void AbortSubtree(
@@ -144,7 +146,8 @@ namespace VadimBurym.DodBehaviourTree.Generated
             DynamicBuffer<NodeStateElement> nodeStates,
             DynamicBuffer<LeafStateElement> leafStates,
             ushort root,
-            in BtContext leafContext)
+            in BtContext leafContext,
+            int sortKey)
         {
             FixedList4096Bytes<int> stack = default;
             stack.Add(root);
@@ -164,7 +167,7 @@ namespace VadimBurym.DodBehaviourTree.Generated
                         {
                             leafState.IsEntered = 0;
                             var leafData = blob.Leafs[nodeData.DataIndex];
-                            LeafTables_BtContext.AbortLeaf(leafData.LeafId, ref entity, in leafData, ref leafState, in leafContext);
+                            LeafTables_BtContext.AbortLeaf(leafData.LeafId, ref entity, in leafData, ref leafState, in leafContext, sortKey);
                         }
                         leafStates[nodeState.LeafStateIndex] = leafState;
                         break;

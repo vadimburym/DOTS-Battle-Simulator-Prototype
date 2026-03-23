@@ -10,10 +10,11 @@ using Unity.Entities;
 namespace VadimBurym.DodBehaviourTree
 {
     [Serializable]
-    [InternalBufferCapacity(128)]
+    [InternalBufferCapacity(0)]
     public struct LeafStateElement : IBufferElementData
     {
         public byte IsEntered;
+        public ushort BufferIndex;
         public Entity StateEntity;
     }
 }

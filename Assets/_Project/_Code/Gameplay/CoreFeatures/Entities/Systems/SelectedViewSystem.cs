@@ -35,21 +35,21 @@ namespace _Project._Code.Gameplay.CoreFeatures.Entities.Systems
         }
         
         [BurstCompile]
-        [WithDisabled(typeof(Selected))]
+        [WithDisabled(typeof(SelectedTag))]
         public partial struct HideSelectedViewJob : IJobEntity
         {
             [NativeDisableParallelForRestriction]
             public ComponentLookup<LocalTransform> LocalTransformLookup;
 
             [BurstCompile]
-            private void Execute(in Selected selected)
+            private void Execute(in SelectedTag selectedTag)
             {
-                if (!LocalTransformLookup.HasComponent(selected.SelectedView))
+                if (!LocalTransformLookup.HasComponent(selectedTag.SelectedView))
                     return;
 
-                var viewTransform = LocalTransformLookup[selected.SelectedView];
+                var viewTransform = LocalTransformLookup[selectedTag.SelectedView];
                 viewTransform.Scale = 0f;
-                LocalTransformLookup[selected.SelectedView] = viewTransform;
+                LocalTransformLookup[selectedTag.SelectedView] = viewTransform;
             }
         }
 
@@ -60,14 +60,14 @@ namespace _Project._Code.Gameplay.CoreFeatures.Entities.Systems
             public ComponentLookup<LocalTransform> LocalTransformLookup;
 
             [BurstCompile]
-            private void Execute(in Selected selected)
+            private void Execute(in SelectedTag selectedTag)
             {
-                if (!LocalTransformLookup.HasComponent(selected.SelectedView))
+                if (!LocalTransformLookup.HasComponent(selectedTag.SelectedView))
                     return;
 
-                var viewTransform = LocalTransformLookup[selected.SelectedView];
-                viewTransform.Scale = selected.ShowScale;
-                LocalTransformLookup[selected.SelectedView] = viewTransform;
+                var viewTransform = LocalTransformLookup[selectedTag.SelectedView];
+                viewTransform.Scale = selectedTag.ShowScale;
+                LocalTransformLookup[selectedTag.SelectedView] = viewTransform;
             }
         }
     }
