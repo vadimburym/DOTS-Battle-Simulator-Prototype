@@ -92,7 +92,7 @@ namespace _Project._Code.Gameplay.CoreFeatures.Entities.AiSystems
                 {
                     return;
                 }
-
+                
                 chaseState.UpdateTimer -= DeltaTime;
                 if (chaseState.UpdateTimer > 0f)
                     return;

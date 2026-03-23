@@ -13,5 +13,6 @@ namespace _Project._Code.Gameplay.CoreFeatures.AI._Root
         [ReadOnly] public ComponentLookup<LocalTransform> LocalTransformLookup;
         [ReadOnly] public ComponentLookup<AttackStats> AttackStatsLookup;
         [ReadOnly] public ComponentLookup<GridNavigationState> GridNavigationStateLookup;
+        [ReadOnly] public ComponentLookup<IsMovingTag> IsMovingTagLookup;
     }
 }

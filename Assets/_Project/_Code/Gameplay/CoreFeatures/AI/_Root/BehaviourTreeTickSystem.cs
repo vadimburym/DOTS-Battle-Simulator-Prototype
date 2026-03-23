@@ -29,6 +29,7 @@ namespace _Project._Code.Gameplay.CoreFeatures.Entities.AiSystems
         private ComponentLookup<LocalTransform> _localTransformLookup;
         private ComponentLookup<AttackStats> _attackStatsLookup;
         private ComponentLookup<GridNavigationState> _gridNavigationStateLookup;
+        private ComponentLookup<IsMovingTag> _isMovingTagLookup;
         
         public void OnCreate(ref SystemState state)
         {
@@ -48,6 +49,7 @@ namespace _Project._Code.Gameplay.CoreFeatures.Entities.AiSystems
             _localTransformLookup = state.GetComponentLookup<LocalTransform>(isReadOnly: true);
             _attackStatsLookup = state.GetComponentLookup<AttackStats>(isReadOnly: true);
             _gridNavigationStateLookup = state.GetComponentLookup<GridNavigationState>(isReadOnly: true);
+            _isMovingTagLookup = state.GetComponentLookup<IsMovingTag>(isReadOnly: true);
         }
         
         [BurstCompile]
@@ -59,6 +61,7 @@ namespace _Project._Code.Gameplay.CoreFeatures.Entities.AiSystems
             _localTransformLookup.Update(ref state);
             _attackStatsLookup.Update(ref state);
             _gridNavigationStateLookup.Update(ref state);
+            _isMovingTagLookup.Update(ref state);
             
             var ecbSystem = SystemAPI.GetSingleton<EndSimulationEntityCommandBufferSystem.Singleton>();
             var ecb = ecbSystem.CreateCommandBuffer(state.WorldUnmanaged);
@@ -70,6 +73,7 @@ namespace _Project._Code.Gameplay.CoreFeatures.Entities.AiSystems
                 LocalTransformLookup = _localTransformLookup,
                 AttackStatsLookup = _attackStatsLookup,
                 GridNavigationStateLookup = _gridNavigationStateLookup,
+                IsMovingTagLookup = _isMovingTagLookup
             };
             
             /*
@@ -150,9 +154,10 @@ namespace _Project._Code.Gameplay.CoreFeatures.Entities.AiSystems
                         ref Random,
                         nodeStates,
                         leafStates,
-                        Context);
+                        Context,
+                        unfilteredChunkIndex);
                     
-                    aiBrain.UpdateTime = CurrentTime + UpdateInterval;
+                    aiBrain.UpdateTime += UpdateInterval;
                     aiBrains[i] = aiBrain;
                 }
             }

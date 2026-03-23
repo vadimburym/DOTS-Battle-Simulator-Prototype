@@ -61,7 +61,8 @@ namespace _Project._Code.Gameplay.CoreFeatures.Entities.AiSystems
                 ref AttackState attackState)
             {
                 attackState.RemainingTime = math.max(0f, attackState.RemainingTime - DeltaTime);
-
+                if (attackState.RemainingTime > 0f)
+                    return;
                 var owner = attackState.Owner;
                 var target = attackState.Target;
                 var ownerGrid = GridLookup[owner];
@@ -73,19 +74,13 @@ namespace _Project._Code.Gameplay.CoreFeatures.Entities.AiSystems
                 int dist = BattlefieldGridUtils.CellDistanceChebyshev(
                     ownerGrid.OccupiedCell,
                     targetGrid.MovingCell);
-
                 if (dist > range)
                     return;
-
-                if (attackState.RemainingTime > 0f)
-                    return;
-
-    #if UNITY_EDITOR
-                UnityEngine.Debug.Log(
-                    $"Attack: owner={owner.Index} target={target.Index} state={attackStateEntity.Index}");
-    #endif
-
+                
                 attackState.RemainingTime = AttackStatsLookup[owner].AttackInterval;
+    #if UNITY_EDITOR
+                //UnityEngine.Debug.Log($"Attack: owner={owner.Index} target={target.Index} state={attackStateEntity.Index}");
+    #endif
             }
         }
     }

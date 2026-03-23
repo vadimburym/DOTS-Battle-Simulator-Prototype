@@ -39,11 +39,11 @@ namespace _Project._Code.Gameplay.CoreFeatures.Entities.Systems
             float2 max = _selectionResult.ScreenMax;
             
             foreach (var (localTransform, entity)
-                     in SystemAPI.Query<RefRO<LocalTransform>>().WithAll<MyTeamTag>().WithPresent<Selected>().WithEntityAccess())
+                     in SystemAPI.Query<RefRO<LocalTransform>>().WithAll<MyTeamTag>().WithPresent<SelectedTag>().WithEntityAccess())
             {
                 float2 unitScreenPosition = (Vector2)camera.WorldToScreenPoint(localTransform.ValueRO.Position);
                 bool inside = math.all(unitScreenPosition >= min & unitScreenPosition <= max);
-                EntityManager.SetComponentEnabled<Selected>(entity, inside);
+                EntityManager.SetComponentEnabled<SelectedTag>(entity, inside);
             }
             
             _isSelectionDirty = false;

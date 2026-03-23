@@ -48,8 +48,8 @@ MonoBehaviour:
   - Id: 1
     DataIndex: 1
     ParentIndex: 3
-  - Id: 2
-    DataIndex: 5
+  - Id: 1
+    DataIndex: 2
     ParentIndex: 3
   - Id: 4
     DataIndex: 0
@@ -73,42 +73,64 @@ MonoBehaviour:
     DataIndex: 7
     ParentIndex: 9
   - Id: 2
-    DataIndex: 6
+    DataIndex: 5
     ParentIndex: 10
   - Id: 0
     DataIndex: 8
     ParentIndex: 10
+  - Id: 2
+    DataIndex: 6
+    ParentIndex: 11
   - Id: 0
     DataIndex: 9
     ParentIndex: 11
   - Id: 0
     DataIndex: 10
-    ParentIndex: 11
+    ParentIndex: 12
   - Id: 0
     DataIndex: 11
-    ParentIndex: 11
+    ParentIndex: 12
   - Id: 0
     DataIndex: 12
-    ParentIndex: 12
-  - Id: 0
-    DataIndex: 13
-    ParentIndex: 12
-  - Id: 0
-    DataIndex: 14
     ParentIndex: 19
   - Id: 2
     DataIndex: 7
     ParentIndex: 19
   - Id: 0
+    DataIndex: 13
+    ParentIndex: 21
+  - Id: 1
+    DataIndex: 3
+    ParentIndex: 21
+  - Id: 0
+    DataIndex: 14
+    ParentIndex: 21
+  - Id: 0
     DataIndex: 15
-    ParentIndex: 27
+    ParentIndex: 26
   - Id: 0
     DataIndex: 16
-    ParentIndex: 27
+    ParentIndex: 26
+  - Id: 2
+    DataIndex: 8
+    ParentIndex: 28
+  - Id: 0
+    DataIndex: 17
+    ParentIndex: 28
+  - Id: 0
+    DataIndex: 18
+    ParentIndex: 32
+  - Id: 0
+    DataIndex: 19
+    ParentIndex: 32
   SelectorNodes:
   - FirstChild: 1
     ChildCount: 4
   - FirstChild: 19
+    ChildCount: 2
+  - FirstChild: 21
+    ChildCount: 2
+  - FirstChild: 32
     ChildCount: 2
   SequenceNodes:
   - FirstChild: 5
@@ -121,11 +143,13 @@ MonoBehaviour:
     ChildCount: 2
   - FirstChild: 17
     ChildCount: 2
-  - FirstChild: 21
-    ChildCount: 3
-  - FirstChild: 26
+  - FirstChild: 25
     ChildCount: 2
-  - FirstChild: 28
+  - FirstChild: 27
+    ChildCount: 3
+  - FirstChild: 30
+    ChildCount: 2
+  - FirstChild: 34
     ChildCount: 2
   MemorySelectorNodes:
   - FirstChild: 7
@@ -137,7 +161,7 @@ MonoBehaviour:
     PickRandom: 0
     ResetOnAbort: 0
   MemorySequenceNodes:
-  - FirstChild: 24
+  - FirstChild: 23
     ChildCount: 2
     ResetOnFailure: 0
     ResetOnAbort: 0
@@ -179,14 +203,6 @@ MonoBehaviour:
     Int0: 6
     Float0: 0
     Byte0: 2
-  - LeafId: 1
-    Int0: 0
-    Float0: 0
-    Byte0: 0
-  - LeafId: 3
-    Int0: 0
-    Float0: 0
-    Byte0: 0
   - LeafId: 0
     Int0: 777
     Float0: 0
@@ -203,6 +219,14 @@ MonoBehaviour:
     Int0: 3
     Float0: 0
     Byte0: 2
+  - LeafId: 1
+    Int0: 0
+    Float0: 0
+    Byte0: 0
+  - LeafId: 6
+    Int0: 0
+    Float0: 0
+    Byte0: 0
   - LeafId: 0
     Int0: 4
     Float0: 0
@@ -211,3 +235,15 @@ MonoBehaviour:
     Int0: 5
     Float0: 0
     Byte0: 3
+  - LeafId: 4
+    Int0: 0
+    Float0: 0
+    Byte0: 0
+  - LeafId: 3
+    Int0: 0
+    Float0: 0
+    Byte0: 0
+  - LeafId: 5
+    Int0: 0
+    Float0: 0
+    Byte0: 0

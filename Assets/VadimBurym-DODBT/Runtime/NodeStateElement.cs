@@ -11,17 +11,16 @@ using UnityEngine;
 namespace VadimBurym.DodBehaviourTree
 {
     [Serializable]
-    [InternalBufferCapacity(32)]
+    [InternalBufferCapacity(0)]
     public struct NodeStateElement : IBufferElementData
     {
-        [SerializeField] internal byte IsEntered; //TODO
         [SerializeField] internal byte Cursor; 
         [SerializeField] internal byte MemoryCursor; 
         [SerializeField] internal byte CachedStatus;  
         [SerializeField] internal byte TmpA;  
         [SerializeField] internal byte TmpB;  
 #if DODBT_SMALL_SIZE
-        [SerializeField] internal byte LeafStateIndex;
+        [SerializeField] public byte LeafStateIndex;
 #else
         [SerializeField] public ushort LeafStateIndex;
 #endif

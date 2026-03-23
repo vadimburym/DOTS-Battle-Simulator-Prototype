@@ -51,7 +51,7 @@ namespace _Project._Code.Gameplay.CoreFeatures.Units.Factory
                 Speed = unitData.Speed,
                 RotationSpeed = unitData.RotationSpeed,
             });
-            ecb.SetComponentEnabled<Selected>(entity, false);
+            ecb.SetComponentEnabled<SelectedTag>(entity, false);
             ecb.SetComponent(entity, new Footprint {
                 FootprintX = unitData.FootprintX,
                 FootprintY = unitData.FootprintY,

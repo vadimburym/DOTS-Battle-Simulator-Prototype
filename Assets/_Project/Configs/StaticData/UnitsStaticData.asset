@@ -41,7 +41,7 @@ MonoBehaviour:
       Data: 
     - Name: 
       Entry: 12
-      Data: 1
+      Data: 2
     - Name: 
       Entry: 7
       Data: 
@@ -55,6 +55,37 @@ MonoBehaviour:
     - Name: m_AssetGUID
       Entry: 1
       Data: 819afd06752f77042b63353161fb12e0
+    - Name: m_SubObjectName
+      Entry: 6
+      Data: 
+    - Name: m_SubObjectType
+      Entry: 6
+      Data: 
+    - Name: m_SubObjectGUID
+      Entry: 1
+      Data: 
+    - Name: m_EditorAssetChanged
+      Entry: 5
+      Data: true
+    - Name: 
+      Entry: 8
+      Data: 
+    - Name: 
+      Entry: 8
+      Data: 
+    - Name: 
+      Entry: 7
+      Data: 
+    - Name: $k
+      Entry: 3
+      Data: 2
+    - Name: $v
+      Entry: 7
+      Data: 3|UnityEngine.AddressableAssets.AssetReferenceT`1[[_Project._Code.Infrastructure.StaticData.Units.UnitConfig,
+        Assembly-CSharp]], Unity.Addressables
+    - Name: m_AssetGUID
+      Entry: 1
+      Data: 30a3b0d6e84d082498c49df18f287a6b
     - Name: m_SubObjectName
       Entry: 6
       Data: 

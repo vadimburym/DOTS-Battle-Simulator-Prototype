@@ -20,7 +20,7 @@ namespace _Project._Code.Gameplay.CoreFeatures.Entities.Systems
                 return;
             
             var selectedQuery = SystemAPI.QueryBuilder()
-                .WithAll<Selected, LocalTransform, TargetPosition>()
+                .WithAll<SelectedTag, LocalTransform, TargetPosition>()
                 .Build();
 
             int count = selectedQuery.CalculateEntityCount();
