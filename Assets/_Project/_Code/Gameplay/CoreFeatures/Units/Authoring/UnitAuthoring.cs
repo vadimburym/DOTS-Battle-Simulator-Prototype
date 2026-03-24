@@ -6,6 +6,7 @@ using Unity.Entities;
 using Unity.Mathematics;
 using UnityEngine;
 using VadimBurym.DodBehaviourTree;
+using VATDots;
 
 namespace _Project._Code.Gameplay.CoreFeatures.Units.Authoring
 {
@@ -13,6 +14,7 @@ namespace _Project._Code.Gameplay.CoreFeatures.Units.Authoring
     {
         [Header("References")] 
         public GameObject SelectedView;
+        public GameObject Renderer;
         
         public sealed class Baker : Baker<UnitAuthoring>
         {
@@ -24,6 +26,9 @@ namespace _Project._Code.Gameplay.CoreFeatures.Units.Authoring
                 AddComponent(entity, new SelectedTag {
                     SelectedView = GetEntity(authoring.SelectedView, TransformUsageFlags.Dynamic),
                     ShowScale = authoring.SelectedView.transform.localScale.x
+                });
+                AddComponent(entity, new RendererEntityRef {
+                    Value = GetEntity(authoring.Renderer, TransformUsageFlags.Dynamic)
                 });
                 SetComponentEnabled<SelectedTag>(entity, false);
                 AddComponent<MyTeamTag>(entity);
@@ -43,6 +48,7 @@ namespace _Project._Code.Gameplay.CoreFeatures.Units.Authoring
                 AddComponent<EyeSensor>(entity);
                 AddComponent<CommandPriorityMode>(entity);
                 AddComponent<AiBrain>(entity);
+                AddComponent<UnitTag>(entity);
                 AddBuffer<NodeStateElement>(entity);
                 AddBuffer<LeafStateElement>(entity);
             }

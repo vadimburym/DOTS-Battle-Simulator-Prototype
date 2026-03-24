@@ -20,6 +20,7 @@ namespace _Project._Code.Infrastructure
                 if (authoring.Pipeline == null)
                     return;
                 var entries = authoring.Pipeline.EntityMemoryPools;
+#if UNITY_EDITOR
                 for (int i = 0; i < entries.Length; i++)
                 {
                     var entry = entries[i];
@@ -31,6 +32,7 @@ namespace _Project._Code.Infrastructure
                         PrefabReference = new EntityPrefabReference(entry.Asset)
                     });
                 }
+#endif
             }
         }
     }

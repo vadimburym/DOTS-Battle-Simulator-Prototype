@@ -2,6 +2,7 @@ using _Project._Code.Core.Keys;
 using _Project._Code.Infrastructure;
 using _Project._Code.Infrastructure.EcsContext;
 using Cysharp.Threading.Tasks;
+using UnityEngine;
 using VContainer.Unity;
 
 namespace _Project._Code.GameApp.EntryPoints
@@ -28,6 +29,9 @@ namespace _Project._Code.GameApp.EntryPoints
         public void Start() => StartAsync().Forget();
         private async UniTask StartAsync()
         {
+            QualitySettings.vSyncCount = 0;
+            Application.targetFrameRate = 60;
+            
             await _saveRepository.Load();
             await BootstrapContext.Instance.BootstrapSubSceneAwaiter.WaitUntilSubSceneReady();
             _ecsBootstrap.WarmUpSystems(BootstrapContext.Instance.Container);

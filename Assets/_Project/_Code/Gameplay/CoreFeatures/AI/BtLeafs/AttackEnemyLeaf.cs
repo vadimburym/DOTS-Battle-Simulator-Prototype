@@ -4,6 +4,7 @@ using _Project._Code.Gameplay.CoreFeatures.AI._Root;
 using _Project._Code.Gameplay.CoreFeatures.Entities.Components;
 using Unity.Entities;
 using VadimBurym.DodBehaviourTree;
+using VATDots;
 
 namespace _Project._Code.Gameplay.CoreFeatures.AI.BtLeafs
 {
@@ -48,6 +49,15 @@ namespace _Project._Code.Gameplay.CoreFeatures.AI.BtLeafs
                 Value = entity
             });
             ecb.SetComponentEnabled<SeeToDetectedTag>(sortKey, agent, true);
+            
+            var renderer = leafContext.RenderEntityLookup[agent].Value;
+            var unitId = leafContext.UnitTagLookup[agent].UnitId;
+            ecb.SetComponent(sortKey, renderer, new VATAnimationCommand {
+                RequestedClipIndex = VATIndexUtils.GetAnimationIndex(unitId, AnimationId.Attack),
+                StartNormalizedTime = 0f,
+                TransitionDuration = 0.3f,
+                RestartIfSame = 0
+            });
         }
 
         public static void OnExit(

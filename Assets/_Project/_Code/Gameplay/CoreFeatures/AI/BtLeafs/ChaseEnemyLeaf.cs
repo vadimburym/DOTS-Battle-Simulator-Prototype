@@ -4,6 +4,7 @@ using _Project._Code.Gameplay.CoreFeatures.AI._Root;
 using _Project._Code.Gameplay.CoreFeatures.Entities.Components;
 using Unity.Entities;
 using VadimBurym.DodBehaviourTree;
+using VATDots;
 
 namespace _Project._Code.Gameplay.CoreFeatures.AI.BtLeafs
 {
@@ -22,8 +23,21 @@ namespace _Project._Code.Gameplay.CoreFeatures.AI.BtLeafs
             ref Entity agent,
             in LeafData leafData,
             ref LeafStateElement leafState,
-            in BtContext leafContext)
+            in BtContext leafContext,
+            int sortKey)
         {
+            if (leafContext.IsMovingTagLookup[agent].IsMoving == 0)
+            {
+                var renderer = leafContext.RenderEntityLookup[agent].Value;
+                var unitId = leafContext.UnitTagLookup[agent].UnitId;
+                var ecb = leafContext.Ecb;
+                ecb.SetComponent(sortKey, renderer, new VATAnimationCommand {
+                    RequestedClipIndex = VATIndexUtils.GetAnimationIndex(unitId, AnimationId.Idle),
+                    StartNormalizedTime = 0f,
+                    TransitionDuration = 0.3f,
+                    RestartIfSame = 0
+                });
+            }
             return NodeStatus.Running;
         }
 

@@ -11,6 +11,7 @@ using Unity.Entities;
 using Unity.Mathematics;
 using Unity.Transforms;
 using VadimBurym.DodBehaviourTree;
+using VATDots;
 using Random = Unity.Mathematics.Random;
 
 namespace _Project._Code.Gameplay.CoreFeatures.Units.Factory
@@ -45,6 +46,7 @@ namespace _Project._Code.Gameplay.CoreFeatures.Units.Factory
             var entityManager = _ecsContext.EntityManager;
             var entity = ecb.Instantiate(entityPrefab);
             
+            ecb.SetComponent(entity, new UnitTag { UnitId = (byte)unitId });
             ecb.SetComponent(entity, LocalTransform.FromPosition(position));
             ecb.SetComponent(entity, new TargetPosition{ Position = position });
             ecb.SetComponent(entity, new MovementStats {
