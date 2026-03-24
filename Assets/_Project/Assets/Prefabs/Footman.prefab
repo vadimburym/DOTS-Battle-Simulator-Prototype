@@ -101,8 +101,9 @@ GameObject:
   - component: {fileID: 9194866110942216559}
   - component: {fileID: 1318140655308571625}
   - component: {fileID: 1858831283161819419}
+  - component: {fileID: 5324892857347904124}
   m_Layer: 0
-  m_Name: Mesh
+  m_Name: Renderer
   m_TagString: Untagged
   m_Icon: {fileID: 0}
   m_NavMeshLayer: 0
@@ -118,7 +119,7 @@ Transform:
   serializedVersion: 2
   m_LocalRotation: {x: 0, y: 0, z: 0, w: 1}
   m_LocalPosition: {x: 0, y: 0, z: 0}
-  m_LocalScale: {x: 0.01, y: 0.01, z: 0.01}
+  m_LocalScale: {x: 1, y: 1, z: 1}
   m_ConstrainProportionsScale: 0
   m_Children: []
   m_Father: {fileID: 4915754198381700034}
@@ -156,7 +157,7 @@ MeshRenderer:
   m_RenderingLayerMask: 1
   m_RendererPriority: 0
   m_Materials:
-  - {fileID: 2100000, guid: 8c9cf7a0881e564429410703d99e25cd, type: 2}
+  - {fileID: 2100000, guid: 57c8304a3d814204c981b0a696d6584f, type: 2}
   m_StaticBatchInfo:
     firstSubMesh: 0
     subMeshCount: 0
@@ -180,6 +181,29 @@ MeshRenderer:
   m_SortingOrder: 0
   m_MaskInteraction: 0
   m_AdditionalVertexStreams: {fileID: 0}
+--- !u!114 &5324892857347904124
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 6815348432342052969}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: ca35d0dcea0c2e5499738bdc1178f5a6, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: Assembly-CSharp::VATDots.VATAnimatorAuthoring
+  library: {fileID: 11400000, guid: 2b9fb953e71860f478b394b1d0b2df51, type: 2}
+  targetRenderer: {fileID: 1858831283161819419}
+  overrideMesh: {fileID: 4300000, guid: 84b42445372ad5347aebd5d216a95d4f, type: 3}
+  applyLibraryToSharedMaterialInEditor: 1
+  initialClipIndex: 0
+  initialNormalizedTime: 0
+  randomizeStartTime: 1
+  speed: 1
+  loop: 1
+  playOnStart: 1
+  defaultTransitionDuration: 0.15
 --- !u!1 &8364555645895950353
 GameObject:
   m_ObjectHideFlags: 0
@@ -228,19 +252,7 @@ MonoBehaviour:
   m_Name: 
   m_EditorClassIdentifier: Assembly-CSharp::_Project._Code.Gameplay.CoreFeatures.Units.Authoring.UnitAuthoring
   SelectedView: {fileID: 4890105889000459466}
-  BehaviourTreeId: 1
-  Speed: 2.5
-  RotationSpeed: 5
-  Team: 0
-  FootprintX: 1
-  FootprintY: 1
-  AttackInterval: 3
-  AttackRangeCells: 2
-  Damage: 5
-  DetectRadius: 10
-  ChaseRadius: 15
-  UpdateNearestInterval: 2
-  ScanInterval: 0.5
+  Renderer: {fileID: 6815348432342052969}
 --- !u!136 &3748281658093761717
 CapsuleCollider:
   m_ObjectHideFlags: 0

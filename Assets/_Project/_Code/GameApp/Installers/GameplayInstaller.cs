@@ -19,6 +19,7 @@ namespace _Project._Code.GameApp.Installers
         {
             //---Entities
             builder.Register<MovementSystem>();
+            builder.Register<MovementAnimationSystem>();
             builder.Register<MoveCommandSystem>();
             builder.Register<SelectedViewSystem>();
             builder.RegisterManaged<SelectionSystem>();

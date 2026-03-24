@@ -8,6 +8,7 @@ namespace _Project._Code.Core.Keys
         InAttackRange = 3,
         ChaseEnemy = 4,
         IsMoving = 5,
-        AttackEnemy = 6
+        AttackEnemy = 6,
+        Idle = 7
     }
 }

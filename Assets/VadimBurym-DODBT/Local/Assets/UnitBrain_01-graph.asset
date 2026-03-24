@@ -18,7 +18,6 @@ MonoBehaviour:
   - 099f19fa0abe4e139db9182623c9617c
   - 6db59e007f60456b957cdf1016b66c62
   - 6ce9e8dd7c4c4263be4aaa15fe08658d
-  - 722a9f5b8fe04e5ca91d90436a334907
   - 1f033b4436c240e2896ad0b0184df68a
   - 23323fa5976f4ea68814e1760b22fc40
   - bb895e77a7f94a498dad4fce2a7aad5c
@@ -26,7 +25,7 @@ MonoBehaviour:
   - 0f2c63a43a7a41d79567fbb3ee407fc1
   - 6073fdcea03c4ee5919f7977f323a4a9
   - 52538ee8d23641f980fe2d7b5278cda8
-  - 71f8fbcc11034d2c973b1a7d51865065
+  - 8956b24b8edf46f2bbb091efe6e4528d
   - 7b1b87013bfe49fcbbc1cf72262126ef
   - a2a9bbe54160491491d352e264846409
   - 88ee0560db06428c80291c044456b6d6
@@ -36,9 +35,8 @@ MonoBehaviour:
   - f221088479b3466bb6e4c7a7a63be2da
   - 09bb848de7364dc9aa081e4f33c0afc5
   - 941c572ba2cc48509d957aa089df334a
-  - 26a466f1da874f558ec79ea0b3f4e756
-  - b585add98a984c0ea6a180bd8e2bb4b4
-  - 146bd26e50d640efbd7140b46fbf3752
+  - 7ec99d21de874ee582d54aebc6a36973
+  - ab87addaa517418cbd855f1106bfd5bc
   - 36fd695aa9a8480a82bbd474846e6f89
   - b9d02804ff5c45ce97ef1de84ef72eff
   - d004a206f84d4050aa8f0d1d8bf74f38
@@ -51,9 +49,9 @@ MonoBehaviour:
   - 9b75c566118d4cac89ab5c7988469efe
   - 14c412394340495f8ec22a3b194452b1
   CreationDate: 18.03.2026 21:28:19
-  LastModifiedDate: 23.03.2026 13:32:30
-  CompiledVersion: 23.03.2026 13:32:30
-  NodesCount: 36
+  LastModifiedDate: 24.03.2026 17:14:14
+  CompiledVersion: 24.03.2026 17:14:14
+  NodesCount: 34
   LeafNodesCount: 20
   NotActualCompiledVersion: 0
   RootNode:
@@ -68,179 +66,169 @@ MonoBehaviour:
     ParentGuid: d96a9aa175f94bee998bab161ac3a2b6
   - Guid: 099f19fa0abe4e139db9182623c9617c
     Kind: 3
-    Position: {x: -2054, y: 282}
+    Position: {x: -2713, y: 307}
     Title: Sequence
     ParentGuid: 562e6417cd774fbc9ae02b783f47424d
   - Guid: 1f033b4436c240e2896ad0b0184df68a
     Kind: 2
-    Position: {x: -2754, y: 463}
+    Position: {x: -3413, y: 488}
     Title: Debug
     ParentGuid: 099f19fa0abe4e139db9182623c9617c
   - Guid: 23323fa5976f4ea68814e1760b22fc40
     Kind: 2
-    Position: {x: -2356, y: 463}
+    Position: {x: -3015, y: 488}
     Title: Debug
     ParentGuid: 099f19fa0abe4e139db9182623c9617c
-  - Guid: 26a466f1da874f558ec79ea0b3f4e756
-    Kind: 2
-    Position: {x: 551, y: 1023}
-    Title: Debug
-    ParentGuid: 52538ee8d23641f980fe2d7b5278cda8
-  - Guid: 722a9f5b8fe04e5ca91d90436a334907
-    Kind: 6
-    Position: {x: 1129, y: 258}
-    Title: MemorySelector
-    ParentGuid: 562e6417cd774fbc9ae02b783f47424d
-  - Guid: 71f8fbcc11034d2c973b1a7d51865065
-    Kind: 5
-    Position: {x: 1364, y: 463}
-    Title: MemorySequence
-    ParentGuid: 722a9f5b8fe04e5ca91d90436a334907
-  - Guid: b585add98a984c0ea6a180bd8e2bb4b4
-    Kind: 2
-    Position: {x: 1166, y: 689}
-    Title: Debug
-    ParentGuid: 71f8fbcc11034d2c973b1a7d51865065
-  - Guid: 146bd26e50d640efbd7140b46fbf3752
-    Kind: 2
-    Position: {x: 1580, y: 689}
-    Title: Debug
-    ParentGuid: 71f8fbcc11034d2c973b1a7d51865065
   - Guid: 6db59e007f60456b957cdf1016b66c62
     Kind: 6
-    Position: {x: -1477, y: 463}
+    Position: {x: -2091, y: 313}
     Title: MemorySelector
     ParentGuid: 562e6417cd774fbc9ae02b783f47424d
   - Guid: bb895e77a7f94a498dad4fce2a7aad5c
     Kind: 3
-    Position: {x: -3275, y: 788}
+    Position: {x: -4145, y: 748}
     Title: Sequence
     ParentGuid: 6db59e007f60456b957cdf1016b66c62
   - Guid: fc0d92c0841347768f014f1180311553
     Kind: 3
-    Position: {x: -2874, y: 788}
+    Position: {x: -3744, y: 748}
     Title: Sequence
     ParentGuid: 6db59e007f60456b957cdf1016b66c62
   - Guid: 0f2c63a43a7a41d79567fbb3ee407fc1
     Kind: 3
-    Position: {x: -2516, y: 788}
+    Position: {x: -3386, y: 748}
     Title: Sequence
     ParentGuid: 6db59e007f60456b957cdf1016b66c62
   - Guid: 7b1b87013bfe49fcbbc1cf72262126ef
     Kind: 2
-    Position: {x: -4100, y: 983}
+    Position: {x: -4970, y: 943}
     Title: Debug
     ParentGuid: bb895e77a7f94a498dad4fce2a7aad5c
   - Guid: a2a9bbe54160491491d352e264846409
     Kind: 2
-    Position: {x: -3715, y: 983}
+    Position: {x: -4585, y: 943}
     Title: Debug
     ParentGuid: bb895e77a7f94a498dad4fce2a7aad5c
   - Guid: 88ee0560db06428c80291c044456b6d6
     Kind: 2
-    Position: {x: -3315, y: 983}
+    Position: {x: -4185, y: 943}
     Title: Debug
     ParentGuid: fc0d92c0841347768f014f1180311553
   - Guid: 94d21f621f4049fbb9773f4ba6fbd5ea
     Kind: 2
-    Position: {x: -2955, y: 983}
+    Position: {x: -3825, y: 943}
     Title: Debug
     ParentGuid: fc0d92c0841347768f014f1180311553
   - Guid: 0730259e28f649b4848be9141db93846
     Kind: 2
-    Position: {x: -2554, y: 983}
+    Position: {x: -3424, y: 943}
     Title: Debug
     ParentGuid: 0f2c63a43a7a41d79567fbb3ee407fc1
   - Guid: d675d1eb5daf43c280ba4b3c44af3634
     Kind: 2
-    Position: {x: -2180, y: 983}
+    Position: {x: -3050, y: 943}
     Title: Debug
     ParentGuid: 0f2c63a43a7a41d79567fbb3ee407fc1
   - Guid: 6073fdcea03c4ee5919f7977f323a4a9
     Kind: 4
-    Position: {x: -1683, y: 1056}
+    Position: {x: -2165, y: 592}
     Title: Selector
     ParentGuid: 6ce9e8dd7c4c4263be4aaa15fe08658d
   - Guid: f221088479b3466bb6e4c7a7a63be2da
     Kind: 3
-    Position: {x: -1889, y: 1260}
+    Position: {x: -2347, y: 748}
     Title: Sequence
     ParentGuid: 6073fdcea03c4ee5919f7977f323a4a9
   - Guid: 09bb848de7364dc9aa081e4f33c0afc5
     Kind: 2
-    Position: {x: -1473, y: 1260}
+    Position: {x: -1931, y: 748}
     Title: Debug
     ParentGuid: 6073fdcea03c4ee5919f7977f323a4a9
   - Guid: 36fd695aa9a8480a82bbd474846e6f89
     Kind: 2
-    Position: {x: -2187, y: 1437}
+    Position: {x: -2645, y: 925}
     Title: Debug
     ParentGuid: f221088479b3466bb6e4c7a7a63be2da
   - Guid: b9d02804ff5c45ce97ef1de84ef72eff
     Kind: 3
-    Position: {x: -1827, y: 1437}
+    Position: {x: -2285, y: 925}
     Title: Sequence
     ParentGuid: f221088479b3466bb6e4c7a7a63be2da
   - Guid: 33881346405545499adb3e055f28bbfe
     Kind: 2
-    Position: {x: -2027, y: 1658}
+    Position: {x: -2485, y: 1146}
     Title: Debug
     ParentGuid: b9d02804ff5c45ce97ef1de84ef72eff
   - Guid: c25c7d56956c44b6b134d6d0b1f8a4d9
     Kind: 2
-    Position: {x: -1667, y: 1658}
+    Position: {x: -2125, y: 1146}
     Title: Debug
     ParentGuid: b9d02804ff5c45ce97ef1de84ef72eff
   - Guid: 6ce9e8dd7c4c4263be4aaa15fe08658d
     Kind: 3
-    Position: {x: -202, y: 537}
+    Position: {x: 0, y: 307}
     Title: Sequence
     ParentGuid: 562e6417cd774fbc9ae02b783f47424d
   - Guid: 941c572ba2cc48509d957aa089df334a
     Kind: 3
-    Position: {x: -107, y: 1023}
+    Position: {x: -160, y: 754}
     Title: Sequence
     ParentGuid: 52538ee8d23641f980fe2d7b5278cda8
   - Guid: d004a206f84d4050aa8f0d1d8bf74f38
     Kind: 2
-    Position: {x: -606, y: 1235}
+    Position: {x: -659, y: 966}
     Title: IsEnemyDetected
     ParentGuid: 941c572ba2cc48509d957aa089df334a
   - Guid: 9b75c566118d4cac89ab5c7988469efe
     Kind: 2
-    Position: {x: -681, y: 1593}
+    Position: {x: -734, y: 1324}
     Title: InAttackRange
     ParentGuid: 2f087b7395e74ee6a08c012ea63a2b66
   - Guid: 52538ee8d23641f980fe2d7b5278cda8
     Kind: 4
-    Position: {x: 53, y: 823}
+    Position: {x: 0, y: 512}
     Title: Selector
     ParentGuid: 6ce9e8dd7c4c4263be4aaa15fe08658d
   - Guid: 6dd5b54c54084940b18f60755aee5858
     Kind: 2
-    Position: {x: -63, y: 1438}
+    Position: {x: -116, y: 1169}
     Title: ChaseEnemy
     ParentGuid: 05a3a05c6c844ad1bff4a8cee6bf05b3
   - Guid: 05a3a05c6c844ad1bff4a8cee6bf05b3
     Kind: 4
-    Position: {x: -223, y: 1235}
+    Position: {x: -276, y: 966}
     Title: Selector
     ParentGuid: 941c572ba2cc48509d957aa089df334a
   - Guid: 763bf1b73e494e15a18c83d92d438e55
     Kind: 2
-    Position: {x: 149, y: 1235}
+    Position: {x: 96, y: 966}
     Title: AttackEnemy
     ParentGuid: 941c572ba2cc48509d957aa089df334a
   - Guid: 2f087b7395e74ee6a08c012ea63a2b66
     Kind: 3
-    Position: {x: -446, y: 1438}
+    Position: {x: -499, y: 1169}
     Title: Sequence
     ParentGuid: 05a3a05c6c844ad1bff4a8cee6bf05b3
   - Guid: 14c412394340495f8ec22a3b194452b1
     Kind: 2
-    Position: {x: -299, y: 1593}
+    Position: {x: -352, y: 1324}
     Title: IsMoving
     ParentGuid: 2f087b7395e74ee6a08c012ea63a2b66
+  - Guid: 7ec99d21de874ee582d54aebc6a36973
+    Kind: 2
+    Position: {x: 256, y: 754}
+    Title: IsMoving
+    ParentGuid: 52538ee8d23641f980fe2d7b5278cda8
+  - Guid: ab87addaa517418cbd855f1106bfd5bc
+    Kind: 2
+    Position: {x: 646, y: 754}
+    Title: Idle
+    ParentGuid: 52538ee8d23641f980fe2d7b5278cda8
+  - Guid: 8956b24b8edf46f2bbb091efe6e4528d
+    Kind: 2
+    Position: {x: 505, y: 506}
+    Title: Debug
+    ParentGuid: 6ce9e8dd7c4c4263be4aaa15fe08658d
   LeafNodes:
   - Guid: 1f033b4436c240e2896ad0b0184df68a
     Leaf:
@@ -248,15 +236,6 @@ MonoBehaviour:
   - Guid: 23323fa5976f4ea68814e1760b22fc40
     Leaf:
       rid: 1545528986697203791
-  - Guid: 26a466f1da874f558ec79ea0b3f4e756
-    Leaf:
-      rid: 1545529026523168861
-  - Guid: b585add98a984c0ea6a180bd8e2bb4b4
-    Leaf:
-      rid: 1545529026523168856
-  - Guid: 146bd26e50d640efbd7140b46fbf3752
-    Leaf:
-      rid: 1545529026523168858
   - Guid: 7b1b87013bfe49fcbbc1cf72262126ef
     Leaf:
       rid: 1545529026523168840
@@ -302,6 +281,15 @@ MonoBehaviour:
   - Guid: 14c412394340495f8ec22a3b194452b1
     Leaf:
       rid: 1545529030437503049
+  - Guid: 7ec99d21de874ee582d54aebc6a36973
+    Leaf:
+      rid: 1545529074700779594
+  - Guid: ab87addaa517418cbd855f1106bfd5bc
+    Leaf:
+      rid: 1545529074700779595
+  - Guid: 8956b24b8edf46f2bbb091efe6e4528d
+    Leaf:
+      rid: 1545529074700779597
   SequenceNodes:
   - Guid: 099f19fa0abe4e139db9182623c9617c
     ChildrenGuids:
@@ -331,6 +319,7 @@ MonoBehaviour:
     ChildrenGuids:
     - 6073fdcea03c4ee5919f7977f323a4a9
     - 52538ee8d23641f980fe2d7b5278cda8
+    - 8956b24b8edf46f2bbb091efe6e4528d
   - Guid: 941c572ba2cc48509d957aa089df334a
     ChildrenGuids:
     - d004a206f84d4050aa8f0d1d8bf74f38
@@ -340,20 +329,13 @@ MonoBehaviour:
     ChildrenGuids:
     - 9b75c566118d4cac89ab5c7988469efe
     - 14c412394340495f8ec22a3b194452b1
-  MemorySequenceNodes:
-  - Guid: 71f8fbcc11034d2c973b1a7d51865065
-    ChildrenGuids:
-    - b585add98a984c0ea6a180bd8e2bb4b4
-    - 146bd26e50d640efbd7140b46fbf3752
-    ResetOnFailure: 0
-    ResetOnAbort: 0
+  MemorySequenceNodes: []
   SelectorNodes:
   - Guid: 562e6417cd774fbc9ae02b783f47424d
     ChildrenGuids:
     - 099f19fa0abe4e139db9182623c9617c
     - 6db59e007f60456b957cdf1016b66c62
     - 6ce9e8dd7c4c4263be4aaa15fe08658d
-    - 722a9f5b8fe04e5ca91d90436a334907
   - Guid: 6073fdcea03c4ee5919f7977f323a4a9
     ChildrenGuids:
     - f221088479b3466bb6e4c7a7a63be2da
@@ -361,17 +343,13 @@ MonoBehaviour:
   - Guid: 52538ee8d23641f980fe2d7b5278cda8
     ChildrenGuids:
     - 941c572ba2cc48509d957aa089df334a
-    - 26a466f1da874f558ec79ea0b3f4e756
+    - 7ec99d21de874ee582d54aebc6a36973
+    - ab87addaa517418cbd855f1106bfd5bc
   - Guid: 05a3a05c6c844ad1bff4a8cee6bf05b3
     ChildrenGuids:
     - 2f087b7395e74ee6a08c012ea63a2b66
     - 6dd5b54c54084940b18f60755aee5858
   MemorySelectorNodes:
-  - Guid: 722a9f5b8fe04e5ca91d90436a334907
-    PickRandom: 0
-    ResetOnAbort: 0
-    ChildrenGuids:
-    - 71f8fbcc11034d2c973b1a7d51865065
   - Guid: 6db59e007f60456b957cdf1016b66c62
     PickRandom: 1
     ResetOnAbort: 0
@@ -443,21 +421,6 @@ MonoBehaviour:
       data:
         _debugInt: 6
         _debugStatus: 2
-    - rid: 1545529026523168856
-      type: {class: DebugLeaf, ns: _Project._Code.Gameplay.CoreFeatures.AI.BtLeafs, asm: Assembly-CSharp}
-      data:
-        _debugInt: 99
-        _debugStatus: 2
-    - rid: 1545529026523168858
-      type: {class: DebugLeaf, ns: _Project._Code.Gameplay.CoreFeatures.AI.BtLeafs, asm: Assembly-CSharp}
-      data:
-        _debugInt: 98
-        _debugStatus: 1
-    - rid: 1545529026523168861
-      type: {class: DebugLeaf, ns: _Project._Code.Gameplay.CoreFeatures.AI.BtLeafs, asm: Assembly-CSharp}
-      data:
-        _debugInt: 777
-        _debugStatus: 1
     - rid: 1545529026523168862
       type: {class: IsEnemyDetectedLeaf, ns: _Project._Code.Gameplay.CoreFeatures.AI.BtLeafs, asm: Assembly-CSharp}
       data: 
@@ -474,3 +437,15 @@ MonoBehaviour:
       type: {class: IsMovingLeaf, ns: _Project._Code.Gameplay.CoreFeatures.AI.BtLeafs, asm: Assembly-CSharp}
       data:
         _isMoving: 0
+    - rid: 1545529074700779594
+      type: {class: IsMovingLeaf, ns: _Project._Code.Gameplay.CoreFeatures.AI.BtLeafs, asm: Assembly-CSharp}
+      data:
+        _isMoving: 1
+    - rid: 1545529074700779595
+      type: {class: IdleLeaf, ns: _Project._Code.Gameplay.CoreFeatures.AI.BtLeafs, asm: Assembly-CSharp}
+      data: 
+    - rid: 1545529074700779597
+      type: {class: DebugLeaf, ns: _Project._Code.Gameplay.CoreFeatures.AI.BtLeafs, asm: Assembly-CSharp}
+      data:
+        _debugInt: 0
+        _debugStatus: 1

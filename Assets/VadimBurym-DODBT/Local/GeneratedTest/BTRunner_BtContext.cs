@@ -41,7 +41,7 @@ namespace VadimBurym.DodBehaviourTree.Generated
                             LeafTables_BtContext.EnterLeaf(leafData.LeafId, ref entity, in leafData, ref leafState, in leafContext, sortKey);
                             leafState.IsEntered = 1;
                         }
-                        var status = LeafTables_BtContext.TickLeaf(leafData.LeafId, ref entity, in leafData, ref leafState, in leafContext);
+                        var status = LeafTables_BtContext.TickLeaf(leafData.LeafId, ref entity, in leafData, ref leafState, in leafContext, sortKey);
                         if (status != NodeStatus.Running)
                         {
                             LeafTables_BtContext.ExitLeaf(leafData.LeafId, ref entity, in leafData, ref leafState, in leafContext, sortKey);
