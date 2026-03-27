@@ -23,6 +23,8 @@ namespace _Project._Code.Gameplay.CoreFeatures.AI.BtLeafs
         {
             //TODO: now - GREEN, refactoring: вынести логику в сенсор
             var enemy = leafContext.EyeSensorLookup[agent].DetectedEntity;
+            if (!leafContext.GridNavigationStateLookup.HasComponent(enemy))
+                return NodeStatus.Failure;
             var agentCell = leafContext.GridNavigationStateLookup[agent].MovingCell;
             var enemyCell = leafContext.GridNavigationStateLookup[enemy].MovingCell;
             var threshold = leafContext.AttackStatsLookup[agent].AttackRangeCells;

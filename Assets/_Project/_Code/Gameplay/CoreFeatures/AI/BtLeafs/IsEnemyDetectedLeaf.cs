@@ -20,7 +20,9 @@ namespace _Project._Code.Gameplay.CoreFeatures.AI.BtLeafs
         
         public static NodeStatus OnTick(ref Entity agent, in LeafData leafData, ref LeafStateElement leafState, in BtContext leafContext)
         {
-            return leafContext.EyeSensorLookup[agent].IsDetected == 1 ? NodeStatus.Success : NodeStatus.Failure;
+            var sensor = leafContext.EyeSensorLookup[agent];
+            bool isEntityExist = leafContext.EntityInfoLookup.Exists(sensor.DetectedEntity);
+            return sensor.IsDetected == 1 && isEntityExist ? NodeStatus.Success : NodeStatus.Failure;
         }
         
         public static void OnEnter(ref Entity agent, in LeafData leafData, ref LeafStateElement leafState, in BtContext leafContext) { }

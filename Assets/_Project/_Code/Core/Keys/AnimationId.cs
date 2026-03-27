@@ -4,6 +4,7 @@ namespace _Project._Code.Core.Keys
     {
         Idle = 0,
         Run = 1,
-        Attack = 2
+        Attack = 2,
+        Dead = 3
     }
 }

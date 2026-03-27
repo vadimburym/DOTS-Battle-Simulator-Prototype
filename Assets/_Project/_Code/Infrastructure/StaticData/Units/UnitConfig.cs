@@ -17,6 +17,8 @@ namespace _Project._Code.Infrastructure.StaticData.Units
         [Header("Footprint")]
         public byte FootprintX = 1;
         public byte FootprintY = 1;
+        [Header("Health")]
+        public ushort MaxHealth = 100;
         [Header("AttackStats")]
         public float AttackInterval = 3f;
         public byte AttackRangeCells = 2;

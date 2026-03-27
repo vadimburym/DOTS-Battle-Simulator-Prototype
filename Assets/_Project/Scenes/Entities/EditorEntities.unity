@@ -381,13 +381,13 @@ MonoBehaviour:
   targetRenderer: {fileID: 562510604}
   overrideMesh: {fileID: 4300000, guid: 84b42445372ad5347aebd5d216a95d4f, type: 3}
   applyLibraryToSharedMaterialInEditor: 1
-  initialClipIndex: 1
+  initialClipIndex: 3
   initialNormalizedTime: 0
   randomizeStartTime: 0
   speed: 1
-  loop: 1
+  loop: 0
   playOnStart: 1
-  defaultTransitionDuration: 0.15
+  defaultTransitionDuration: 0
 --- !u!23 &562510604
 MeshRenderer:
   m_ObjectHideFlags: 0
@@ -501,7 +501,7 @@ MonoBehaviour:
   speed: 1
   loop: 1
   playOnStart: 1
-  defaultTransitionDuration: 0.15
+  defaultTransitionDuration: 0.5
 --- !u!23 &1215272377
 MeshRenderer:
   m_ObjectHideFlags: 0
@@ -609,11 +609,11 @@ MonoBehaviour:
   targetRenderer: {fileID: 1230097668}
   overrideMesh: {fileID: 4300000, guid: eb5e3fc8d0caf3945a6effdb6372a9c7, type: 3}
   applyLibraryToSharedMaterialInEditor: 1
-  initialClipIndex: 1
+  initialClipIndex: 7
   initialNormalizedTime: 0
   randomizeStartTime: 0
   speed: 1
-  loop: 1
+  loop: 0
   playOnStart: 1
   defaultTransitionDuration: 0.15
 --- !u!23 &1230097668

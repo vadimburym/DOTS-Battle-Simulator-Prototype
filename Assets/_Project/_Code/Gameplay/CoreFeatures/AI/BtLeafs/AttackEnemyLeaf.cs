@@ -25,6 +25,14 @@ namespace _Project._Code.Gameplay.CoreFeatures.AI.BtLeafs
             ref LeafStateElement leafState,
             in BtContext leafContext)
         {
+            var lookUp = leafContext.AttackStateLookup;
+            if (!lookUp.HasComponent(leafState.StateEntity))
+                return NodeStatus.Running;
+            if (!leafContext.EntityInfoLookup.Exists(lookUp[leafState.StateEntity].Target))
+                return NodeStatus.Failure;
+            if (leafContext.EyeSensorLookup[agent].DetectedEntity != lookUp[leafState.StateEntity].Target)
+                return NodeStatus.Failure;
+                
             return NodeStatus.Running;
         }
 
@@ -50,14 +58,11 @@ namespace _Project._Code.Gameplay.CoreFeatures.AI.BtLeafs
             });
             ecb.SetComponentEnabled<SeeToDetectedTag>(sortKey, agent, true);
             
-            var renderer = leafContext.RenderEntityLookup[agent].Value;
-            var unitId = leafContext.UnitTagLookup[agent].UnitId;
-            ecb.SetComponent(sortKey, renderer, new VATAnimationCommand {
-                RequestedClipIndex = VATIndexUtils.GetAnimationIndex(unitId, AnimationId.Attack),
-                StartNormalizedTime = 0f,
-                TransitionDuration = 0.3f,
-                RestartIfSame = 0
-            });
+            AnimatorUtils.PlayAnimation(
+                renderer: leafContext.RenderEntityLookup[agent].Value,
+                animationId: AnimationId.Attack,
+                ecb: ecb,
+                sortKey: sortKey);
         }
 
         public static void OnExit(

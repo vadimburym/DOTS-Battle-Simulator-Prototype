@@ -19,9 +19,10 @@ MonoBehaviour:
   RotationSpeed: 5
   FootprintX: 1
   FootprintY: 1
-  AttackInterval: 3
+  MaxHealth: 100
+  AttackInterval: 1.5
   AttackRangeCells: 2
-  Damage: 5
+  Damage: 10
   DetectRadius: 10
   ChaseRadius: 15
   UpdateNearestInterval: 3

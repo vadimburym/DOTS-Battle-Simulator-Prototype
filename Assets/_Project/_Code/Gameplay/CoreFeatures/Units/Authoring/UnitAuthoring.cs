@@ -21,6 +21,7 @@ namespace _Project._Code.Gameplay.CoreFeatures.Units.Authoring
             public override void Bake(UnitAuthoring authoring)
             {
                 var entity = GetEntity(TransformUsageFlags.Dynamic);
+                
                 AddComponent<MovementStats>(entity);
                 AddComponent<TargetPosition>(entity);
                 AddComponent(entity, new SelectedTag {
@@ -33,6 +34,8 @@ namespace _Project._Code.Gameplay.CoreFeatures.Units.Authoring
                 SetComponentEnabled<SelectedTag>(entity, false);
                 AddComponent<MyTeamTag>(entity);
                 SetComponentEnabled<MyTeamTag>(entity, false);
+                AddComponent<CleanupTag>(entity);
+                SetComponentEnabled<CleanupTag>(entity, false);
                 AddComponent<SeeToDetectedTag>(entity);
                 SetComponentEnabled<SeeToDetectedTag>(entity, false);
                 AddComponent<Footprint>(entity);
@@ -48,7 +51,7 @@ namespace _Project._Code.Gameplay.CoreFeatures.Units.Authoring
                 AddComponent<EyeSensor>(entity);
                 AddComponent<CommandPriorityMode>(entity);
                 AddComponent<AiBrain>(entity);
-                AddComponent<UnitTag>(entity);
+                AddComponent<Health>(entity);
                 AddBuffer<NodeStateElement>(entity);
                 AddBuffer<LeafStateElement>(entity);
             }

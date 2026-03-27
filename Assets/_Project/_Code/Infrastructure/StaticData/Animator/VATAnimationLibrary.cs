@@ -38,7 +38,8 @@ namespace VATDots
         public int maxVertexCount;
         public int totalFrameRows;
 
-        [Header("Lookup")]
+        [Header("Lookup")] 
+        public byte ClipsLength => (byte)(clips.Length / meshes.Length);
         public MeshEntry[] meshes = Array.Empty<MeshEntry>();
         public ClipEntry[] clips = Array.Empty<ClipEntry>();
 

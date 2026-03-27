@@ -47,7 +47,7 @@ namespace _Project._Code.Gameplay.CoreFeatures.EyeSensorGrid.Systems
                 in SeeToDetectedTag seeToDetectedTag)
             {
                 var targetEntity = eyeSensor.DetectedEntity;
-                if (targetEntity == Entity.Null)
+                if (!LocalTransformLookup.HasComponent(targetEntity))
                     return;
                 var targetTransform = LocalTransformLookup[targetEntity];
                 var toTarget = targetTransform.Position - localTransform.Position;
