@@ -399,6 +399,7 @@ MonoBehaviour:
     - {fileID: 7400000, guid: 336bd171ee23b7f40a82b613bc6c7944, type: 3}
     - {fileID: 7400000, guid: b454e93a07770e84988e53d55b93bdb5, type: 3}
     - {fileID: 7400000, guid: a7e26c30a8a5e3547b105bca0bcf0a44, type: 3}
+    - {fileID: 7400000, guid: a58aeb722e452254686f56bdc4b22c67, type: 3}
   - name: orc
     sourcePrefab: {fileID: 388476414, guid: 7df524699deb44341b3693c8538df185, type: 3}
     skinnedMeshRendererPath: 
@@ -406,6 +407,7 @@ MonoBehaviour:
     - {fileID: 7400000, guid: 25cc2c37e339f4e409306df4dde6c404, type: 2}
     - {fileID: 7400000, guid: d71581b97fb501e488eb778f198bb010, type: 2}
     - {fileID: 7400000, guid: f10541572d6d93144ab62d62774e6af5, type: 2}
+    - {fileID: 7400000, guid: 8cf19caeee9bb3c43a09d57a2a2ba09d, type: 2}
 --- !u!1 &1951452259
 GameObject:
   m_ObjectHideFlags: 0

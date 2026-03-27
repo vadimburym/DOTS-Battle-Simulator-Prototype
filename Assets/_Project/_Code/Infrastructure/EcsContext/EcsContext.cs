@@ -29,7 +29,9 @@ namespace _Project._Code.Infrastructure.EcsContext
 
         public void WarmUpSystems(IObjectResolver diContainer) => WarmUpSystems(diContainer, _builder);
         
-        public void WarmUpSystems(IObjectResolver diContainer, Action<IEcsContextBuilder> builder)
+        public void WarmUpSystems(
+            IObjectResolver diContainer,
+            Action<IEcsContextBuilder> builder)
         {
             CleanUpSystems();
             var localBuilder = new EcsContextBuilder(

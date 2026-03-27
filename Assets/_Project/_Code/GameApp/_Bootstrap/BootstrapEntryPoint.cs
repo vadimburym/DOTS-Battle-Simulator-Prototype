@@ -29,8 +29,8 @@ namespace _Project._Code.GameApp.EntryPoints
         public void Start() => StartAsync().Forget();
         private async UniTask StartAsync()
         {
-            QualitySettings.vSyncCount = 0;
-            Application.targetFrameRate = 60;
+            //QualitySettings.vSyncCount = 0;
+            //Application.targetFrameRate = 60;
             
             await _saveRepository.Load();
             await BootstrapContext.Instance.BootstrapSubSceneAwaiter.WaitUntilSubSceneReady();

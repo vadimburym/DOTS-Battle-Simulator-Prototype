@@ -75,8 +75,8 @@ namespace _Project._Code.Gameplay.CoreFeatures.Units.Systems
             /*
             _unitFactory.Create(UnitId.Footman, new float3(0f, 0f, 0f), 0, ecb);
             _unitFactory.Create(UnitId.Footman, new float3(1f, 0f, 1f), 0, ecb);
-            _unitFactory.Create(UnitId.Orc, new float3(5f, 0f, 5f), 1, ecb);
-            _unitFactory.Create(UnitId.Orc, new float3(6f, 0f, 6f), 1, ecb);
+            _unitFactory.Create(UnitId.Orc, new float3(25f, 0f, 25f), 1, ecb);
+            _unitFactory.Create(UnitId.Orc, new float3(25f, 0f, 27f), 1, ecb);
             */
             ecb.Playback(_ecsContext.EntityManager);
         }

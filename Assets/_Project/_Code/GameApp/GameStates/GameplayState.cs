@@ -53,16 +53,16 @@ namespace _Project._Code.GameApp.GameStates
             await _sceneLoadService.FindFirstComponentInRoots<SubSceneAwaiter>().WaitUntilSubSceneReady();
             var sceneInstaller = _sceneLoadService.FindFirstComponentInRoots<SceneInstaller>();
             
-            _localContextService.WarmUp(BootstrapContext.Instance,builder =>
-            {
+            _localContextService.WarmUp(BootstrapContext.Instance,builder => {
                 GameplayInstaller.Register(builder);
                 sceneInstaller.Register(builder);
                 builder.Register<GameplayEntryPoint>(Lifetime.Singleton);
             }, GAMEPLAY_NAME);
-            _localEcsContext.WarmUpSystems(_localContextService.Container, builder =>
-            {
+            
+            _localEcsContext.WarmUpSystems(_localContextService.Container, builder => {
                 GameplayInstaller.RegisterEcsSystems(builder);
             });
+            
             _entryPoint = _localContextService.Container.Resolve<GameplayEntryPoint>();
             _entryPoint.Start();
             GC.Collect();

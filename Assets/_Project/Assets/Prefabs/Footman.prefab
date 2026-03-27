@@ -102,6 +102,7 @@ GameObject:
   - component: {fileID: 1318140655308571625}
   - component: {fileID: 1858831283161819419}
   - component: {fileID: 5324892857347904124}
+  - component: {fileID: 4235820605247929554}
   m_Layer: 0
   m_Name: Renderer
   m_TagString: Untagged
@@ -196,7 +197,6 @@ MonoBehaviour:
   library: {fileID: 11400000, guid: 2b9fb953e71860f478b394b1d0b2df51, type: 2}
   targetRenderer: {fileID: 1858831283161819419}
   overrideMesh: {fileID: 4300000, guid: 84b42445372ad5347aebd5d216a95d4f, type: 3}
-  applyLibraryToSharedMaterialInEditor: 1
   initialClipIndex: 0
   initialNormalizedTime: 0
   randomizeStartTime: 1
@@ -204,6 +204,18 @@ MonoBehaviour:
   loop: 1
   playOnStart: 1
   defaultTransitionDuration: 0.15
+--- !u!114 &4235820605247929554
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 6815348432342052969}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: 09bda8b223704c9284e3ea7de1e8dae4, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: Assembly-CSharp::_Project._Code.Gameplay.CoreFeatures.Entities.Authoring.CorpseAuthoring
 --- !u!1 &8364555645895950353
 GameObject:
   m_ObjectHideFlags: 0

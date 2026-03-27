@@ -1,4 +1,5 @@
 using _Project._Code.Gameplay.CoreFeatures.Entities.Components;
+using _Project._Code.Gameplay.CoreFeatures.Entities.Systems;
 using Unity.Burst;
 using Unity.Collections;
 using Unity.Entities;
@@ -9,6 +10,7 @@ namespace _Project._Code.Gameplay.CoreFeatures.Entities.AiSystems
 {
     [BurstCompile]
     [DisableAutoCreation]
+    [UpdateAfter(typeof(EntityCleanupSystem))]
     public partial struct ChaseStateSystem : ISystem
     {
         private ComponentLookup<GridNavigationState> _gridLookup;
@@ -17,12 +19,15 @@ namespace _Project._Code.Gameplay.CoreFeatures.Entities.AiSystems
         private ComponentLookup<Footprint> _footprintLookup;
         private ComponentLookup<LocalTransform> _transformLookup;
 
+        private EntityStorageInfoLookup _entityStorageInfoLookup;
+        
         private const float DefaultStoppingRadius = 0.1f;
         private const int MaxOuterSearchRings = 64;
 
         [BurstCompile]
         public void OnCreate(ref SystemState state)
         {
+            state.RequireForUpdate<EndSimulationEntityCommandBufferSystem.Singleton>();
             state.RequireForUpdate<BattlefieldGridSingleton>();
             state.RequireForUpdate<GridRuntimeMapSingleton>();
 
@@ -31,6 +36,8 @@ namespace _Project._Code.Gameplay.CoreFeatures.Entities.AiSystems
             _attackStatsLookup = state.GetComponentLookup<AttackStats>(true);
             _footprintLookup = state.GetComponentLookup<Footprint>(true);
             _transformLookup = state.GetComponentLookup<LocalTransform>(true);
+
+            _entityStorageInfoLookup = state.GetEntityStorageInfoLookup();
         }
 
         [BurstCompile]
@@ -41,10 +48,14 @@ namespace _Project._Code.Gameplay.CoreFeatures.Entities.AiSystems
             _attackStatsLookup.Update(ref state);
             _footprintLookup.Update(ref state);
             _transformLookup.Update(ref state);
-
+            _entityStorageInfoLookup.Update(ref state);
+            
             var gridRef = SystemAPI.GetSingleton<BattlefieldGridSingleton>().Value;
             var mapsRw = SystemAPI.GetSingletonRW<GridRuntimeMapSingleton>();
 
+            var ecbSingleton = SystemAPI.GetSingleton<EndSimulationEntityCommandBufferSystem.Singleton>();
+            var ecb = ecbSingleton.CreateCommandBuffer(state.WorldUnmanaged);
+            
             state.Dependency = new ChaseStateJob
             {
                 DeltaTime = SystemAPI.Time.DeltaTime,
@@ -54,7 +65,9 @@ namespace _Project._Code.Gameplay.CoreFeatures.Entities.AiSystems
                 TargetPositionLookup = _targetPositionLookup,
                 AttackStatsLookup = _attackStatsLookup,
                 FootprintLookup = _footprintLookup,
-                TransformLookup = _transformLookup
+                TransformLookup = _transformLookup,
+                Ecb = ecb,
+                EntityInfoLookup = _entityStorageInfoLookup
             }.Schedule(state.Dependency);
         }
 
@@ -62,7 +75,9 @@ namespace _Project._Code.Gameplay.CoreFeatures.Entities.AiSystems
         public partial struct ChaseStateJob : IJobEntity
         {
             public float DeltaTime;
-
+            public EntityCommandBuffer Ecb;
+            [ReadOnly] public EntityStorageInfoLookup EntityInfoLookup;
+            
             [ReadOnly] public BlobAssetReference<BattlefieldGridBlob> GridRef;
             public NativeParallelHashMap<int2, Entity> OccupiedMap;
 
@@ -74,30 +89,24 @@ namespace _Project._Code.Gameplay.CoreFeatures.Entities.AiSystems
             [ReadOnly] public ComponentLookup<LocalTransform> TransformLookup;
 
             [BurstCompile]
-            private void Execute(ref ChaseState chaseState)
+            private void Execute(ref ChaseState chaseState, Entity stateEntity)
             {
-                Entity owner = chaseState.Owner;
-                Entity target = chaseState.Target;
+                var owner = chaseState.Owner;
+                var target = chaseState.Target;
 
-                if (owner == Entity.Null || target == Entity.Null)
-                    return;
-
-                if (!GridLookup.HasComponent(owner) ||
-                    !GridLookup.HasComponent(target) ||
-                    !TargetPositionLookup.HasComponent(owner) ||
-                    !AttackStatsLookup.HasComponent(owner) ||
-                    !FootprintLookup.HasComponent(owner) ||
-                    !TransformLookup.HasComponent(owner) ||
-                    !TransformLookup.HasComponent(target))
+                if (!GridLookup.HasComponent(owner))
                 {
+                    Ecb.DestroyEntity(stateEntity);
                     return;
                 }
+                if (!GridLookup.HasComponent(target))
+                    return;
                 
                 chaseState.UpdateTimer -= DeltaTime;
                 if (chaseState.UpdateTimer > 0f)
                     return;
 
-                chaseState.UpdateTimer = math.max(0.01f, chaseState.UpdateInterval);
+                chaseState.UpdateTimer += chaseState.UpdateInterval;
 
                 var ownerGrid = GridLookup[owner];
                 var targetGrid = GridLookup[target];

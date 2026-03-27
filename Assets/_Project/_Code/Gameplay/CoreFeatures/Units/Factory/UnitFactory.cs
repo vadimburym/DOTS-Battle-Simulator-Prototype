@@ -46,7 +46,6 @@ namespace _Project._Code.Gameplay.CoreFeatures.Units.Factory
             var entityManager = _ecsContext.EntityManager;
             var entity = ecb.Instantiate(entityPrefab);
             
-            ecb.SetComponent(entity, new UnitTag { UnitId = (byte)unitId });
             ecb.SetComponent(entity, LocalTransform.FromPosition(position));
             ecb.SetComponent(entity, new TargetPosition{ Position = position });
             ecb.SetComponent(entity, new MovementStats {
@@ -59,7 +58,8 @@ namespace _Project._Code.Gameplay.CoreFeatures.Units.Factory
                 FootprintY = unitData.FootprintY,
             });
             ecb.SetComponent(entity, new Team { Value = team });
-            ecb.SetComponentEnabled<MyTeamTag>(entity, team == 0);
+            //ecb.SetComponentEnabled<MyTeamTag>(entity, team == 0);
+            ecb.SetComponentEnabled<MyTeamTag>(entity, true);
             ecb.SetComponent(entity, new AttackStats {
                 AttackInterval = unitData.AttackInterval,
                 AttackRangeCells = unitData.AttackRangeCells,
@@ -77,6 +77,10 @@ namespace _Project._Code.Gameplay.CoreFeatures.Units.Factory
             });
             ecb.SetComponent(entity, new EyeSensor {
                 ScanTimer = _random.NextFloat(0f, unitData.ScanInterval)
+            });
+            ecb.SetComponent(entity, new Health {
+                Max = unitData.MaxHealth,
+                Current = unitData.MaxHealth,
             });
             
             var btAsset = _addressableService.GetLoadedObject<BehaviourTreeAsset>(

@@ -1,4 +1,5 @@
 using _Project._Code.Gameplay.CoreFeatures.Entities.AiSystems;
+using _Project._Code.Infrastructure.EcsContext;
 using Unity.Burst;
 using Unity.Collections;
 using Unity.Entities;
@@ -9,6 +10,7 @@ namespace _Project._Code.Gameplay.CoreFeatures.AI._Root
     [DisableAutoCreation]
     [BurstCompile]
     [UpdateBefore(typeof(BehaviourTreeTickSystem))]
+    //[UpdateInGroup(typeof(LocalSystemsGroup), OrderFirst = true)]
     public partial struct LeafStateWriteSystem : ISystem
     {
         [BurstCompile]
@@ -22,12 +24,14 @@ namespace _Project._Code.Gameplay.CoreFeatures.AI._Root
                          RefRO<LeafStateWriteRequest>>()
                          .WithEntityAccess())
             {
+                ecb.DestroyEntity(entity);
+                if (!SystemAPI.HasBuffer<LeafStateElement>(request.ValueRO.Entity))
+                    continue;
                 var buffer = SystemAPI.GetBuffer<LeafStateElement>(request.ValueRO.Entity);
                 var index = request.ValueRO.Index;
                 var data = buffer[index];
                 data.StateEntity = request.ValueRO.Value;
                 buffer[index] = data;
-                ecb.DestroyEntity(entity);
             }
             ecb.Playback(state.EntityManager);
         }

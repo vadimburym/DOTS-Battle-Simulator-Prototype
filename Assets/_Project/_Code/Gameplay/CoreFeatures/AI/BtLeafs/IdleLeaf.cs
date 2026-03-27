@@ -34,15 +34,11 @@ namespace _Project._Code.Gameplay.CoreFeatures.AI.BtLeafs
             in BtContext leafContext,
             int sortKey)
         {
-            var ecb = leafContext.Ecb;
-            var renderer = leafContext.RenderEntityLookup[agent].Value;
-            var unitId = leafContext.UnitTagLookup[agent].UnitId;
-            ecb.SetComponent(sortKey, renderer, new VATAnimationCommand {
-                RequestedClipIndex = VATIndexUtils.GetAnimationIndex(unitId, AnimationId.Idle),
-                StartNormalizedTime = 0f,
-                TransitionDuration = 0.3f,
-                RestartIfSame = 0
-            });
+            AnimatorUtils.PlayAnimation(
+                renderer: leafContext.RenderEntityLookup[agent].Value,
+                animationId: AnimationId.Idle,
+                ecb: leafContext.Ecb,
+                sortKey: sortKey);
         }
         
         public static void OnExit(

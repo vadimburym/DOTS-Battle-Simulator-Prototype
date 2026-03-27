@@ -11,6 +11,7 @@ namespace _Project._Code.Gameplay.CoreFeatures.Entities.Systems
 {
     [DisableAutoCreation]
     [UpdateAfter(typeof(BehaviourTreeTickSystem))]
+    [UpdateAfter(typeof(MovementSystem))]
     public partial struct MovementAnimationSystem : ISystem
     {
         private ComponentLookup<VATAnimationCommand> _vatAnimationCommandLookup;
@@ -38,18 +39,14 @@ namespace _Project._Code.Gameplay.CoreFeatures.Entities.Systems
             
             public void Execute(
                 in IsMovingTag isMoving,
-                in RendererEntityRef renderer,
-                in UnitTag unitTag)
+                in RendererEntityRef renderer)
             {
                 if (isMoving.IsMoving == 0)
                     return;
-                var entity = renderer.Value;
-                VATAnimationCommandLookup[entity] = new VATAnimationCommand {
-                    RequestedClipIndex = VATIndexUtils.GetAnimationIndex(unitTag.UnitId, AnimationId.Run),
-                    StartNormalizedTime = 0f,
-                    TransitionDuration = 0.3f,
-                    RestartIfSame = 0
-                };
+                AnimatorUtils.PlayAnimation(
+                    VATAnimationCommandLookup,
+                    renderer.Value,
+                    AnimationId.Run);
             }
         }
     }

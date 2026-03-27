@@ -22,10 +22,14 @@ namespace _Project._Code.GameApp.Installers
             builder.Register<MovementAnimationSystem>();
             builder.Register<MoveCommandSystem>();
             builder.Register<SelectedViewSystem>();
+            builder.Register<TakeDamageSystem>();
             builder.RegisterManaged<SelectionSystem>();
             builder.RegisterManaged<ClickToMoveSelectedSystem>();
+            builder.Register<EntityCleanupSystem>();
+            builder.Register<CorpseSystem>();
             //---BattlefieldGrid
             builder.Register<GridMovingCellSyncSystem>();
+            builder.Register<GridOccupiedCleanupSystem>();
             //---EyeSensor
             builder.Register<EyeSensorGridSystem>();
             builder.Register<EyeSensorSystem>();

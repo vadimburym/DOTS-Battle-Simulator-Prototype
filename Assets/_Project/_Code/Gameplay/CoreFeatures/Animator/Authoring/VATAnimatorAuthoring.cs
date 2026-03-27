@@ -13,8 +13,7 @@ namespace VATDots
         public VATAnimationLibrary library;
         public Renderer targetRenderer;
         public Mesh overrideMesh;
-        public bool applyLibraryToSharedMaterialInEditor = true;
-
+        
         [Header("Initial Playback")]
         public int initialClipIndex;
         [Range(0f, 1f)] public float initialNormalizedTime;
@@ -91,7 +90,7 @@ namespace VATDots
                 return false;
 
             var command = entityManager.GetComponentData<VATAnimationCommand>(entity);
-            command.RequestedClipIndex = clipIndex;
+            command.RequestedAnimationIndex = clipIndex;
             command.TransitionDuration = transitionDuration;
             command.StartNormalizedTime = math.saturate(startNormalizedTime);
             command.RestartIfSame = restartIfSame ? (byte)1 : (byte)0;
@@ -244,7 +243,7 @@ namespace VATDots
 
                 AddComponent(entity, new VATAnimationCommand
                 {
-                    RequestedClipIndex = -1,
+                    RequestedAnimationIndex = -1,
                     TransitionDuration = -1f,
                     StartNormalizedTime = 0f,
                     RestartIfSame = 0,
@@ -276,7 +275,8 @@ namespace VATDots
                         Length = clip != null ? math.max(clip.length, 1e-5f) : 1e-5f,
                     };
                 }
-
+                root.ClipsLength = library.ClipsLength;
+                
                 return builder.CreateBlobAssetReference<VATAnimationLibraryBlob>(Allocator.Persistent);
             }
 

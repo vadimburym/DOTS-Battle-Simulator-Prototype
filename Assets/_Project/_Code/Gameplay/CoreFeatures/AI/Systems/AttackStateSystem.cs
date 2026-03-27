@@ -1,19 +1,24 @@
 using _Project._Code.Gameplay.CoreFeatures.Entities.Components;
+using _Project._Code.Gameplay.CoreFeatures.Entities.Systems;
 using Unity.Burst;
 using Unity.Collections;
 using Unity.Entities;
 using Unity.Mathematics;
+using UnityEngine;
 
 namespace _Project._Code.Gameplay.CoreFeatures.Entities.AiSystems
 {
     [BurstCompile]
     [DisableAutoCreation]
+    [UpdateAfter(typeof(EntityCleanupSystem))]
     public partial struct AttackStateSystem : ISystem
     {
         private ComponentLookup<GridNavigationState> _gridLookup;
         private ComponentLookup<IsMovingTag> _movementLookup;
         private ComponentLookup<AttackStats> _attackStatsLookup;
 
+        private EntityStorageInfoLookup _entityStorageInfoLookup;
+        
         [BurstCompile]
         public void OnCreate(ref SystemState state)
         {
@@ -22,6 +27,7 @@ namespace _Project._Code.Gameplay.CoreFeatures.Entities.AiSystems
             _gridLookup = state.GetComponentLookup<GridNavigationState>(true);
             _movementLookup = state.GetComponentLookup<IsMovingTag>(true);
             _attackStatsLookup = state.GetComponentLookup<AttackStats>(true);
+            _entityStorageInfoLookup = state.GetEntityStorageInfoLookup();
         }
 
         [BurstCompile]
@@ -30,7 +36,8 @@ namespace _Project._Code.Gameplay.CoreFeatures.Entities.AiSystems
             _gridLookup.Update(ref state);
             _movementLookup.Update(ref state);
             _attackStatsLookup.Update(ref state);
-
+            _entityStorageInfoLookup.Update(ref state);
+            
             var ecbSingleton = SystemAPI.GetSingleton<EndSimulationEntityCommandBufferSystem.Singleton>();
             var ecb = ecbSingleton.CreateCommandBuffer(state.WorldUnmanaged).AsParallelWriter();
 
@@ -40,7 +47,8 @@ namespace _Project._Code.Gameplay.CoreFeatures.Entities.AiSystems
                 Ecb = ecb,
                 GridLookup = _gridLookup,
                 MovementLookup = _movementLookup,
-                AttackStatsLookup = _attackStatsLookup
+                AttackStatsLookup = _attackStatsLookup,
+                EntityInfoLookup = _entityStorageInfoLookup
             }.ScheduleParallel(state.Dependency);
         }
 
@@ -49,7 +57,8 @@ namespace _Project._Code.Gameplay.CoreFeatures.Entities.AiSystems
         {
             public float DeltaTime;
             public EntityCommandBuffer.ParallelWriter Ecb;
-
+            [ReadOnly] public EntityStorageInfoLookup EntityInfoLookup;
+            
             [ReadOnly] public ComponentLookup<GridNavigationState> GridLookup;
             [ReadOnly] public ComponentLookup<IsMovingTag> MovementLookup;
             [ReadOnly] public ComponentLookup<AttackStats> AttackStatsLookup;
@@ -57,7 +66,7 @@ namespace _Project._Code.Gameplay.CoreFeatures.Entities.AiSystems
             [BurstCompile]
             private void Execute(
                 [ChunkIndexInQuery] int sortKey,
-                Entity attackStateEntity,
+                Entity stateEntity,
                 ref AttackState attackState)
             {
                 attackState.RemainingTime = math.max(0f, attackState.RemainingTime - DeltaTime);
@@ -65,6 +74,15 @@ namespace _Project._Code.Gameplay.CoreFeatures.Entities.AiSystems
                     return;
                 var owner = attackState.Owner;
                 var target = attackState.Target;
+
+                if (!GridLookup.HasComponent(owner))
+                {
+                    Ecb.DestroyEntity(sortKey, stateEntity);
+                    return;
+                }
+                if (!GridLookup.HasComponent(target))
+                    return;
+                
                 var ownerGrid = GridLookup[owner];
                 var targetGrid = GridLookup[target];
                 
@@ -78,9 +96,11 @@ namespace _Project._Code.Gameplay.CoreFeatures.Entities.AiSystems
                     return;
                 
                 attackState.RemainingTime = AttackStatsLookup[owner].AttackInterval;
-    #if UNITY_EDITOR
-                //UnityEngine.Debug.Log($"Attack: owner={owner.Index} target={target.Index} state={attackStateEntity.Index}");
-    #endif
+                var damageRequest = Ecb.CreateEntity(sortKey);
+                Ecb.AddComponent(sortKey, damageRequest, new TakeDamageRequest {
+                    Source = target,
+                    Damage = AttackStatsLookup[owner].Damage,
+                });
             }
         }
     }

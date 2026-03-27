@@ -20,6 +20,7 @@ namespace _Project._Code.Gameplay.CoreFeatures.Entities.AiSystems
         private const float UpdateInterval = 0.2f;
         private BTRunner_BtContext _runner;
         private Random _random;
+        private EntityStorageInfoLookup _entityInfoLookup;
         
         private ComponentTypeHandle<AiBrain> _aiBrainHandle;
         private BufferTypeHandle<NodeStateElement> _nodeStateHandle;
@@ -33,7 +34,8 @@ namespace _Project._Code.Gameplay.CoreFeatures.Entities.AiSystems
         private ComponentLookup<GridNavigationState> _gridNavigationStateLookup;
         private ComponentLookup<IsMovingTag> _isMovingTagLookup;
         private ComponentLookup<RendererEntityRef> _rendererEntityLookup;
-        private ComponentLookup<UnitTag> _unitTagLookup;
+        
+        private ComponentLookup<AttackState> _attackStateLookup;
         
         public void OnCreate(ref SystemState state)
         {
@@ -44,6 +46,7 @@ namespace _Project._Code.Gameplay.CoreFeatures.Entities.AiSystems
             _query = SystemAPI.QueryBuilder()
                 .WithAllRW<AiBrain>()
                 .Build();
+            _entityInfoLookup = state.GetEntityStorageInfoLookup();
             _aiBrainHandle = state.GetComponentTypeHandle<AiBrain>(false);
             _nodeStateHandle = state.GetBufferTypeHandle<NodeStateElement>(false);
             _leafStateHandle = state.GetBufferTypeHandle<LeafStateElement>(false);
@@ -55,13 +58,15 @@ namespace _Project._Code.Gameplay.CoreFeatures.Entities.AiSystems
             _gridNavigationStateLookup = state.GetComponentLookup<GridNavigationState>(isReadOnly: true);
             _isMovingTagLookup = state.GetComponentLookup<IsMovingTag>(isReadOnly: true);
             _rendererEntityLookup = state.GetComponentLookup<RendererEntityRef>(isReadOnly: true);
-            _unitTagLookup = state.GetComponentLookup<UnitTag>(isReadOnly: true);
+            
+            _attackStateLookup = state.GetComponentLookup<AttackState>(isReadOnly: true);
         }
         
         [BurstCompile]
         public void OnUpdate(ref SystemState state)
         {
             var trees = SystemAPI.GetSingleton<BehaviourTreeSingleton>().Blobs;
+            _entityInfoLookup.Update(ref state);
             
             _eyeSensorLookup.Update(ref state);
             _localTransformLookup.Update(ref state);
@@ -69,7 +74,8 @@ namespace _Project._Code.Gameplay.CoreFeatures.Entities.AiSystems
             _gridNavigationStateLookup.Update(ref state);
             _isMovingTagLookup.Update(ref state);
             _rendererEntityLookup.Update(ref state);
-            _unitTagLookup.Update(ref state);
+            
+            _attackStateLookup.Update(ref state);
             
             var ecbSystem = SystemAPI.GetSingleton<EndSimulationEntityCommandBufferSystem.Singleton>();
             var ecb = ecbSystem.CreateCommandBuffer(state.WorldUnmanaged);
@@ -77,13 +83,15 @@ namespace _Project._Code.Gameplay.CoreFeatures.Entities.AiSystems
             var context = new BtContext
             {
                 Ecb = ecb.AsParallelWriter(),
+                Random = _random,
                 EyeSensorLookup = _eyeSensorLookup,
                 LocalTransformLookup = _localTransformLookup,
                 AttackStatsLookup = _attackStatsLookup,
                 GridNavigationStateLookup = _gridNavigationStateLookup,
                 IsMovingTagLookup = _isMovingTagLookup,
                 RenderEntityLookup = _rendererEntityLookup,
-                UnitTagLookup = _unitTagLookup
+                AttackStateLookup = _attackStateLookup,
+                EntityInfoLookup = _entityInfoLookup
             };
             
             /*
