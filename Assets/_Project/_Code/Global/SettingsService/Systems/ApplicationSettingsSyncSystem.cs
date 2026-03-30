@@ -38,6 +38,11 @@ namespace _Project._Code.Global.Settings
         private void OnResolutionSetting(float resolutionIdx)
         {
             var resolutions = _applicationService.AvailableResolutions;
+            if ((int)resolutionIdx == -1)
+            {
+                _applicationService.TrySetResolution(resolutions[^1]);
+                return;
+            }
             var resolution = resolutions[Mathf.Clamp((int)resolutionIdx, 0, resolutions.Count - 1)];
             _applicationService.TrySetResolution(resolution);
         }
