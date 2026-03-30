@@ -49,6 +49,8 @@ namespace _Project._Code.Gameplay.CoreFeatures.Entities.AiSystems
                         trees[i].Dispose();
                 trees.Dispose();
             }
+            if (SystemAPI.TryGetSingletonEntity<BehaviourTreeSingleton>(out var e))
+                EntityManager.DestroyEntity(e);
         }
 
         protected override void OnUpdate() { }

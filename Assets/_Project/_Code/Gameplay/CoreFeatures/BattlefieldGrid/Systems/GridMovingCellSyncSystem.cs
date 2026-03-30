@@ -31,6 +31,8 @@ namespace _Project._Code.Gameplay.CoreFeatures
                 return;
             if (mapsRw.ValueRO.OccupiedMap.IsCreated)
                 mapsRw.ValueRW.OccupiedMap.Dispose();
+            if (SystemAPI.TryGetSingletonEntity<GridRuntimeMapSingleton>(out var e))
+                state.EntityManager.DestroyEntity(e);
         }
         
         [BurstCompile]

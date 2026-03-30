@@ -52,6 +52,7 @@ namespace _Project._Code.Infrastructure.EcsContext
         public void CleanUpSystems()
         {
             _systemsGroup.Enabled = false;
+            _entityManager.CompleteAllTrackedJobs();
             for (int i = 0; i < _installedSystems.Count; i++)
             {
                 var handle = _installedSystems[i];
