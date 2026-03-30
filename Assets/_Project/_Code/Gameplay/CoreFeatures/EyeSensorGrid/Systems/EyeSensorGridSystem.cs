@@ -35,6 +35,8 @@ namespace _Project._Code.Gameplay.CoreFeatures.EyeSensorGrid.Systems
                 mapRw.ValueRW.Command0Grid.Dispose();
             if (mapRw.ValueRO.Command1Grid.IsCreated)
                 mapRw.ValueRW.Command1Grid.Dispose();
+            if (SystemAPI.TryGetSingletonEntity<EyeSensorGridSingleton>(out var e))
+                state.EntityManager.DestroyEntity(e);
         }
 
         [BurstCompile]
