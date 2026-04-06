@@ -20,8 +20,8 @@ namespace _Project._Code.Global.Settings
                 throw new KeyNotFoundException($"Setting '{id}' is not registered.");
             return entry.ValueType;
         }
-        
-        public SettingsService(SettingsPipeline pipeline)
+
+        public void WarmUp(SettingsPipeline pipeline)
         {
             foreach (var setting in pipeline.Settings)
             {
@@ -39,7 +39,7 @@ namespace _Project._Code.Global.Settings
                 }
             }
         }
-        
+
         public void RegisterOrSet<T>(SettingId id, T value)
         {
             if (_settings.TryGetValue(id, out var existing))
@@ -114,7 +114,7 @@ namespace _Project._Code.Global.Settings
             return Observe<int>(id)
                 .Select(value => (TEnum)Enum.ToObject(typeof(TEnum), value));
         }
-        
+
         public void Save()
         {
             foreach (var pair in _settings)
@@ -127,7 +127,7 @@ namespace _Project._Code.Global.Settings
             foreach (var pair in _settings)
                 pair.Value.Load(GetKey(pair.Key));
         }
-        
+
         public void DeleteSaved()
         {
             foreach (var pair in _settings)
@@ -144,7 +144,7 @@ namespace _Project._Code.Global.Settings
 
         private static string GetKey(SettingId id)
             => $"{KeyPrefix}{id}";
-        
+
         private SettingEntry<T> GetEntry<T>(SettingId id)
         {
             if (!_settings.TryGetValue(id, out var entry))
@@ -179,7 +179,7 @@ namespace _Project._Code.Global.Settings
 
             private readonly ReactiveProperty<T> _value;
             private readonly T _defaultValue;
-            
+
             public SettingEntry(SettingId id, T initialValue)
             {
                 Id = id;

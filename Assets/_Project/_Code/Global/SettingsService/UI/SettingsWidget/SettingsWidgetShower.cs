@@ -7,6 +7,7 @@ using _Project._Code.Global.SettingsService.UI.EnumSetting;
 using _Project._Code.Global.SettingsService.UI.Settings;
 using _Project._Code.Infrastructure;
 using _Project._Code.Infrastructure.ApplicationService;
+using _Project._Code.Infrastructure.StaticData._Root;
 using _Project._Code.Locale;
 
 namespace _Project._Code.Global.SettingsService.UI
@@ -18,12 +19,14 @@ namespace _Project._Code.Global.SettingsService.UI
         private readonly SettingsWidgetConfig _config;
         private readonly IInputService _inputService;
         private readonly IStateMachine _stateMachine;
-        
+        private readonly StaticDataService _staticDataService;
+
         public SettingsWidgetShower(
             ISettingsService settingsService,
             IApplicationService applicationService,
             IInputService inputService,
             IStateMachine stateMachine,
+            StaticDataService staticDataService,
             SettingsWidgetConfig config) : base(config)
         {
             _config = config;
@@ -31,11 +34,12 @@ namespace _Project._Code.Global.SettingsService.UI
             _settingsService = settingsService;
             _inputService = inputService;
             _applicationService = applicationService;
+            _staticDataService = staticDataService;
         }
 
         protected override ISettingsPresenter CreatePresenter()
         {
-            var staticData = BootstrapContext.Instance.SettingsPipeline;
+            var staticData = _staticDataService.SettingsPipeline;
             var groupsData = _config.Groups;
             var groups = new List<SettingGroup>();
             for (int i = 0; i < groupsData.Length; i++)

@@ -18,31 +18,33 @@ namespace _Project._Code.Gameplay.CoreFeatures.Entities.AiSystems
     public partial struct BehaviourTreeTickSystem : ISystem
     {
         private const float UpdateInterval = 0.2f;
+        private const int RandomSeed = 55555;
+
         private BTRunner_BtContext _runner;
         private Random _random;
         private EntityStorageInfoLookup _entityInfoLookup;
-        
+
         private ComponentTypeHandle<AiBrain> _aiBrainHandle;
         private BufferTypeHandle<NodeStateElement> _nodeStateHandle;
         private BufferTypeHandle<LeafStateElement> _leafStateHandle;
         private EntityTypeHandle _entityHandle;
         private EntityQuery _query;
-        
+
         private ComponentLookup<EyeSensor> _eyeSensorLookup;
         private ComponentLookup<LocalTransform> _localTransformLookup;
         private ComponentLookup<AttackStats> _attackStatsLookup;
         private ComponentLookup<GridNavigationState> _gridNavigationStateLookup;
         private ComponentLookup<IsMovingTag> _isMovingTagLookup;
         private ComponentLookup<RendererEntityRef> _rendererEntityLookup;
-        
+
         private ComponentLookup<AttackState> _attackStateLookup;
-        
+
         public void OnCreate(ref SystemState state)
         {
             state.RequireForUpdate<BehaviourTreeSingleton>();
             state.RequireForUpdate<EndSimulationEntityCommandBufferSystem.Singleton>();
             _runner = new BTRunner_BtContext();
-            _random = new Random(55555);
+            _random = new Random(RandomSeed);
             _query = SystemAPI.QueryBuilder()
                 .WithAllRW<AiBrain>()
                 .Build();
@@ -51,32 +53,32 @@ namespace _Project._Code.Gameplay.CoreFeatures.Entities.AiSystems
             _nodeStateHandle = state.GetBufferTypeHandle<NodeStateElement>(false);
             _leafStateHandle = state.GetBufferTypeHandle<LeafStateElement>(false);
             _entityHandle = state.GetEntityTypeHandle();
-            
+
             _eyeSensorLookup = state.GetComponentLookup<EyeSensor>(isReadOnly: true);
             _localTransformLookup = state.GetComponentLookup<LocalTransform>(isReadOnly: true);
             _attackStatsLookup = state.GetComponentLookup<AttackStats>(isReadOnly: true);
             _gridNavigationStateLookup = state.GetComponentLookup<GridNavigationState>(isReadOnly: true);
             _isMovingTagLookup = state.GetComponentLookup<IsMovingTag>(isReadOnly: true);
             _rendererEntityLookup = state.GetComponentLookup<RendererEntityRef>(isReadOnly: true);
-            
+
             _attackStateLookup = state.GetComponentLookup<AttackState>(isReadOnly: true);
         }
-        
+
         [BurstCompile]
         public void OnUpdate(ref SystemState state)
         {
             var trees = SystemAPI.GetSingleton<BehaviourTreeSingleton>().Blobs;
             _entityInfoLookup.Update(ref state);
-            
+
             _eyeSensorLookup.Update(ref state);
             _localTransformLookup.Update(ref state);
             _attackStatsLookup.Update(ref state);
             _gridNavigationStateLookup.Update(ref state);
             _isMovingTagLookup.Update(ref state);
             _rendererEntityLookup.Update(ref state);
-            
+
             _attackStateLookup.Update(ref state);
-            
+
             var ecbSystem = SystemAPI.GetSingleton<EndSimulationEntityCommandBufferSystem.Singleton>();
             var ecb = ecbSystem.CreateCommandBuffer(state.WorldUnmanaged);
 
@@ -93,24 +95,7 @@ namespace _Project._Code.Gameplay.CoreFeatures.Entities.AiSystems
                 AttackStateLookup = _attackStateLookup,
                 EntityInfoLookup = _entityInfoLookup
             };
-            
-            /*
-            foreach (var (
-                         aiBrain,
-                         nodeStates,
-                         leafStates,
-                         agent)
-                     in SystemAPI.Query<
-                         RefRW<AiBrain>,
-                         DynamicBuffer<NodeStateElement>,
-                         DynamicBuffer<LeafStateElement>>()
-                         .WithEntityAccess())
-            {
-                var treeBlob = trees[aiBrain.ValueRO.BlobId];
-                _runner.Tick(agent, ref treeBlob.Value, ref _random, nodeStates, leafStates, context);
-            }
-            */
-            
+
             _aiBrainHandle.Update(ref state);
             _nodeStateHandle.Update(ref state);
             _leafStateHandle.Update(ref state);
@@ -129,7 +114,7 @@ namespace _Project._Code.Gameplay.CoreFeatures.Entities.AiSystems
             };
             state.Dependency = job.ScheduleParallel(_query, state.Dependency);
         }
-        
+
         [BurstCompile]
         public struct BehaviourTreeTickChunkJob : IJobChunk
         {
@@ -138,13 +123,13 @@ namespace _Project._Code.Gameplay.CoreFeatures.Entities.AiSystems
             [ReadOnly] public NativeArray<BlobAssetReference<BehaviourTreeBlob>> Trees;
             public Random Random;
             public float CurrentTime;
-            
+
             public ComponentTypeHandle<AiBrain> AiBrainHandle;
             public BufferTypeHandle<NodeStateElement> NodeStateHandle;
             public BufferTypeHandle<LeafStateElement> LeafStateHandle;
 
             [ReadOnly] public EntityTypeHandle EntityHandle;
-            
+
             public void Execute(in ArchetypeChunk chunk, int unfilteredChunkIndex, bool useEnabledMask, in v128 chunkEnabledMask)
             {
                 var aiBrains = chunk.GetNativeArray(ref AiBrainHandle);
@@ -157,7 +142,7 @@ namespace _Project._Code.Gameplay.CoreFeatures.Entities.AiSystems
                 while (enumerator.NextEntityIndex(out int i))
                 {
                     var aiBrain = aiBrains[i];
-                    
+
                     if (aiBrain.UpdateTime > CurrentTime)
                         continue;
 
@@ -165,7 +150,7 @@ namespace _Project._Code.Gameplay.CoreFeatures.Entities.AiSystems
                     var nodeStates = nodeBuffers[i];
                     var leafStates = leafBuffers[i];
                     var treeBlob = Trees[aiBrain.BlobId];
-                    
+
                     Runner.Tick(
                         entity,
                         ref treeBlob.Value,
@@ -174,13 +159,13 @@ namespace _Project._Code.Gameplay.CoreFeatures.Entities.AiSystems
                         leafStates,
                         Context,
                         unfilteredChunkIndex);
-                    
+
                     aiBrain.UpdateTime += UpdateInterval;
                     aiBrains[i] = aiBrain;
                 }
             }
         }
-        
+
         public void OnDestroy(ref SystemState state)
         {
         }
