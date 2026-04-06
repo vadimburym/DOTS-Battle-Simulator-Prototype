@@ -62,6 +62,7 @@ namespace _Project._Code.GameApp.Installers
             builder.Register<MemoryPoolWarmUpSystem>(Lifetime.Singleton).As<IWarmUp>();
             builder.Register<EdgeScrollCameraSystem>(Lifetime.Singleton).As<ILateTick>();
             builder.Register<SceneEntryCameraSystem>(Lifetime.Singleton).As<IInit>();
+            builder.Register<EscapeWidgetSystem>(Lifetime.Singleton).As<ITick, IInit, IDispose>();
         }
         
         private static void RegisterUnits(IContainerBuilder builder)

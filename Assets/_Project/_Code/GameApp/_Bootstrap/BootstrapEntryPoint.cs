@@ -1,7 +1,7 @@
 using _Project._Code.Core.Keys;
+using _Project._Code.Global.Settings;
 using _Project._Code.Infrastructure;
 using _Project._Code.Infrastructure.EcsContext;
-using _Project._Code.Infrastructure.Settings;
 using Cysharp.Threading.Tasks;
 using VContainer.Unity;
 
@@ -33,10 +33,10 @@ namespace _Project._Code.GameApp.EntryPoints
         private async UniTask StartAsync()
         {
             _settingsService.Load();
-            await _saveRepository.Load();
-            await BootstrapContext.Instance.BootstrapSubSceneAwaiter.WaitUntilSubSceneReady();
             _ecsBootstrap.WarmUpSystems(BootstrapContext.Instance.Container);
             _ecsBootstrap.EnableSystems(true);
+            await _saveRepository.Load();
+            await BootstrapContext.Instance.BootstrapSubSceneAwaiter.WaitUntilSubSceneReady();
             _entityPrefabService.RebuildCache();
             
             _stateMachine.Enter(GameStateId.Meta);

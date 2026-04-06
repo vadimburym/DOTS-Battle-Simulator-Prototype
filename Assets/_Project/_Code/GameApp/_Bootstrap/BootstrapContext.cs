@@ -2,16 +2,15 @@ using _Project._Code.Core.Abstractions;
 using _Project._Code.GameApp.EntryPoints;
 using _Project._Code.GameApp.GameStates;
 using _Project._Code.GameApp.SaveStrategies;
+using _Project._Code.Global.Settings;
 using _Project._Code.Infrastructure;
 using _Project._Code.Infrastructure.ApplicationService;
 using _Project._Code.Infrastructure.Audio;
 using _Project._Code.Infrastructure.EcsContext;
 using _Project._Code.Infrastructure.EntitiesExtensions;
 using _Project._Code.Infrastructure.LoadingCurtainProvider;
-using _Project._Code.Infrastructure.Settings;
 using _Project._Code.Infrastructure.StaticData._Root;
-using UnityEngine;
-using UnityEngine.Serialization;
+using _Project._Code.Tools.FrameDebug;
 using VContainer;
 using VContainer.Unity;
 
@@ -21,10 +20,11 @@ namespace _Project._Code.GameApp
     {
         public StaticDataService StaticDataService;
         public UIInstallerService UIInstallerService;
-        public SettingsPipeline settingsPipeline;
+        public SettingsPipeline SettingsPipeline;
         public SubSceneAwaiter BootstrapSubSceneAwaiter;
         public LoadingCurtainProvider LoadingCurtainProvider;
         public AudioProvider AudioProvider;
+        public FrameDebugProvider FrameDebugProvider;
         
         public static BootstrapContext Instance;
         
@@ -58,7 +58,8 @@ namespace _Project._Code.GameApp
             builder.RegisterInstance(UIInstallerService).As<UIInstallerService>();
             builder.RegisterInstance(LoadingCurtainProvider).As<ILoadingCurtainProvider>();
             builder.RegisterInstance(AudioProvider).As<IAudioProvider>();
-            builder.Register<SettingsService>(Lifetime.Singleton).As<ISettingsService>().WithParameter(settingsPipeline);
+            builder.RegisterInstance(FrameDebugProvider).As<IFrameDebugProvider>();
+            builder.Register<SettingsService>(Lifetime.Singleton).As<ISettingsService>().WithParameter(SettingsPipeline);
             builder.Register<StateMachine>(Lifetime.Singleton).As<IStateMachine>();
             builder.Register<ApplicationService>(Lifetime.Singleton).As<IApplicationService>();
             builder.Register<SaveRepository>(Lifetime.Singleton).As<ISaveRepository>();
@@ -77,7 +78,10 @@ namespace _Project._Code.GameApp
             builder.RegisterInstance(new EcsContext<BootstrapSystemsGroup>(ecsBuilder =>
             {
                 ecsBuilder.RegisterManaged<EntityPrefabLoadSystem>();
+                ecsBuilder.RegisterManaged<FrameDebugSystem>();
+                ecsBuilder.RegisterManaged<FrameDebugSettingSyncSystem>();
                 ecsBuilder.RegisterManaged<ApplicationSettingsSyncSystem>();
+                ecsBuilder.RegisterManaged<AudioSettingsSyncSystem>();
             }))
                 .As<EcsContext<BootstrapSystemsGroup>>();
         }
