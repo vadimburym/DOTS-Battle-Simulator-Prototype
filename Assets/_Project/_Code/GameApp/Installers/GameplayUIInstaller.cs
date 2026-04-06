@@ -10,8 +10,8 @@ using VContainer;
 
 namespace _Project._Code.GameApp.Installers
 {
-    [CreateAssetMenu(fileName = "UIGameplayInstaller", menuName = "_Project/Installers/new UIGameplayInstaller")]
-    public sealed class UIGameplayInstaller : ScriptableObjectInstaller
+    [CreateAssetMenu(fileName = "GameplayUIInstaller", menuName = "_Project/Installers/new GameplayUIInstaller")]
+    public sealed class GameplayUIInstaller : ScriptableObjectInstaller
     {
         [SerializeField] private WidgetConfig _unitCounterConfig;
         [SerializeField] private UnitSpawnPanelConfig _unitSpawnPanelConfig;

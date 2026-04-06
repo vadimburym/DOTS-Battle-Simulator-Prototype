@@ -3,10 +3,15 @@ using _Project._Code.GameApp.EntryPoints;
 using _Project._Code.GameApp.GameStates;
 using _Project._Code.GameApp.SaveStrategies;
 using _Project._Code.Infrastructure;
+using _Project._Code.Infrastructure.ApplicationService;
+using _Project._Code.Infrastructure.Audio;
 using _Project._Code.Infrastructure.EcsContext;
 using _Project._Code.Infrastructure.EntitiesExtensions;
+using _Project._Code.Infrastructure.LoadingCurtainProvider;
+using _Project._Code.Infrastructure.Settings;
 using _Project._Code.Infrastructure.StaticData._Root;
 using UnityEngine;
+using UnityEngine.Serialization;
 using VContainer;
 using VContainer.Unity;
 
@@ -16,8 +21,10 @@ namespace _Project._Code.GameApp
     {
         public StaticDataService StaticDataService;
         public UIInstallerService UIInstallerService;
+        public SettingsPipeline settingsPipeline;
         public SubSceneAwaiter BootstrapSubSceneAwaiter;
-        public GameObject CameraGameObject;
+        public LoadingCurtainProvider LoadingCurtainProvider;
+        public AudioProvider AudioProvider;
         
         public static BootstrapContext Instance;
         
@@ -49,7 +56,11 @@ namespace _Project._Code.GameApp
         {
             builder.RegisterInstance(StaticDataService).As<StaticDataService>();
             builder.RegisterInstance(UIInstallerService).As<UIInstallerService>();
+            builder.RegisterInstance(LoadingCurtainProvider).As<ILoadingCurtainProvider>();
+            builder.RegisterInstance(AudioProvider).As<IAudioProvider>();
+            builder.Register<SettingsService>(Lifetime.Singleton).As<ISettingsService>().WithParameter(settingsPipeline);
             builder.Register<StateMachine>(Lifetime.Singleton).As<IStateMachine>();
+            builder.Register<ApplicationService>(Lifetime.Singleton).As<IApplicationService>();
             builder.Register<SaveRepository>(Lifetime.Singleton).As<ISaveRepository>();
             builder.Register<LocalContextService>(Lifetime.Singleton).As<ILocalContextService>();
             builder.Register<GamePauseService>(Lifetime.Singleton).As<IGamePauseService>();
@@ -57,6 +68,7 @@ namespace _Project._Code.GameApp
             builder.Register<AddressableService>(Lifetime.Singleton).As<IAddressableService>();
             builder.Register<EntityPrefabService>(Lifetime.Singleton).As<IEntityPrefabService>();
             builder.Register<InputService>(Lifetime.Singleton).As<IInputService>();
+            builder.Register<MainCameraService>(Lifetime.Singleton).As<IMainCameraService>();
             builder.RegisterInstance(new EcsContext<LocalSystemsGroup>()).As<IEcsContext>();
         }
         
@@ -65,6 +77,7 @@ namespace _Project._Code.GameApp
             builder.RegisterInstance(new EcsContext<BootstrapSystemsGroup>(ecsBuilder =>
             {
                 ecsBuilder.RegisterManaged<EntityPrefabLoadSystem>();
+                ecsBuilder.RegisterManaged<ApplicationSettingsSyncSystem>();
             }))
                 .As<EcsContext<BootstrapSystemsGroup>>();
         }
