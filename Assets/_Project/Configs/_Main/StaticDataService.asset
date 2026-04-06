@@ -15,3 +15,4 @@ MonoBehaviour:
   MemoryPoolPipeline: {fileID: 11400000, guid: 1682ede3aea2bd945b081da73be7b33b, type: 2}
   UnitsStaticData: {fileID: 11400000, guid: 4ca809a91d4f5564398556c044216129, type: 2}
   BehaviourTreeStaticData: {fileID: 11400000, guid: 297f787e197092543bd27f07d7f04eb7, type: 2}
+  WidgetStaticData: {fileID: 11400000, guid: 043025aece1b1784d8b135b401608171, type: 2}

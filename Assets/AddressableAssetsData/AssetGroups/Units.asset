@@ -50,6 +50,13 @@ MonoBehaviour:
     - gameplay
     - preload
     FlaggedDuringContentUpdateRestriction: 0
+  - m_GUID: fb3275d18cdba934eb420b389d84152f
+    m_Address: Assets/_Project/Assets/Prefabs/UI/MetaInterface.prefab
+    m_ReadOnly: 0
+    m_SerializedLabels:
+    - meta
+    - preload
+    FlaggedDuringContentUpdateRestriction: 0
   m_ReadOnly: 0
   m_Settings: {fileID: 11400000, guid: 0af3e38b99bd4904aa84bf2fdef7ba6a, type: 2}
   m_SchemaSet:

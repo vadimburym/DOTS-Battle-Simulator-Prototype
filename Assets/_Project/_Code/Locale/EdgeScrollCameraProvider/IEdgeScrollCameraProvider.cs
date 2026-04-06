@@ -4,7 +4,6 @@ namespace _Project._Code.Locale.EdgeScrollCamera
 {
     public interface IEdgeScrollCameraProvider
     {
-        Transform Root { get; }
         float MoveSpeed { get; }
         float EdgeSize { get; }
         Vector2 XLimits { get; }

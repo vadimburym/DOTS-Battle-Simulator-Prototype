@@ -12,5 +12,5 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: e623c23cd50c43fab577bfcccb366c1e, type: 3}
   m_Name: UIInstallerService
   m_EditorClassIdentifier: Assembly-CSharp::_Project._Code.Infrastructure.StaticData._Root.UIInstallerService
-  GameplayInstaller: {fileID: 11400000, guid: 8c9c51f5070dc5345bf186bb568d5a99, type: 2}
-  MetaInstaller: {fileID: 11400000, guid: f0401b4d5052ffb4b95a25b5827c6192, type: 2}
+  GameplayUIInstaller: {fileID: 11400000, guid: 8c9c51f5070dc5345bf186bb568d5a99, type: 2}
+  MetaUIInstaller: {fileID: 11400000, guid: f0401b4d5052ffb4b95a25b5827c6192, type: 2}

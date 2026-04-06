@@ -15,7 +15,7 @@ MonoBehaviour:
   m_DefaultGroup: d4460d82a18ec77468d7e8926fef070e
   m_currentHash:
     serializedVersion: 2
-    Hash: 00000000000000000000000000000000
+    Hash: b37d260b814ae15dd3478f38dd9277f4
   m_OptimizeCatalogSize: 0
   m_BuildRemoteCatalog: 0
   m_CatalogRequestsTimeout: 0
@@ -104,6 +104,7 @@ MonoBehaviour:
     - default
     - gameplay
     - preload
+    - meta
   m_SchemaTemplates: []
   m_GroupTemplateObjects:
   - {fileID: 11400000, guid: e93d08c623485bd499369062e1a9785c, type: 2}

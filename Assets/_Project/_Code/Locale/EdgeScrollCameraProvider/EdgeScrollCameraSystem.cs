@@ -7,19 +7,23 @@ namespace _Project._Code.Locale.EdgeScrollCamera
     public sealed class EdgeScrollCameraSystem : ILateTick
     {
         private readonly IEdgeScrollCameraProvider _edgeScrollCameraProvider;
+        private readonly IMainCameraService _mainCameraService;
         private readonly IInputService _inputService;
         
         public EdgeScrollCameraSystem(
             IEdgeScrollCameraProvider edgeScrollCameraProvider,
-            IInputService inputService)
+            IInputService inputService,
+            IMainCameraService mainCameraService)
         {
             _edgeScrollCameraProvider = edgeScrollCameraProvider;
             _inputService = inputService;
+            _mainCameraService = mainCameraService;
         }
         
         public void LateTick()
         {
-            var transform = _edgeScrollCameraProvider.Root;
+            var transform = _mainCameraService.MainCameraTransform;
+            
             var edgeSize = _edgeScrollCameraProvider.EdgeSize;
             var moveSpeed = _edgeScrollCameraProvider.MoveSpeed;
             var xLimits = _edgeScrollCameraProvider.XLimits;
