@@ -8,6 +8,8 @@ namespace _Project._Code.Infrastructure
 {
     public sealed class SceneLoadService : ISceneLoadService
     {
+        private const int BOOTSTRAP_IDX = 0;
+        
         public IReadOnlyList<GameObject> RootGameObjects => _rootGameObjects;
         public Scene CurrentScene => SceneManager.GetSceneByBuildIndex(_currentSceneBuildIDX);
         
@@ -28,15 +30,8 @@ namespace _Project._Code.Infrastructure
             var scene = SceneManager.GetSceneByBuildIndex(SceneBuildIDX);
             scene.GetRootGameObjects(_rootGameObjects);
             _currentSceneBuildIDX = SceneBuildIDX;
-            //SceneManager.SetActiveScene(scene);
+            SceneManager.SetActiveScene(scene);
             return scene;
-        }
-
-        public void SetActiveCurrentScene()
-        {
-            if (_currentSceneBuildIDX == -1)
-                return;
-            SceneManager.SetActiveScene(SceneManager.GetSceneByBuildIndex(_currentSceneBuildIDX));
         }
         
         public T FindFirstComponentInRoots<T>() where T : Component

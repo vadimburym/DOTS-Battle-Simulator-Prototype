@@ -10,7 +10,6 @@ namespace _Project._Code.Infrastructure
         IReadOnlyList<GameObject> RootGameObjects { get; }
         Scene CurrentScene { get; }
         UniTask<Scene> LoadSceneAsync(int SceneBuildIDX);
-        void SetActiveCurrentScene();
         T FindFirstComponentInRoots<T>() where T : Component;
     }
 }
