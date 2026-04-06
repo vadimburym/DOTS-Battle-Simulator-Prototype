@@ -239,7 +239,7 @@ MonoBehaviour:
   DetectRadius: 10
   ChaseRadius: 15
   UpdateNearestInterval: 2
-  ScanInterval: 0.2
+  ScanInterval: 0.5
 --- !u!136 &3748281658093761717
 CapsuleCollider:
   m_ObjectHideFlags: 0

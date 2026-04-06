@@ -1,3 +1,4 @@
+using System.Runtime.CompilerServices;
 using Unity.Burst;
 using Unity.Collections;
 using Unity.Entities;
@@ -5,21 +6,28 @@ using Unity.Mathematics;
 
 namespace _Project._Code.Gameplay.CoreFeatures
 {
-    public static class BattlefieldGridUtils
+    [BurstCompile]
+    public struct BattlefieldGridUtils
     {
-        public static int CellDistanceChebyshev(int2 a, int2 b)
+        [BurstCompile]
+        [MethodImpl(MethodImplOptions.AggressiveInlining)]
+        public int CellDistanceChebyshev(int2 a, int2 b)
         {
-            int2 d = math.abs(a - b);
+            var d = math.abs(a - b);
             return math.max(d.x, d.y);
         }
         
-        public static int2 WorldToCell(ref BattlefieldGridBlob grid, float3 world)
+        [BurstCompile]
+        [MethodImpl(MethodImplOptions.AggressiveInlining)]
+        public int2 WorldToCell(ref BattlefieldGridBlob grid, float3 world)
         {
-            float2 local = new float2(world.x - grid.Origin.x, world.z - grid.Origin.z);
+            var local = new float2(world.x - grid.Origin.x, world.z - grid.Origin.z);
             return (int2)math.floor(local / grid.CellSize);
         }
         
-        public static float3 CellToWorldCenter(ref BattlefieldGridBlob grid, int2 cell, float y = 0f)
+        [BurstCompile]
+        [MethodImpl(MethodImplOptions.AggressiveInlining)]
+        public float3 CellToWorldCenter(ref BattlefieldGridBlob grid, int2 cell, float y = 0f)
         {
             return new float3(
                 grid.Origin.x + (cell.x + 0.5f) * grid.CellSize,
@@ -28,7 +36,9 @@ namespace _Project._Code.Gameplay.CoreFeatures
             );
         }
         
-        public static float3 FootprintToWorldCenter(
+        [BurstCompile]
+        [MethodImpl(MethodImplOptions.AggressiveInlining)]
+        public float3 FootprintToWorldCenter(
             ref BattlefieldGridBlob grid,
             int2 originCell,
             int footprintX,
@@ -37,7 +47,6 @@ namespace _Project._Code.Gameplay.CoreFeatures
         {
             float centerX = originCell.x + footprintX * 0.5f;
             float centerY = originCell.y + footprintY * 0.5f;
-
             return new float3(
                 grid.Origin.x + centerX * grid.CellSize,
                 y,
@@ -45,41 +54,48 @@ namespace _Project._Code.Gameplay.CoreFeatures
             );
         }
         
-        public static bool InBounds(ref BattlefieldGridBlob grid, int2 cell)
+        [BurstCompile]
+        [MethodImpl(MethodImplOptions.AggressiveInlining)]
+        public bool InBounds(ref BattlefieldGridBlob grid, int2 cell)
         {
-            return cell.x >= 0 && cell.y >= 0 && cell.x < grid.Width && cell.y < grid.Height;
+            return cell is { x: >= 0, y: >= 0 } && cell.x < grid.Width && cell.y < grid.Height;
         }
         
-        public static int Flatten(ref BattlefieldGridBlob grid, int2 cell)
+        [BurstCompile]
+        [MethodImpl(MethodImplOptions.AggressiveInlining)]
+        public int Flatten(ref BattlefieldGridBlob grid, int2 cell)
         {
             return cell.y * grid.Width + cell.x;
         }
         
-        public static bool IsWalkable(ref BattlefieldGridBlob grid, int2 cell)
+        [BurstCompile]
+        [MethodImpl(MethodImplOptions.AggressiveInlining)]
+        public bool IsWalkable(ref BattlefieldGridBlob grid, int2 cell)
         {
             return InBounds(ref grid, cell) && grid.Walkable[Flatten(ref grid, cell)] != 0;
         }
         
-        public static bool IsAreaWalkable(
+        [BurstCompile]
+        [MethodImpl(MethodImplOptions.AggressiveInlining)]
+        public bool IsAreaWalkable(
             ref BattlefieldGridBlob grid,
             int2 originCell,
             int footprintX,
             int footprintY)
         {
             for (int y = 0; y < footprintY; y++)
-            {
                 for (int x = 0; x < footprintX; x++)
                 {
-                    int2 cell = originCell + new int2(x, y);
+                    var cell = originCell + new int2(x, y);
                     if (!IsWalkable(ref grid, cell))
                         return false;
                 }
-            }
-
             return true;
         }
         
-        public static bool IsAreaFreeInOccupiedMap(
+        [BurstCompile]
+        [MethodImpl(MethodImplOptions.AggressiveInlining)]
+        public bool IsAreaFreeInOccupiedMap(
             NativeParallelHashMap<int2, Entity> occupiedMap,
             int2 originCell,
             int footprintX,
@@ -87,57 +103,18 @@ namespace _Project._Code.Gameplay.CoreFeatures
             Entity self)
         {
             for (int y = 0; y < footprintY; y++)
-            {
                 for (int x = 0; x < footprintX; x++)
                 {
-                    int2 cell = originCell + new int2(x, y);
-
+                    var cell = originCell + new int2(x, y);
                     if (occupiedMap.TryGetValue(cell, out var occupiedBy) && occupiedBy != self)
                         return false;
                 }
-            }
-
             return true;
         }
         
-        public static bool IsAreaFreeInLocalClaims(
-            NativeHashMap<int2, Entity> localClaims,
-            int2 originCell,
-            int footprintX,
-            int footprintY,
-            Entity self)
-        {
-            for (int y = 0; y < footprintY; y++)
-            {
-                for (int x = 0; x < footprintX; x++)
-                {
-                    int2 cell = originCell + new int2(x, y);
-
-                    if (localClaims.TryGetValue(cell, out var claimedBy) && claimedBy != self)
-                        return false;
-                }
-            }
-
-            return true;
-        }
-        
-        public static void AddAreaToLocalClaims(
-            NativeHashMap<int2, Entity> localClaims,
-            Entity entity,
-            int2 originCell,
-            int footprintX,
-            int footprintY)
-        {
-            for (int y = 0; y < footprintY; y++)
-            {
-                for (int x = 0; x < footprintX; x++)
-                {
-                    localClaims.TryAdd(originCell + new int2(x, y), entity);
-                }
-            }
-        }
-        
-        public static void OccupyAreaDirect(
+        [BurstCompile]
+        [MethodImpl(MethodImplOptions.AggressiveInlining)]
+        public void OccupyAreaDirect(
             NativeParallelHashMap<int2, Entity> occupiedMap,
             Entity entity,
             int2 originCell,
@@ -145,15 +122,15 @@ namespace _Project._Code.Gameplay.CoreFeatures
             int footprintY)
         {
             for (int y = 0; y < footprintY; y++)
-            {
                 for (int x = 0; x < footprintX; x++)
                 {
                     occupiedMap.TryAdd(originCell + new int2(x, y), entity);
                 }
-            }
         }
 
-        public static void ReleaseAreaDirect(
+        [BurstCompile]
+        [MethodImpl(MethodImplOptions.AggressiveInlining)]
+        public void ReleaseAreaDirect(
             NativeParallelHashMap<int2, Entity> occupiedMap,
             Entity entity,
             int2 originCell,
@@ -161,15 +138,12 @@ namespace _Project._Code.Gameplay.CoreFeatures
             int footprintY)
         {
             for (int y = 0; y < footprintY; y++)
-            {
                 for (int x = 0; x < footprintX; x++)
                 {
-                    int2 cell = originCell + new int2(x, y);
-
+                    var cell = originCell + new int2(x, y);
                     if (occupiedMap.TryGetValue(cell, out var current) && current == entity)
                         occupiedMap.Remove(cell);
                 }
-            }
         }
     }
 }
