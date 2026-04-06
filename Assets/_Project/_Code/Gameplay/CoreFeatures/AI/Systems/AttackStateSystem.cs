@@ -38,6 +38,7 @@ namespace _Project._Code.Gameplay.CoreFeatures.Entities.AiSystems
             {
                 DeltaTime = SystemAPI.Time.DeltaTime,
                 Ecb = ecb,
+                Utils = new BattlefieldGridUtils(),
                 GridLookup = _gridLookup,
                 MovementLookup = _movementLookup,
                 AttackStatsLookup = _attackStatsLookup
@@ -49,6 +50,7 @@ namespace _Project._Code.Gameplay.CoreFeatures.Entities.AiSystems
         {
             public float DeltaTime;
             public EntityCommandBuffer.ParallelWriter Ecb;
+            public BattlefieldGridUtils Utils;
 
             [ReadOnly] public ComponentLookup<GridNavigationState> GridLookup;
             [ReadOnly] public ComponentLookup<IsMovingTag> MovementLookup;
@@ -71,7 +73,7 @@ namespace _Project._Code.Gameplay.CoreFeatures.Entities.AiSystems
                     return;
 
                 int range = math.max(1, AttackStatsLookup[owner].AttackRangeCells);
-                int dist = BattlefieldGridUtils.CellDistanceChebyshev(
+                int dist = Utils.CellDistanceChebyshev(
                     ownerGrid.OccupiedCell,
                     targetGrid.MovingCell);
 

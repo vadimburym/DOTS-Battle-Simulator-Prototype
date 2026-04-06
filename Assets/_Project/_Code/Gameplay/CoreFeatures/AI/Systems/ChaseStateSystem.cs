@@ -48,6 +48,7 @@ namespace _Project._Code.Gameplay.CoreFeatures.Entities.AiSystems
             state.Dependency = new ChaseStateJob
             {
                 DeltaTime = SystemAPI.Time.DeltaTime,
+                Utils = new BattlefieldGridUtils(),
                 GridRef = gridRef,
                 OccupiedMap = mapsRw.ValueRW.OccupiedMap,
                 GridLookup = _gridLookup,
@@ -62,6 +63,7 @@ namespace _Project._Code.Gameplay.CoreFeatures.Entities.AiSystems
         public partial struct ChaseStateJob : IJobEntity
         {
             public float DeltaTime;
+            public BattlefieldGridUtils Utils;
 
             [ReadOnly] public BlobAssetReference<BattlefieldGridBlob> GridRef;
             public NativeParallelHashMap<int2, Entity> OccupiedMap;
@@ -107,7 +109,7 @@ namespace _Project._Code.Gameplay.CoreFeatures.Entities.AiSystems
 
                 int range = math.max(1, AttackStatsLookup[owner].AttackRangeCells);
 
-                int currentDistance = BattlefieldGridUtils.CellDistanceChebyshev(
+                int currentDistance = Utils.CellDistanceChebyshev(
                     ownerGrid.OccupiedCell,
                     targetGrid.MovingCell);
 
@@ -145,14 +147,14 @@ namespace _Project._Code.Gameplay.CoreFeatures.Entities.AiSystems
                 if (math.all(ownerGrid.OccupiedCell == desiredCell))
                     return;
 
-                BattlefieldGridUtils.ReleaseAreaDirect(
+                Utils.ReleaseAreaDirect(
                     OccupiedMap,
                     owner,
                     ownerGrid.OccupiedCell,
                     footprintX,
                     footprintY);
 
-                BattlefieldGridUtils.OccupyAreaDirect(
+                Utils.OccupyAreaDirect(
                     OccupiedMap,
                     owner,
                     desiredCell,
@@ -165,7 +167,7 @@ namespace _Project._Code.Gameplay.CoreFeatures.Entities.AiSystems
 
                 TargetPositionLookup[owner] = new TargetPosition
                 {
-                    Position = BattlefieldGridUtils.FootprintToWorldCenter(
+                    Position = Utils.FootprintToWorldCenter(
                         ref grid,
                         desiredCell,
                         footprintX,
@@ -353,10 +355,10 @@ namespace _Project._Code.Gameplay.CoreFeatures.Entities.AiSystems
                 ref float bestAlignment,
                 ref float bestPreferredDistSq)
             {
-                if (!BattlefieldGridUtils.IsAreaWalkable(ref grid, candidateCell, footprintX, footprintY))
+                if (!Utils.IsAreaWalkable(ref grid, candidateCell, footprintX, footprintY))
                     return;
 
-                if (!BattlefieldGridUtils.IsAreaFreeInOccupiedMap(
+                if (!Utils.IsAreaFreeInOccupiedMap(
                         occupiedMap,
                         candidateCell,
                         footprintX,

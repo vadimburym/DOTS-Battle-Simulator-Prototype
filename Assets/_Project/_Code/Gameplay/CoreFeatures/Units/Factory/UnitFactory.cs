@@ -5,8 +5,6 @@ using _Project._Code.Infrastructure;
 using _Project._Code.Infrastructure.EcsContext;
 using _Project._Code.Infrastructure.StaticData._Root;
 using _Project._Code.Infrastructure.StaticData.Units;
-using _Project._Code.Locale;
-using Cysharp.Threading.Tasks;
 using Unity.Entities;
 using Unity.Mathematics;
 using Unity.Transforms;
@@ -19,6 +17,7 @@ namespace _Project._Code.Gameplay.CoreFeatures.Units.Factory
         private readonly IAddressableService _addressableService;
         private readonly IEntityPrefabService _entityPrefabService;
         private readonly IEcsContext _ecsContext;
+        private Random _random;
         
         public UnitFactory(
             StaticDataService staticDataService,
@@ -30,6 +29,7 @@ namespace _Project._Code.Gameplay.CoreFeatures.Units.Factory
             _addressableService = addressableService;
             _entityPrefabService = entityPrefabService;
             _ecsContext = ecsContext;
+            _random = new Random(12345);
         }
 
         public Entity Create(UnitId unitId, float3 position, byte team)
@@ -42,6 +42,9 @@ namespace _Project._Code.Gameplay.CoreFeatures.Units.Factory
             entityManager.SetComponentData(entity, LocalTransform.FromPosition(position));
             entityManager.SetComponentData(entity, new TargetPosition{ Position = position });
             entityManager.SetComponentData(entity, new Team { Value = team });
+            entityManager.SetComponentData(entity, new EyeSensor {
+                ScanTimer = _random.NextFloat(0f, entityManager.GetComponentData<EyeSensorStats>(entity).ScanInterval)
+            });
             
             if (team == 0)
                 entityManager.SetComponentEnabled<MyTeamTag>(entity, true);
