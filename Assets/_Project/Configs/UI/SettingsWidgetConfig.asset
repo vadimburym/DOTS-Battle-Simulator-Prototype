@@ -1,0 +1,29 @@
+%YAML 1.1
+%TAG !u! tag:unity3d.com,2011:
+--- !u!114 &11400000
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 0}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: fb04501393584337b2d8f146b9c61f8d, type: 3}
+  m_Name: SettingsWidgetConfig
+  m_EditorClassIdentifier: Assembly-CSharp::_Project._Code.Global.SettingsService.UI.SettingsWidgetConfig
+  WidgetId: 4
+  WidgetReference:
+    m_AssetGUID: 6c7853c97a6da8548a55a1abdcde7432
+    m_SubObjectName: 
+    m_SubObjectType: 
+    m_SubObjectGUID: 
+    m_EditorAssetChanged: 1
+  ShowOnStart: 0
+  Groups:
+  - GroupTitleKey: AUDIO
+    Settings: 0b0000000c0000000f0000000d0000000e000000
+  - GroupTitleKey: GRAPHICS
+    Settings: 010000000200000004000000
+  - GroupTitleKey: OTHER
+    Settings: 65000000

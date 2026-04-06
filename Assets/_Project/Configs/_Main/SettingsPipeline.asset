@@ -13,76 +13,111 @@ MonoBehaviour:
   m_Name: SettingsPipeline
   m_EditorClassIdentifier: Assembly-CSharp::_Project._Code.Infrastructure.Settings.SettingsPipeline
   Settings:
-  - rid: 1545529186853584973
-  - rid: 1545529186853584974
-  - rid: 1545529186853584975
-  - rid: 1545529186853584976
-  - rid: 1545529186853584977
-  - rid: 1545529186853584978
-  - rid: 1545529186853584980
-  - rid: 1545529186853584982
+  - rid: 1545529208036917321
+  - rid: 1545529208036917322
+  - rid: 1545529208036917323
+  - rid: 1545529208036917324
+  - rid: 1545529208036917325
+  - rid: 1545529208036917326
+  - rid: 1545529208036917328
+  - rid: 1545529208036917329
+  - rid: 1545529208036917515
   references:
     version: 2
     RefIds:
-    - rid: 1545529186853584973
-      type: {class: NumericSettingDefinition, ns: _Project._Code.Infrastructure.Settings, asm: Assembly-CSharp}
+    - rid: 1545529208036917321
+      type: {class: NumericSettingDefinition, ns: _Project._Code.Global.Settings, asm: Assembly-CSharp}
       data:
         Id: 11
         DefaultValue: 0
         Min: -80
         Max: 0
         WholeNumbers: 1
-    - rid: 1545529186853584974
-      type: {class: NumericSettingDefinition, ns: _Project._Code.Infrastructure.Settings, asm: Assembly-CSharp}
+    - rid: 1545529208036917322
+      type: {class: NumericSettingDefinition, ns: _Project._Code.Global.Settings, asm: Assembly-CSharp}
       data:
         Id: 12
         DefaultValue: 0
         Min: -80
         Max: 0
         WholeNumbers: 1
-    - rid: 1545529186853584975
-      type: {class: NumericSettingDefinition, ns: _Project._Code.Infrastructure.Settings, asm: Assembly-CSharp}
+    - rid: 1545529208036917323
+      type: {class: NumericSettingDefinition, ns: _Project._Code.Global.Settings, asm: Assembly-CSharp}
       data:
         Id: 13
         DefaultValue: 0
         Min: -80
         Max: 0
         WholeNumbers: 1
-    - rid: 1545529186853584976
-      type: {class: NumericSettingDefinition, ns: _Project._Code.Infrastructure.Settings, asm: Assembly-CSharp}
+    - rid: 1545529208036917324
+      type: {class: NumericSettingDefinition, ns: _Project._Code.Global.Settings, asm: Assembly-CSharp}
       data:
         Id: 14
         DefaultValue: 0
         Min: -80
         Max: 0
         WholeNumbers: 1
-    - rid: 1545529186853584977
-      type: {class: NumericSettingDefinition, ns: _Project._Code.Infrastructure.Settings, asm: Assembly-CSharp}
+    - rid: 1545529208036917325
+      type: {class: NumericSettingDefinition, ns: _Project._Code.Global.Settings, asm: Assembly-CSharp}
       data:
         Id: 15
         DefaultValue: 0
         Min: -80
         Max: 0
         WholeNumbers: 1
-    - rid: 1545529186853584978
-      type: {class: EnumSettingDefinition, ns: _Project._Code.Infrastructure.Settings, asm: Assembly-CSharp}
+    - rid: 1545529208036917326
+      type: {class: EnumSettingDefinition, ns: _Project._Code.Global.Settings, asm: Assembly-CSharp}
       data:
         Id: 1
         EnumTypeName: UnityEngine.FullScreenMode, UnityEngine.CoreModule, Version=0.0.0.0,
           Culture=neutral, PublicKeyToken=null
         DefaultValue: 3
-    - rid: 1545529186853584980
-      type: {class: NumericSettingDefinition, ns: _Project._Code.Infrastructure.Settings, asm: Assembly-CSharp}
+        _enumValuesTable:
+        - Name: ExclusiveFullScreen
+          Value: 0
+          IsDefault: 0
+        - Name: FullScreenWindow
+          Value: 1
+          IsDefault: 0
+        - Name: MaximizedWindow
+          Value: 2
+          IsDefault: 0
+        - Name: Windowed
+          Value: 3
+          IsDefault: 1
+    - rid: 1545529208036917328
+      type: {class: NumericSettingDefinition, ns: _Project._Code.Global.Settings, asm: Assembly-CSharp}
       data:
         Id: 2
         DefaultValue: 0
         Min: 0
         Max: 99
         WholeNumbers: 1
-    - rid: 1545529186853584982
-      type: {class: EnumSettingDefinition, ns: _Project._Code.Infrastructure.Settings, asm: Assembly-CSharp}
+    - rid: 1545529208036917329
+      type: {class: EnumSettingDefinition, ns: _Project._Code.Global.Settings, asm: Assembly-CSharp}
       data:
         Id: 4
         EnumTypeName: _Project._Code.Infrastructure.ApplicationService.FrameRateMode,
           Assembly-CSharp, Version=0.0.0.0, Culture=neutral, PublicKeyToken=null
-        DefaultValue: 0
+        DefaultValue: 3
+        _enumValuesTable:
+        - Name: VSync
+          Value: 0
+          IsDefault: 0
+        - Name: Fps30
+          Value: 1
+          IsDefault: 0
+        - Name: Fps60
+          Value: 2
+          IsDefault: 0
+        - Name: Fps120
+          Value: 3
+          IsDefault: 1
+        - Name: Fps144
+          Value: 4
+          IsDefault: 0
+    - rid: 1545529208036917515
+      type: {class: BoolSettingDefinition, ns: _Project._Code.Global.Settings, asm: Assembly-CSharp}
+      data:
+        Id: 101
+        DefaultValue: 1
