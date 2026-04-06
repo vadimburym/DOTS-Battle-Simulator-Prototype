@@ -1,0 +1,30 @@
+%YAML 1.1
+%TAG !u! tag:unity3d.com,2011:
+--- !u!114 &11400000
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 0}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: bbb281ee3bf0b054c82ac2347e9e782c, type: 3}
+  m_Name: Units
+  m_EditorClassIdentifier: Unity.Addressables.Editor::UnityEditor.AddressableAssets.Settings.AddressableAssetGroup
+  m_GroupName: Units
+  m_GUID: d4460d82a18ec77468d7e8926fef070e
+  m_SerializeEntries:
+  - m_GUID: 819afd06752f77042b63353161fb12e0
+    m_Address: Assets/_Project/Configs/Units/Footman.asset
+    m_ReadOnly: 0
+    m_SerializedLabels:
+    - gameplay
+    - preload
+    FlaggedDuringContentUpdateRestriction: 0
+  m_ReadOnly: 0
+  m_Settings: {fileID: 11400000, guid: 0af3e38b99bd4904aa84bf2fdef7ba6a, type: 2}
+  m_SchemaSet:
+    m_Schemas:
+    - {fileID: 11400000, guid: b06406fcba65ad142901451d4e2a0d4a, type: 2}
+    - {fileID: 11400000, guid: d859f243b949d14469608e376ed3f6d3, type: 2}
