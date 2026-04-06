@@ -1,8 +1,8 @@
 using _Project._Code.Core.Keys;
 using _Project._Code.Infrastructure;
 using _Project._Code.Infrastructure.EcsContext;
+using _Project._Code.Infrastructure.Settings;
 using Cysharp.Threading.Tasks;
-using UnityEngine;
 using VContainer.Unity;
 
 namespace _Project._Code.GameApp.EntryPoints
@@ -13,32 +13,33 @@ namespace _Project._Code.GameApp.EntryPoints
         private readonly ISaveRepository _saveRepository;
         private readonly EcsContext<BootstrapSystemsGroup> _ecsBootstrap;
         private readonly IEntityPrefabService _entityPrefabService;
+        private readonly ISettingsService _settingsService;
         
         public BootstrapEntryPoint(
             IStateMachine stateMachine,
             ISaveRepository saveRepository,
             EcsContext<BootstrapSystemsGroup> ecsBootstrap,
-            IEntityPrefabService entityPrefabService)
+            IEntityPrefabService entityPrefabService,
+            ISettingsService settingsService)
         {
             _stateMachine = stateMachine;
             _saveRepository = saveRepository;
             _ecsBootstrap = ecsBootstrap;
             _entityPrefabService = entityPrefabService;
+            _settingsService = settingsService;
         }
 
         public void Start() => StartAsync().Forget();
         private async UniTask StartAsync()
         {
-            //QualitySettings.vSyncCount = 0;
-            //Application.targetFrameRate = 60;
-            
+            _settingsService.Load();
             await _saveRepository.Load();
             await BootstrapContext.Instance.BootstrapSubSceneAwaiter.WaitUntilSubSceneReady();
             _ecsBootstrap.WarmUpSystems(BootstrapContext.Instance.Container);
             _ecsBootstrap.EnableSystems(true);
             _entityPrefabService.RebuildCache();
             
-            _stateMachine.Enter(GameStateId.Gameplay);
+            _stateMachine.Enter(GameStateId.Meta);
         }
 
         public void Tick()

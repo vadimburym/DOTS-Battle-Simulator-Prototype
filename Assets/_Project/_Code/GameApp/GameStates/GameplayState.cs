@@ -6,7 +6,7 @@ using _Project._Code.GameApp.Installers;
 using _Project._Code.Infrastructure;
 using _Project._Code.Infrastructure.EcsContext;
 using _Project._Code.Infrastructure.EntitiesExtensions;
-using _Project._Code.Infrastructure.StaticData;
+using _Project._Code.Infrastructure.LoadingCurtainProvider;
 using _Project._Code.Infrastructure.StaticData._Root;
 using Cysharp.Threading.Tasks;
 using UnityEngine.AddressableAssets;
@@ -17,7 +17,8 @@ namespace _Project._Code.GameApp.GameStates
 {
     public sealed class GameplayState : IGameState
     {
-        public GameStateId GameStateId => GameStateId.Gameplay;
+        GameStateId IGameState.GameStateId => GameStateId.Gameplay;
+        
         private const string GAMEPLAY_NAME = "GameplayContext";
         private readonly string[] GAMEPLAY_ADDRESSABLE_LABELS = { "gameplay", "preload" };
         private const int GAMEPLAY_SCENE_IDX = 2;
@@ -29,6 +30,7 @@ namespace _Project._Code.GameApp.GameStates
         private readonly IAddressableService _addressableService;
         private readonly IEntityPrefabService _entityPrefabService;
         private readonly UIInstallerService _uiInstallerService;
+        private readonly ILoadingCurtainProvider _loadingCurtainProvider;
         
         private GameplayEntryPoint _entryPoint;
         private bool _isStarted;
@@ -39,7 +41,8 @@ namespace _Project._Code.GameApp.GameStates
             IAddressableService addressableService,
             IEcsContext localEcsContext,
             IEntityPrefabService entityPrefabService,
-            UIInstallerService uiInstallerService)
+            UIInstallerService uiInstallerService,
+            ILoadingCurtainProvider loadingCurtainProvider)
         {
             _localContextService = localContextService;
             _sceneLoadService = sceneLoadService;
@@ -47,6 +50,7 @@ namespace _Project._Code.GameApp.GameStates
             _localEcsContext = localEcsContext;
             _entityPrefabService = entityPrefabService;
             _uiInstallerService = uiInstallerService;
+            _loadingCurtainProvider = loadingCurtainProvider;
         }
         
         public void Enter() => EnterAsync().Forget();
@@ -56,12 +60,12 @@ namespace _Project._Code.GameApp.GameStates
             await _addressableService.LoadObjectsByLabelsAsync(GAMEPLAY_ADDRESSABLE_LABELS, Addressables.MergeMode.Intersection);
             await _sceneLoadService.LoadSceneAsync(GAMEPLAY_SCENE_IDX);
             await _sceneLoadService.FindFirstComponentInRoots<SubSceneAwaiter>().WaitUntilSubSceneReady();
-            var sceneInstaller = _sceneLoadService.FindFirstComponentInRoots<SceneInstaller>();
+            var sceneInstaller = _sceneLoadService.FindFirstComponentInRoots<GameplaySceneInstaller>();
             
             _localContextService.WarmUp(BootstrapContext.Instance,builder => {
                 GameplayInstaller.Register(builder);
                 sceneInstaller.Register(builder);
-                _uiInstallerService.GameplayInstaller.Register(builder);
+                _uiInstallerService.GameplayUIInstaller.Register(builder);
                 builder.Register<GameplayEntryPoint>(Lifetime.Singleton);
             }, GAMEPLAY_NAME);
             
@@ -72,8 +76,7 @@ namespace _Project._Code.GameApp.GameStates
             _entryPoint = _localContextService.Container.Resolve<GameplayEntryPoint>();
             _entryPoint.Start();
             GC.Collect();
-            BootstrapContext.Instance.CameraGameObject.SetActive(false);
-            _sceneLoadService.SetActiveCurrentScene();
+            _loadingCurtainProvider.Hide();
             _isStarted = true;
         }
 
@@ -94,9 +97,12 @@ namespace _Project._Code.GameApp.GameStates
         public void Dispose()
         {
             _isStarted = false;
+            _loadingCurtainProvider.Show();
             _entryPoint.Dispose();
             _localEcsContext.CleanUpSystems();
             _localContextService.CleanUp();
+            _entityPrefabService.Unload(PrefabsToLoad);
+            _addressableService.ReleaseByLabels(GAMEPLAY_ADDRESSABLE_LABELS, Addressables.MergeMode.Intersection);
         }
     }
 }
