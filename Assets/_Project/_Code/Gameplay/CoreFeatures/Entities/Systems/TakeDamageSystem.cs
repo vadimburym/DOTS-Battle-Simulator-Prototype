@@ -6,7 +6,6 @@ using Unity.Burst;
 using Unity.Collections;
 using Unity.Entities;
 using Unity.Transforms;
-using UnityEngine;
 using VATDots;
 
 namespace _Project._Code.Gameplay.CoreFeatures.Entities.Systems
@@ -17,11 +16,11 @@ namespace _Project._Code.Gameplay.CoreFeatures.Entities.Systems
     {
         private ComponentLookup<Health> _healthLookup;
         private ComponentLookup<RendererEntityRef> _rendererLookup;
-        
+
         private BufferLookup<LinkedEntityGroup> _linkedLookup;
         private ComponentLookup<Parent> _parentLookup;
         private ComponentLookup<LocalTransform> _localLookup;
-        
+
         public void OnCreate(ref SystemState state)
         {
             _healthLookup = SystemAPI.GetComponentLookup<Health>();
@@ -30,7 +29,7 @@ namespace _Project._Code.Gameplay.CoreFeatures.Entities.Systems
             _parentLookup =  SystemAPI.GetComponentLookup<Parent>();
             _localLookup = SystemAPI.GetComponentLookup<LocalTransform>();
         }
-        
+
         [BurstCompile]
         public void OnUpdate(ref SystemState state)
         {
@@ -39,9 +38,9 @@ namespace _Project._Code.Gameplay.CoreFeatures.Entities.Systems
             _linkedLookup.Update(ref state);
             _parentLookup.Update(ref state);
             _localLookup.Update(ref state);
-            
+
             var ecb = new EntityCommandBuffer(Allocator.Temp);
-            
+
             foreach (var (requestData, request) in
                      SystemAPI.Query<RefRO<TakeDamageRequest>>().WithEntityAccess())
             {
@@ -50,7 +49,7 @@ namespace _Project._Code.Gameplay.CoreFeatures.Entities.Systems
 
                 if (!_healthLookup.HasComponent(entity))
                     continue;
-                
+
                 var damage = requestData.ValueRO.Damage;
                 var health = _healthLookup[entity];
                 if (health.Current <= 0)
@@ -67,7 +66,7 @@ namespace _Project._Code.Gameplay.CoreFeatures.Entities.Systems
                             animationId: AnimationId.Dead,
                             ecb: ecb,
                             oneShot: 1);
-                        
+
                         EntityUtils.DetachEntityChild(
                             entity,
                             renderer,
@@ -75,7 +74,7 @@ namespace _Project._Code.Gameplay.CoreFeatures.Entities.Systems
                             _linkedLookup,
                             _localLookup,
                             ecb);
-                        
+
                         ecb.SetComponent(renderer, new CorpseTag { Time = 0f });
                         ecb.SetComponentEnabled<CorpseTag>(renderer, true);
                     }

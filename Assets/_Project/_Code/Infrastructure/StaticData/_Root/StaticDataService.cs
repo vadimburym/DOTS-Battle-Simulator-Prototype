@@ -1,3 +1,4 @@
+using _Project._Code.Global.Settings;
 using _Project._Code.Infrastructure.StaticData.AI;
 using _Project._Code.Infrastructure.StaticData.Units;
 using _Project._Code.Locale;
@@ -12,5 +13,6 @@ namespace _Project._Code.Infrastructure.StaticData._Root
         public UnitsStaticData UnitsStaticData;
         public BehaviourTreeStaticData BehaviourTreeStaticData;
         public WidgetStaticData WidgetStaticData;
+        public SettingsPipeline SettingsPipeline;
     }
 }

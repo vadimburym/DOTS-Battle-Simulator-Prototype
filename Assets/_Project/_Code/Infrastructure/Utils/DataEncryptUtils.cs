@@ -7,6 +7,8 @@ namespace _Project._Code.Infrastructure
 {
     public static class DataEncryptUtils
     {
+        //Do not store the encryption key in the source code
+        //Temporary solution
         private static readonly byte[] EncryptionKey = {
              0xA3, 0x1F, 0x8C, 0x72, 0xE9, 0x55, 0x4B, 0x2D,
              0xC6, 0x7A, 0x90, 0xDD, 0x34, 0x12, 0xAB, 0xEF,
