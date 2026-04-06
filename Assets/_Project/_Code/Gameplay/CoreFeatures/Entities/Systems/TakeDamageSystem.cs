@@ -47,6 +47,10 @@ namespace _Project._Code.Gameplay.CoreFeatures.Entities.Systems
             {
                 ecb.DestroyEntity(request);
                 var entity = requestData.ValueRO.Source;
+
+                if (!_healthLookup.HasComponent(entity))
+                    continue;
+                
                 var damage = requestData.ValueRO.Damage;
                 var health = _healthLookup[entity];
                 if (health.Current <= 0)
