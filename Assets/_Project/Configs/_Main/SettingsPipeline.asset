@@ -71,7 +71,7 @@ MonoBehaviour:
         Id: 1
         EnumTypeName: UnityEngine.FullScreenMode, UnityEngine.CoreModule, Version=0.0.0.0,
           Culture=neutral, PublicKeyToken=null
-        DefaultValue: 3
+        DefaultValue: 2
         _enumValuesTable:
         - Name: ExclusiveFullScreen
           Value: 0
@@ -81,16 +81,16 @@ MonoBehaviour:
           IsDefault: 0
         - Name: MaximizedWindow
           Value: 2
-          IsDefault: 0
+          IsDefault: 1
         - Name: Windowed
           Value: 3
-          IsDefault: 1
+          IsDefault: 0
     - rid: 1545529208036917328
       type: {class: NumericSettingDefinition, ns: _Project._Code.Global.Settings, asm: Assembly-CSharp}
       data:
         Id: 2
-        DefaultValue: 0
-        Min: 0
+        DefaultValue: -1
+        Min: -1
         Max: 99
         WholeNumbers: 1
     - rid: 1545529208036917329
