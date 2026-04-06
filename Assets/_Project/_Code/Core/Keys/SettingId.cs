@@ -11,6 +11,7 @@ namespace _Project._Code.Core.Keys
         MusicVolume = 12,
         SfxVolume = 13,
         UIVolume = 14,
-        EnvironmentVolume = 15
+        EnvironmentVolume = 15,
+        FrameDebug = 101
     }
 }

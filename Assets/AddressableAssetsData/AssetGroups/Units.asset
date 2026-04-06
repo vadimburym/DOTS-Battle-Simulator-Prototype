@@ -29,6 +29,14 @@ MonoBehaviour:
     - gameplay
     - preload
     FlaggedDuringContentUpdateRestriction: 0
+  - m_GUID: 6c7853c97a6da8548a55a1abdcde7432
+    m_Address: Assets/_Project/Assets/Prefabs/UI/SettingsWidget.prefab
+    m_ReadOnly: 0
+    m_SerializedLabels:
+    - gameplay
+    - meta
+    - preload
+    FlaggedDuringContentUpdateRestriction: 0
   - m_GUID: 7db2de631eaee0a41a8f278a501b3576
     m_Address: Assets/_Project/Assets/Prefabs/UI/UnitsCounterView.prefab
     m_ReadOnly: 0

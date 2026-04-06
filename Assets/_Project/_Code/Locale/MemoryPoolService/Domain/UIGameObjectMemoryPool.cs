@@ -19,7 +19,7 @@ namespace _Project._Code.Locale
         {
             _itemPrefab = asset;
             _container = container;
-            _activeItems = instances;
+            _activeItems = instances ?? new List<T>();
             Clear();
         }
         

@@ -4,7 +4,6 @@ using _Project._Code.Core.Keys;
 using _Project._Code.Infrastructure;
 using _Project._Code.Infrastructure.StaticData;
 using _Project._Code.Infrastructure.StaticData._Root;
-using UnityEngine;
 using UnityEngine.Rendering;
 using UnityEngine.Rendering.Universal;
 
@@ -27,6 +26,7 @@ namespace _Project._Code.Locale
         public WidgetService(
             IReadOnlyList<IWidgetShower> widgets,
             StaticDataService staticDataService,
+            IMainCameraService mainCameraService,
             IStateMachine stateMachine)
         {
             for (int i = 0; i < widgets.Count; i++)
@@ -35,10 +35,12 @@ namespace _Project._Code.Locale
             _staticData = staticDataService.WidgetStaticData;
             _mainScreenId = _staticData.MainScreens[stateMachine.CurrentStateId];
             _currentScreen = _mainScreenId;
-            var volume = Camera.main.gameObject.GetComponent<Volume>();
+            var volume = mainCameraService.MainCameraTransform.GetComponent<Volume>();
             if (volume.profile.TryGet<DepthOfField>(out var depth))
+            {
                 _depth = depth;
-            UnsetDepthOfField();
+                _depth.active = false;
+            }
         }
 
         public void ShowScreen(ScreenId name)

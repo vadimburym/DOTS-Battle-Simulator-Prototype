@@ -8,6 +8,7 @@ namespace _Project._Code.Infrastructure.ApplicationService
     {
         IReadOnlyList<ResolutionOption> AvailableResolutions { get; }
         IReadOnlyList<string> QualityLevels { get; }
+        ResolutionOption GetResolutionOption(int index);
         void SetFullscreenMode(FullScreenMode mode);
         bool TrySetResolution(ResolutionOption resolution, FullScreenMode? overrideMode = null);
         void SetVSyncCount(int count);

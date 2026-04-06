@@ -1,3 +1,4 @@
+using System;
 using _Project._Code.Core.Contracts;
 using _Project._Code.Core.Keys;
 using _Project._Code.Infrastructure;
@@ -11,7 +12,7 @@ namespace _Project._Code.Locale
 {
     public abstract class WidgetShower<TPresenter, TWidget> : IWidgetShower, IInit, IDispose
         where TWidget : MonoWidget<TPresenter>
-        where TPresenter : IWidgetPresenter
+        where TPresenter : IDisposable
     {
         protected TWidget _view;
         protected TPresenter _presenter;

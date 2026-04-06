@@ -1,0 +1,10 @@
+OVDF v1.1
+_Project._Code.Global.Settings.SettingDefinition, Assembly-CSharp
+
+# Id
++ [Sirenix.OdinInspector.GUIColorAttribute]
+	Color = #4EC2FFFF
++ [Sirenix.OdinInspector.LabelTextAttribute]
+	Text = "ID"
+	NicifyText = False
+	Icon = GearFill

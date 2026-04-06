@@ -7,13 +7,6 @@
       "dependencies": {},
       "hash": "c2af83c9d4f8cdaada9d4a0e94de2f195d8e1d01"
     },
-    "com.lukestilson.openvat": {
-      "version": "https://github.com/sharpen3d/openvat-unity.git",
-      "depth": 0,
-      "source": "git",
-      "dependencies": {},
-      "hash": "e264f863ce29d7e3e081f81daf784a1fde02a661"
-    },
     "com.unity.2d.sprite": {
       "version": "1.0.0",
       "depth": 0,

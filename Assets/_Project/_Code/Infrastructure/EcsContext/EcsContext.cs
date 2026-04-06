@@ -60,7 +60,9 @@ namespace _Project._Code.Infrastructure.EcsContext
             }
             for (int i = 0; i < _installedSystemsManaged.Count; i++)
                 _systemsGroup.RemoveSystemFromUpdateList(_installedSystemsManaged[i]);
+            
             _systemsGroup.SortSystems();
+            
             for (int i = 0; i < _installedSystems.Count; i++)
             {
                 var handle = _installedSystems[i];
@@ -69,7 +71,9 @@ namespace _Project._Code.Infrastructure.EcsContext
             }
             for (int i = 0; i < _installedSystemsManaged.Count; i++)
                 _world.DestroySystemManaged(_installedSystemsManaged[i]);
+            
             _installedSystems.Clear();
+            _installedSystemsManaged.Clear();
         }
 
         public RefRW<T> GetSingletonRW<T>() where T : unmanaged, IComponentData
