@@ -12,6 +12,7 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: edd0735b28c04f65b1fab5916a24c6a6, type: 3}
   m_Name: Footman
   m_EditorClassIdentifier: Assembly-CSharp::_Project._Code.Infrastructure.StaticData.Units.UnitConfig
+  Icon: {fileID: 21300000, guid: 29e3cd5295e34bb4ba6d16e2516901ee, type: 3}
   UnitId: 1
   EntityPoolId: 1
   BehaviourTreeId: 1

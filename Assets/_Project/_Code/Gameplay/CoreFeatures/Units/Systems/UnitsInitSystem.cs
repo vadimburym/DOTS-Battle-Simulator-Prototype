@@ -1,6 +1,7 @@
 using _Project._Code.Core.Contracts;
 using _Project._Code.Core.Keys;
 using _Project._Code.Gameplay.CoreFeatures.Entities.Components;
+using _Project._Code.Gameplay.CoreFeatures.Units.Components;
 using _Project._Code.Gameplay.CoreFeatures.Units.Factory;
 using _Project._Code.Infrastructure.EcsContext;
 using Unity.Collections;
@@ -11,14 +12,11 @@ namespace _Project._Code.Gameplay.CoreFeatures.Units.Systems
 {
     public sealed class UnitsInitSystem : IInit
     {
-        private readonly IUnitFactory _unitFactory;
         private readonly IEcsContext _ecsContext;
         
         public UnitsInitSystem(
-            IUnitFactory unitFactory,
             IEcsContext ecsContext)
         {
-            _unitFactory = unitFactory;
             _ecsContext = ecsContext;
         }
         
@@ -32,17 +30,13 @@ namespace _Project._Code.Gameplay.CoreFeatures.Units.Systems
             {
                 for (int i = 0; i < 100; i++)
                 {
-                    var entity = _unitFactory.Create(UnitId.Footman, new float3(x, 0f, z), 0, ecb);
-                    
                     var request = ecb.CreateEntity();
-                    ecb.AddComponent(request, new MoveCommandRequest {
-                        Destination = new float3(x, 0f, z)
+                    ecb.AddComponent(request, new UnitFabricateRequest {
+                        UnitId = UnitId.Footman,
+                        Position = new float3(x, 0f, z),
+                        Count = 1,
+                        Team = 0
                     });
-                    ecb.AddBuffer<MoveCommandTarget>(request);
-                    ecb.AppendToBuffer(request, new MoveCommandTarget {
-                        Value = entity
-                    });
-                    
                     x += 1f;
                 }
                 z += 1f;
@@ -55,15 +49,12 @@ namespace _Project._Code.Gameplay.CoreFeatures.Units.Systems
             {
                 for (int i = 0; i < 100; i++)
                 {
-                    var entity = _unitFactory.Create(UnitId.Orc, new float3(x, 0f, z), 1, ecb);
-                    
                     var request = ecb.CreateEntity();
-                    ecb.AddComponent(request, new MoveCommandRequest {
-                        Destination = new float3(x, 0f, z)
-                    });
-                    ecb.AddBuffer<MoveCommandTarget>(request);
-                    ecb.AppendToBuffer(request, new MoveCommandTarget {
-                        Value = entity
+                    ecb.AddComponent(request, new UnitFabricateRequest {
+                        UnitId = UnitId.Orc,
+                        Position = new float3(x, 0f, z),
+                        Count = 1,
+                        Team = 1
                     });
                     
                     x += 1f;

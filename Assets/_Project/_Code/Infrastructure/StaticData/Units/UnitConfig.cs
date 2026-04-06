@@ -6,6 +6,8 @@ namespace _Project._Code.Infrastructure.StaticData.Units
     [CreateAssetMenu(fileName = nameof(UnitConfig), menuName = "_Project/Core/New UnitConfig")]
     public sealed class UnitConfig : ScriptableObject
     {
+        [Header("Meta")]
+        public Sprite Icon;
         [Header("Entity")]
         public UnitId UnitId;
         public EntityPoolId EntityPoolId;

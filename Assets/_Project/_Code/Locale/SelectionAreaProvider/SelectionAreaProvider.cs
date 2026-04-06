@@ -38,6 +38,15 @@ namespace _Project._Code.Gameplay.CoreFeatures.Entities.Behaviours
             _selectionVisual.sizeDelta = Vector2.zero;
         }
 
+        public bool InBounds(Vector2 screenPoint)
+        {
+            if (_selectionArea == null)
+                return false;
+            if (!RectTransformUtility.ScreenPointToLocalPointInRectangle(_selectionArea, screenPoint, _uiCamera, out var localPoint))
+                return false;
+            return _selectionArea.rect.Contains(localPoint);
+        }
+        
         public void OnPointerDown(PointerEventData eventData)
         {
             if (eventData.button != _requiredButton)

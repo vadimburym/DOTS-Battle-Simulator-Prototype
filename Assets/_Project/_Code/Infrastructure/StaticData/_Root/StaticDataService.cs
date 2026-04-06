@@ -11,5 +11,6 @@ namespace _Project._Code.Infrastructure.StaticData._Root
         public MemoryPoolPipeline MemoryPoolPipeline;
         public UnitsStaticData UnitsStaticData;
         public BehaviourTreeStaticData BehaviourTreeStaticData;
+        public WidgetStaticData WidgetStaticData;
     }
 }
