@@ -1,0 +1,19 @@
+OVDF v1.1
+_Project._Code.Global.Settings.NumericSettingDefinition, Assembly-CSharp
+
+# $UGGCkBSdUirjMTv4nJC6ue
+Position: $root:2
++ [Sirenix.OdinInspector.FoldoutGroupAttribute]
+	GroupName = "Definition"
+
+# WholeNumbers
+Position: $UGGCkBSdUirjMTv4nJC6ue:3
+
+# Max
+Position: $UGGCkBSdUirjMTv4nJC6ue:2
+
+# Min
+Position: $UGGCkBSdUirjMTv4nJC6ue:1
+
+# DefaultValue
+Position: $UGGCkBSdUirjMTv4nJC6ue:0

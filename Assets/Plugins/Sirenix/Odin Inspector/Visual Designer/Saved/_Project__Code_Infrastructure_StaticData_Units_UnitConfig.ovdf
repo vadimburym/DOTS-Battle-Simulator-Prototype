@@ -1,0 +1,114 @@
+OVDF v1.1
+_Project._Code.Infrastructure.StaticData.Units.UnitConfig, Assembly-CSharp
+MetaGuid:edd0735b28c04f65b1fab5916a24c6a6
+
+# $MuCMUX8f8PmGmL6tSzkQgj
+Position: $root:1
++ [_Project._Code.Tools.OdinExtensions.ColoredFoldoutGroupAttribute]
+	GroupName = "AI"
+	R = 1
+	A = 1
+	G = 1
+
+# $2nzdJ9fQwutWxRCHk94FCn
+Position: $root:0
++ [Sirenix.OdinInspector.ColumnGroupAttribute]
+
+# $CKWJ8KEUvj8Q87FHy2ZiBH
+Position: $2nzdJ9fQwutWxRCHk94FCn:0
++ [Sirenix.OdinInspector.ColumnGroupAttribute+ColumnSubGroupAttribute]
+
+# $QWG41Dd7XjZxRfxGshCwar
+Position: $2nzdJ9fQwutWxRCHk94FCn:1
++ [Sirenix.OdinInspector.ColumnGroupAttribute+ColumnSubGroupAttribute]
+	Size = 25 %
+
+# $SrFiyJEXNPiXTnyWHEtA1M
+Position: $root:2
++ [_Project._Code.Tools.OdinExtensions.ColoredFoldoutGroupAttribute]
+	GroupName = "MovementStats"
+	A = 1
+	B = 1
+
+# $LLCswRvCkk8W6KmeiUp8sC
+Position: $root:3
++ [_Project._Code.Tools.OdinExtensions.ColoredFoldoutGroupAttribute]
+	GroupName = "Footprint"
+	G = 0
+	A = 1
+	R = 1
+
+# $Seo78RbuDGjGqD666Q7KKs
+Position: $root:4
++ [_Project._Code.Tools.OdinExtensions.ColoredFoldoutGroupAttribute]
+	GroupName = "Health"
+	A = 1
+	B = 0
+	G = 1
+	R = 0
+
+# $86mRbGjaQtMkDspyst8QBF
+Position: $root:5
++ [_Project._Code.Tools.OdinExtensions.ColoredFoldoutGroupAttribute]
+	GroupName = "AtackStats"
+	G = 1
+	B = 1
+	A = 1
+
+# $KTGvpoZKBnc6X7LetC39rv
+Position: $root:6
++ [_Project._Code.Tools.OdinExtensions.ColoredFoldoutGroupAttribute]
+	GroupName = "EyeSensorStats"
+	A = 1
+	B = 1
+
+# BehaviourTreeId
+Position: $MuCMUX8f8PmGmL6tSzkQgj:0
+
+# Icon
+Position: $QWG41Dd7XjZxRfxGshCwar:0
++ [Sirenix.OdinInspector.PreviewFieldAttribute]
+	Height = 100
++ [Sirenix.OdinInspector.HideLabelAttribute]
+
+# UnitId
+Position: $CKWJ8KEUvj8Q87FHy2ZiBH:0
+
+# EntityPoolId
+Position: $CKWJ8KEUvj8Q87FHy2ZiBH:1
+
+# Speed
+Position: $SrFiyJEXNPiXTnyWHEtA1M:0
+
+# RotationSpeed
+Position: $SrFiyJEXNPiXTnyWHEtA1M:1
+
+# FootprintX
+Position: $LLCswRvCkk8W6KmeiUp8sC:0
+
+# FootprintY
+Position: $LLCswRvCkk8W6KmeiUp8sC:1
+
+# MaxHealth
+Position: $Seo78RbuDGjGqD666Q7KKs:0
+
+# AttackInterval
+Position: $86mRbGjaQtMkDspyst8QBF:0
+
+# AttackRangeCells
+Position: $86mRbGjaQtMkDspyst8QBF:1
+
+# Damage
+Position: $86mRbGjaQtMkDspyst8QBF:2
+
+# DetectRadius
+Position: $KTGvpoZKBnc6X7LetC39rv:0
+
+# ChaseRadius
+Position: $KTGvpoZKBnc6X7LetC39rv:1
+
+# UpdateNearestInterval
+Position: $KTGvpoZKBnc6X7LetC39rv:2
+
+# ScanInterval
+Position: $KTGvpoZKBnc6X7LetC39rv:3

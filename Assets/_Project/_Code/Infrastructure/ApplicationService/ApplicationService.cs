@@ -10,22 +10,25 @@ namespace _Project._Code.Infrastructure.ApplicationService
 {
     public sealed class ApplicationService : IApplicationService
     {
-        public ApplicationSettingsSnapshot Current => CaptureCurrent();
-
-        public IReadOnlyList<ResolutionOption> AvailableResolutions
-        {
-            get
-            {
-                var source = Screen.resolutions;
-                var result = new ResolutionOption[source.Length];
-                for (int i = 0; i < source.Length; i++)
-                    result[i] = ResolutionOption.FromUnity(source[i]);
-                return result;
-            }
-        }
+        public ApplicationSnapshot Current => CaptureCurrent();
 
         public IReadOnlyList<string> QualityLevels => QualitySettings.names;
+        public IReadOnlyList<ResolutionOption> AvailableResolutions => _resolutionOptions;
+        
+        private readonly List<ResolutionOption> _resolutionOptions = new();
 
+        public ApplicationService()
+        {
+            var source = Screen.resolutions;
+            for (int i = 0; i < source.Length; i++)
+                _resolutionOptions.Add(ResolutionOption.FromUnity(source[i]));
+        }
+
+        public ResolutionOption GetResolutionOption(int index)
+        {
+            return _resolutionOptions[Mathf.Clamp(index, 0, _resolutionOptions.Count - 1)];
+        }
+        
         public void SetFullscreenMode(FullScreenMode mode)
         {
             var currentResolution = CaptureCurrent().Resolution;
@@ -75,6 +78,7 @@ namespace _Project._Code.Infrastructure.ApplicationService
         public void SetVSyncCount(int count)
         {
             QualitySettings.vSyncCount = Mathf.Clamp(count, 0, 4);
+            Application.targetFrameRate = -1;
         }
 
         public void EnableVSync(int count = 1)
@@ -126,9 +130,9 @@ namespace _Project._Code.Infrastructure.ApplicationService
     #endif
         }
         
-        private static ApplicationSettingsSnapshot CaptureCurrent()
+        private static ApplicationSnapshot CaptureCurrent()
         {
-            return new ApplicationSettingsSnapshot(
+            return new ApplicationSnapshot(
                 resolution: ResolutionOption.FromCurrentResolution(),
                 fullScreenMode: Screen.fullScreenMode,
                 isFullscreen: Screen.fullScreen,

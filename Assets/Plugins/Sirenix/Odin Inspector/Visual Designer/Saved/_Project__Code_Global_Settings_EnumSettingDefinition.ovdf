@@ -1,0 +1,16 @@
+OVDF v1.1
+_Project._Code.Global.Settings.EnumSettingDefinition, Assembly-CSharp
+
+# $SUU2q8eQKbpCdQMJ83zKmx
+Position: $root:12
++ [Sirenix.OdinInspector.FoldoutGroupAttribute]
+	GroupName = "Definition"
+
+# EnumTypeName
+Position: $SUU2q8eQKbpCdQMJ83zKmx:0
+
+# DefaultValue
+Position: $SUU2q8eQKbpCdQMJ83zKmx:1
+
+# EnumValuesTable
+Position: $SUU2q8eQKbpCdQMJ83zKmx:2

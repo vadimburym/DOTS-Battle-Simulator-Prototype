@@ -13,3 +13,4 @@ MonoBehaviour:
   m_Name: UIMetaInstaller
   m_EditorClassIdentifier: Assembly-CSharp::_Project._Code.GameApp.Installers.UIMetaInstaller
   _metaInterfaceConfig: {fileID: 11400000, guid: b6c8ecb44a7cf104f9380b349d28d0b8, type: 2}
+  _settingsWidgetConfig: {fileID: 11400000, guid: a36df38ced87a874abfcad2430134627, type: 2}

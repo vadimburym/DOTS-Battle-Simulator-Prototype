@@ -5,6 +5,7 @@
         None = 0,
         UnitCounterView = 1,
         UnitSpawnPanel = 2,
-        MetaInterface = 3
+        MetaInterface = 3,
+        Settings = 4
     }
 }

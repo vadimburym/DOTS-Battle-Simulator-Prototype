@@ -1,14 +1,17 @@
+using System;
 using UnityEngine;
 
 namespace _Project._Code.Infrastructure
 {
     public sealed class InputService : IInputService
     {
+        public event Action OnEscape;
         public bool IsMainActionDown => Input.GetMouseButtonDown(0);
         public bool IsMainActionUp => Input.GetMouseButtonUp(0);
         public bool IsSecondActionDown => Input.GetMouseButtonDown(1);
         public Vector2 MousePosition => Input.mousePosition;
         public float Scroll => Input.mouseScrollDelta.y;
+        public bool IsEscape => Input.GetKeyDown(KeyCode.Escape);
         
         public bool TryGetMouseToWorldPosition(out Vector3 worldPosition)
         {
@@ -25,5 +28,7 @@ namespace _Project._Code.Infrastructure
             }
             return false;
         }
+        
+        public void InputEscape() => OnEscape?.Invoke();
     }
 }

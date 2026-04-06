@@ -14,3 +14,4 @@ MonoBehaviour:
   m_EditorClassIdentifier: Assembly-CSharp::_Project._Code.GameApp.Installers.UIGameplayInstaller
   _unitCounterConfig: {fileID: 11400000, guid: dd637bcc8a8d2d442aca53742bcc8b72, type: 2}
   _unitSpawnPanelConfig: {fileID: 11400000, guid: 7628fc53d71c3b146b9fd330f6f18f01, type: 2}
+  _settingsWidgetConfig: {fileID: 11400000, guid: a36df38ced87a874abfcad2430134627, type: 2}
