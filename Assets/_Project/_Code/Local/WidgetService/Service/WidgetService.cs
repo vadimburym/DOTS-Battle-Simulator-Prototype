@@ -22,7 +22,7 @@ namespace _Project._Code.Locale
         private ScreenId _currentScreen;
 
         private readonly WidgetStaticData _staticData;
-        
+
         public WidgetService(
             IReadOnlyList<IWidgetShower> widgets,
             StaticDataService staticDataService,
@@ -31,12 +31,12 @@ namespace _Project._Code.Locale
         {
             for (int i = 0; i < widgets.Count; i++)
                 _widgets.Add(widgets[i].ID, widgets[i]);
-            
+
             _staticData = staticDataService.WidgetStaticData;
             _mainScreenId = _staticData.MainScreens[stateMachine.CurrentStateId];
             _currentScreen = _mainScreenId;
             var volume = mainCameraService.MainCameraTransform.GetComponent<Volume>();
-            if (volume.profile.TryGet<DepthOfField>(out var depth))
+            if (volume != null && volume.profile.TryGet<DepthOfField>(out var depth))
             {
                 _depth = depth;
                 _depth.active = false;
@@ -102,7 +102,16 @@ namespace _Project._Code.Locale
             }
         }
 
-        private void SetDepthOfField() => _depth.active = true;
-        private void UnsetDepthOfField() => _depth.active = false;
+        private void SetDepthOfField()
+        {
+            if (_depth != null)
+                _depth.active = true;
+        }
+
+        private void UnsetDepthOfField()
+        {
+            if (_depth != null)
+                _depth.active = false;
+        }
     }
 }

@@ -1305,13 +1305,12 @@ MonoBehaviour:
     TypeName: 
   autoRun: 1
   autoInjectGameObjects: []
-  StaticDataService: {fileID: 11400000, guid: 17aeb5202ff1cac448bd1b2d010d6ac4, type: 2}
-  UIInstallerService: {fileID: 11400000, guid: 8ee393cb237beaa4a8d02733864158bb, type: 2}
-  SettingsPipeline: {fileID: 11400000, guid: b2bab8ea41afd914c8bd244db660598e, type: 2}
-  BootstrapSubSceneAwaiter: {fileID: 1472602362}
-  LoadingCurtainProvider: {fileID: 779251212}
-  AudioProvider: {fileID: 1978549415}
-  FrameDebugProvider: {fileID: 1877807993}
+  _staticDataService: {fileID: 11400000, guid: 17aeb5202ff1cac448bd1b2d010d6ac4, type: 2}
+  _uiInstallerService: {fileID: 11400000, guid: 8ee393cb237beaa4a8d02733864158bb, type: 2}
+  _bootstrapSubSceneAwaiter: {fileID: 1472602362}
+  _loadingCurtainProvider: {fileID: 779251212}
+  _audioProvider: {fileID: 1978549415}
+  _frameDebugProvider: {fileID: 1877807993}
 --- !u!4 &1472602361
 Transform:
   m_ObjectHideFlags: 0

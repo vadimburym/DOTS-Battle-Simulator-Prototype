@@ -7,23 +7,24 @@ using _Project._Code.Infrastructure;
 using _Project._Code.Infrastructure.EcsContext;
 using _Project._Code.Infrastructure.EntitiesExtensions;
 using _Project._Code.Infrastructure.LoadingCurtainProvider;
+using _Project._Code.Infrastructure.ProjectContextService;
 using _Project._Code.Infrastructure.StaticData._Root;
 using Cysharp.Threading.Tasks;
 using UnityEngine.AddressableAssets;
 using VContainer;
-// ReSharper disable All
 
 namespace _Project._Code.GameApp.GameStates
 {
     public sealed class GameplayState : IGameState
     {
         GameStateId IGameState.GameStateId => GameStateId.Gameplay;
-        
+
         private const string GAMEPLAY_NAME = "GameplayContext";
         private readonly string[] GAMEPLAY_ADDRESSABLE_LABELS = { "gameplay", "preload" };
         private const int GAMEPLAY_SCENE_IDX = 2;
         private readonly EntityPoolId[] PrefabsToLoad = { EntityPoolId.Footman, EntityPoolId.Orc };
-        
+
+        private readonly IBootstrapContextService _bootstrapContext;
         private readonly ILocalContextService _localContextService;
         private readonly IEcsContext _localEcsContext;
         private readonly ISceneLoadService _sceneLoadService;
@@ -31,11 +32,12 @@ namespace _Project._Code.GameApp.GameStates
         private readonly IEntityPrefabService _entityPrefabService;
         private readonly UIInstallerService _uiInstallerService;
         private readonly ILoadingCurtainProvider _loadingCurtainProvider;
-        
+
         private GameplayEntryPoint _entryPoint;
         private bool _isStarted;
-        
+
         public GameplayState(
+            IBootstrapContextService bootstrapContext,
             ILocalContextService localContextService,
             ISceneLoadService sceneLoadService,
             IAddressableService addressableService,
@@ -44,6 +46,7 @@ namespace _Project._Code.GameApp.GameStates
             UIInstallerService uiInstallerService,
             ILoadingCurtainProvider loadingCurtainProvider)
         {
+            _bootstrapContext = bootstrapContext;
             _localContextService = localContextService;
             _sceneLoadService = sceneLoadService;
             _addressableService = addressableService;
@@ -52,7 +55,7 @@ namespace _Project._Code.GameApp.GameStates
             _uiInstallerService = uiInstallerService;
             _loadingCurtainProvider = loadingCurtainProvider;
         }
-        
+
         public void Enter() => EnterAsync().Forget();
         private async UniTask EnterAsync()
         {
@@ -61,18 +64,18 @@ namespace _Project._Code.GameApp.GameStates
             await _sceneLoadService.LoadSceneAsync(GAMEPLAY_SCENE_IDX);
             await _sceneLoadService.FindFirstComponentInRoots<SubSceneAwaiter>().WaitUntilSubSceneReady();
             var sceneInstaller = _sceneLoadService.FindFirstComponentInRoots<GameplaySceneInstaller>();
-            
-            _localContextService.WarmUp(BootstrapContext.Instance,builder => {
+
+            _localContextService.WarmUp(_bootstrapContext.Context,builder => {
                 GameplayInstaller.Register(builder);
                 sceneInstaller.Register(builder);
                 _uiInstallerService.GameplayUIInstaller.Register(builder);
                 builder.Register<GameplayEntryPoint>(Lifetime.Singleton);
             }, GAMEPLAY_NAME);
-            
+
             _localEcsContext.WarmUpSystems(_localContextService.Container, builder => {
                 GameplayInstaller.RegisterEcsSystems(builder);
             });
-            
+
             _entryPoint = _localContextService.Container.Resolve<GameplayEntryPoint>();
             _entryPoint.Start();
             GC.Collect();
@@ -93,12 +96,12 @@ namespace _Project._Code.GameApp.GameStates
                 return;
             _entryPoint.LateTick();
         }
-        
+
         public void Dispose()
         {
             _isStarted = false;
             _loadingCurtainProvider.Show();
-            _entryPoint.Dispose();
+            _entryPoint?.Dispose();
             _localEcsContext.CleanUpSystems();
             _localContextService.CleanUp();
             _entityPrefabService.Unload(PrefabsToLoad);

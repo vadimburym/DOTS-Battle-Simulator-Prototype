@@ -8,7 +8,8 @@ namespace _Project._Code.Global.Settings
     {
         bool Contains(SettingId id);
         Type GetValueType(SettingId id);
-        
+
+        void WarmUp(SettingsPipeline pipeline);
         void Set<T>(SettingId id, T value);
         bool TrySet<T>(SettingId id, T value);
         T Get<T>(SettingId id);

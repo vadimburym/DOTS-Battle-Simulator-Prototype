@@ -1,6 +1,7 @@
 using _Project._Code.Gameplay.CoreFeatures.Entities.Behaviours;
 using _Project._Code.Gameplay.CoreFeatures.Entities.Components;
 using _Project._Code.Gameplay.CoreFeatures.Units.Components;
+using _Project._Code.Infrastructure;
 using Unity.Entities;
 using Unity.Mathematics;
 using Unity.Transforms;
@@ -13,14 +14,18 @@ namespace _Project._Code.Gameplay.CoreFeatures.Entities.Systems
     public partial class SelectionSystem : SystemBase
     {
         private ISelectionAreaProvider _selectionAreaProvider;
-        
+        private IMainCameraService _mainCameraService;
+
         private SelectionResult _selectionResult;
         private bool _isSelectionDirty;
-        
+
         [Inject]
-        private void Construct(ISelectionAreaProvider selectionAreaProvider)
+        private void Construct(
+            ISelectionAreaProvider selectionAreaProvider,
+            IMainCameraService mainCameraService)
         {
             _selectionAreaProvider = selectionAreaProvider;
+            _mainCameraService = mainCameraService;
             _selectionAreaProvider.OnSelectionResult += OnSelectionResult;
         }
 
@@ -29,15 +34,15 @@ namespace _Project._Code.Gameplay.CoreFeatures.Entities.Systems
             _selectionResult = result;
             _isSelectionDirty = true;
         }
-        
+
         protected override void OnUpdate()
         {
             if (!_isSelectionDirty)
                 return;
-            var camera = Camera.main;
+            var camera = _mainCameraService.MainCamera;
             float2 min = _selectionResult.ScreenMin;
             float2 max = _selectionResult.ScreenMax;
-            
+
             foreach (var (localTransform, entity)
                      in SystemAPI.Query<RefRO<LocalTransform>>().WithAll<MyTeamTag>().WithPresent<SelectedTag>().WithEntityAccess())
             {
@@ -45,7 +50,7 @@ namespace _Project._Code.Gameplay.CoreFeatures.Entities.Systems
                 bool inside = math.all(unitScreenPosition >= min & unitScreenPosition <= max);
                 EntityManager.SetComponentEnabled<SelectedTag>(entity, inside);
             }
-            
+
             _isSelectionDirty = false;
         }
 
