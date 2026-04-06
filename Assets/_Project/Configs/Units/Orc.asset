@@ -12,6 +12,7 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: edd0735b28c04f65b1fab5916a24c6a6, type: 3}
   m_Name: Orc
   m_EditorClassIdentifier: Assembly-CSharp::_Project._Code.Infrastructure.StaticData.Units.UnitConfig
+  Icon: {fileID: 21300000, guid: 200714b8e63102b4ab5a65d1b3f1ffae, type: 3}
   UnitId: 2
   EntityPoolId: 2
   BehaviourTreeId: 1

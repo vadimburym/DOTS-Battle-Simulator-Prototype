@@ -6,6 +6,8 @@ using _Project._Code.GameApp.Installers;
 using _Project._Code.Infrastructure;
 using _Project._Code.Infrastructure.EcsContext;
 using _Project._Code.Infrastructure.EntitiesExtensions;
+using _Project._Code.Infrastructure.StaticData;
+using _Project._Code.Infrastructure.StaticData._Root;
 using Cysharp.Threading.Tasks;
 using UnityEngine.AddressableAssets;
 using VContainer;
@@ -26,6 +28,7 @@ namespace _Project._Code.GameApp.GameStates
         private readonly ISceneLoadService _sceneLoadService;
         private readonly IAddressableService _addressableService;
         private readonly IEntityPrefabService _entityPrefabService;
+        private readonly UIInstallerService _uiInstallerService;
         
         private GameplayEntryPoint _entryPoint;
         private bool _isStarted;
@@ -35,13 +38,15 @@ namespace _Project._Code.GameApp.GameStates
             ISceneLoadService sceneLoadService,
             IAddressableService addressableService,
             IEcsContext localEcsContext,
-            IEntityPrefabService entityPrefabService)
+            IEntityPrefabService entityPrefabService,
+            UIInstallerService uiInstallerService)
         {
             _localContextService = localContextService;
             _sceneLoadService = sceneLoadService;
             _addressableService = addressableService;
             _localEcsContext = localEcsContext;
             _entityPrefabService = entityPrefabService;
+            _uiInstallerService = uiInstallerService;
         }
         
         public void Enter() => EnterAsync().Forget();
@@ -56,6 +61,7 @@ namespace _Project._Code.GameApp.GameStates
             _localContextService.WarmUp(BootstrapContext.Instance,builder => {
                 GameplayInstaller.Register(builder);
                 sceneInstaller.Register(builder);
+                _uiInstallerService.GameplayInstaller.Register(builder);
                 builder.Register<GameplayEntryPoint>(Lifetime.Singleton);
             }, GAMEPLAY_NAME);
             

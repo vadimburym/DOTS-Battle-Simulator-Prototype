@@ -15,6 +15,7 @@ namespace _Project._Code.GameApp
     public sealed class BootstrapContext : LifetimeScope
     {
         public StaticDataService StaticDataService;
+        public UIInstallerService UIInstallerService;
         public SubSceneAwaiter BootstrapSubSceneAwaiter;
         public GameObject CameraGameObject;
         
@@ -47,6 +48,7 @@ namespace _Project._Code.GameApp
         private void RegisterInfrastructure(IContainerBuilder builder)
         {
             builder.RegisterInstance(StaticDataService).As<StaticDataService>();
+            builder.RegisterInstance(UIInstallerService).As<UIInstallerService>();
             builder.Register<StateMachine>(Lifetime.Singleton).As<IStateMachine>();
             builder.Register<SaveRepository>(Lifetime.Singleton).As<ISaveRepository>();
             builder.Register<LocalContextService>(Lifetime.Singleton).As<ILocalContextService>();
