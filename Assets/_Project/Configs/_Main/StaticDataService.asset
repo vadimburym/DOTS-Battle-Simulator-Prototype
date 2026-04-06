@@ -1,0 +1,16 @@
+%YAML 1.1
+%TAG !u! tag:unity3d.com,2011:
+--- !u!114 &11400000
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 0}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: a0a7adfa9f854253a201e845df43fe58, type: 3}
+  m_Name: StaticDataService
+  m_EditorClassIdentifier: Assembly-CSharp::_Project._Code.Infrastructure.StaticData._Root.StaticDataService
+  MemoryPoolPipeline: {fileID: 11400000, guid: 1682ede3aea2bd945b081da73be7b33b, type: 2}
+  UnitsStaticData: {fileID: 11400000, guid: 4ca809a91d4f5564398556c044216129, type: 2}

@@ -1,0 +1,17 @@
+%YAML 1.1
+%TAG !u! tag:unity3d.com,2011:
+--- !u!114 &11400000
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 0}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: 7a5f516b433c4a989b219496d14e7331, type: 3}
+  m_Name: EntityPrefabPipeline
+  m_EditorClassIdentifier: Assembly-CSharp::_Project._Code.Infrastructure.EntityPrefabPipeline
+  EntityMemoryPools:
+  - PoolId: 1
+    Asset: {fileID: 8364555645895950353, guid: 2bbfb9163e8991a4d8e9a795a97d2901, type: 3}
