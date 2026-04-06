@@ -5,8 +5,6 @@ charset = utf-8
 end_of_line = lf
 insert_final_newline = true
 trim_trailing_whitespace = true
-indent_style = space
-indent_size = 4
 
 [*.md]
 trim_trailing_whitespace = false
@@ -14,3 +12,16 @@ trim_trailing_whitespace = false
 [*.cs]
 indent_style = space
 indent_size = 4
+
+[*.{shader,hlsl,compute,cginc}]
+indent_style = space
+indent_size = 4
+
+[*.{json,xml,yml,yaml}]
+indent_style = space
+indent_size = 2
+
+[*.{meta,unity,prefab,asset,mat,anim,controller}]
+end_of_line = lf
+insert_final_newline = true
+trim_trailing_whitespace = false
