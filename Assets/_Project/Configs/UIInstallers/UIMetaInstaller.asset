@@ -12,3 +12,4 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 1c0858cd4c5d4e68a6ed362a2f901cfe, type: 3}
   m_Name: UIMetaInstaller
   m_EditorClassIdentifier: Assembly-CSharp::_Project._Code.GameApp.Installers.UIMetaInstaller
+  _metaInterfaceConfig: {fileID: 11400000, guid: b6c8ecb44a7cf104f9380b349d28d0b8, type: 2}

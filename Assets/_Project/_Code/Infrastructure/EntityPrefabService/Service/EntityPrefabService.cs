@@ -5,6 +5,7 @@ using Unity.Collections;
 using Unity.Entities;
 using Unity.Entities.Serialization;
 using Unity.Scenes;
+using UnityEngine;
 
 namespace _Project._Code.Infrastructure
 {
@@ -86,6 +87,12 @@ namespace _Project._Code.Infrastructure
 
             return await tcs.Task;
         }
+
+        public void Unload(EntityPoolId[] entityId)
+        {
+            for (int i = 0; i < entityId.Length; i++)
+                Unload(entityId[i]);
+        }
         
         public void Unload(EntityPoolId entityId)
         {
@@ -94,16 +101,24 @@ namespace _Project._Code.Infrastructure
             if (!_registryQuery.IsEmptyIgnoreFilter)
             {
                 var loadedBuffer = _registryQuery.GetSingletonBuffer<EntityPrefabElement>();
+                int index = -1;
+                var loadHandleEntity = Entity.Null;
                 for (int i = 0; i < loadedBuffer.Length; i++)
                 {
                     if (loadedBuffer[i].EntityPoolId != entityId)
                         continue;
+                    index = i;
+                    loadHandleEntity = loadedBuffer[i].LoadHandleEntity;
+                    break;
+                }
+
+                if (index >= 0)
+                {
+                    loadedBuffer.RemoveAt(index);
                     SceneSystem.UnloadScene(
                         _world.Unmanaged,
-                        loadedBuffer[i].LoadHandleEntity,
+                        loadHandleEntity,
                         SceneSystem.UnloadParameters.Default);
-                    loadedBuffer.RemoveAt(i);
-                    break;
                 }
             }
             

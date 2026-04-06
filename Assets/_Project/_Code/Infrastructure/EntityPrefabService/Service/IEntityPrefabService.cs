@@ -9,6 +9,7 @@ namespace _Project._Code.Infrastructure
         void RebuildCache();
         UniTask LoadAsync(EntityPoolId[] entityIds);
         UniTask<Entity> LoadAsync(EntityPoolId entityId);
+        void Unload(EntityPoolId[] entityId);
         void Unload(EntityPoolId entityId);
         Entity GetEntityPrefab(EntityPoolId entityId);
         bool TryGetEntityPrefab(EntityPoolId entityId, out Entity prefabEntity);

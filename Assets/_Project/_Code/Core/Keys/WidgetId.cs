@@ -4,6 +4,7 @@
     {
         None = 0,
         UnitCounterView = 1,
-        UnitSpawnPanel = 2
+        UnitSpawnPanel = 2,
+        MetaInterface = 3
     }
 }

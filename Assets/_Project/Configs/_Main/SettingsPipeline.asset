@@ -1,0 +1,88 @@
+%YAML 1.1
+%TAG !u! tag:unity3d.com,2011:
+--- !u!114 &11400000
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 0}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: 785fbfa0675f412e90d8e2c5bb37748f, type: 3}
+  m_Name: SettingsPipeline
+  m_EditorClassIdentifier: Assembly-CSharp::_Project._Code.Infrastructure.Settings.SettingsPipeline
+  Settings:
+  - rid: 1545529186853584973
+  - rid: 1545529186853584974
+  - rid: 1545529186853584975
+  - rid: 1545529186853584976
+  - rid: 1545529186853584977
+  - rid: 1545529186853584978
+  - rid: 1545529186853584980
+  - rid: 1545529186853584982
+  references:
+    version: 2
+    RefIds:
+    - rid: 1545529186853584973
+      type: {class: NumericSettingDefinition, ns: _Project._Code.Infrastructure.Settings, asm: Assembly-CSharp}
+      data:
+        Id: 11
+        DefaultValue: 0
+        Min: -80
+        Max: 0
+        WholeNumbers: 1
+    - rid: 1545529186853584974
+      type: {class: NumericSettingDefinition, ns: _Project._Code.Infrastructure.Settings, asm: Assembly-CSharp}
+      data:
+        Id: 12
+        DefaultValue: 0
+        Min: -80
+        Max: 0
+        WholeNumbers: 1
+    - rid: 1545529186853584975
+      type: {class: NumericSettingDefinition, ns: _Project._Code.Infrastructure.Settings, asm: Assembly-CSharp}
+      data:
+        Id: 13
+        DefaultValue: 0
+        Min: -80
+        Max: 0
+        WholeNumbers: 1
+    - rid: 1545529186853584976
+      type: {class: NumericSettingDefinition, ns: _Project._Code.Infrastructure.Settings, asm: Assembly-CSharp}
+      data:
+        Id: 14
+        DefaultValue: 0
+        Min: -80
+        Max: 0
+        WholeNumbers: 1
+    - rid: 1545529186853584977
+      type: {class: NumericSettingDefinition, ns: _Project._Code.Infrastructure.Settings, asm: Assembly-CSharp}
+      data:
+        Id: 15
+        DefaultValue: 0
+        Min: -80
+        Max: 0
+        WholeNumbers: 1
+    - rid: 1545529186853584978
+      type: {class: EnumSettingDefinition, ns: _Project._Code.Infrastructure.Settings, asm: Assembly-CSharp}
+      data:
+        Id: 1
+        EnumTypeName: UnityEngine.FullScreenMode, UnityEngine.CoreModule, Version=0.0.0.0,
+          Culture=neutral, PublicKeyToken=null
+        DefaultValue: 3
+    - rid: 1545529186853584980
+      type: {class: NumericSettingDefinition, ns: _Project._Code.Infrastructure.Settings, asm: Assembly-CSharp}
+      data:
+        Id: 2
+        DefaultValue: 0
+        Min: 0
+        Max: 99
+        WholeNumbers: 1
+    - rid: 1545529186853584982
+      type: {class: EnumSettingDefinition, ns: _Project._Code.Infrastructure.Settings, asm: Assembly-CSharp}
+      data:
+        Id: 4
+        EnumTypeName: _Project._Code.Infrastructure.ApplicationService.FrameRateMode,
+          Assembly-CSharp, Version=0.0.0.0, Culture=neutral, PublicKeyToken=null
+        DefaultValue: 0

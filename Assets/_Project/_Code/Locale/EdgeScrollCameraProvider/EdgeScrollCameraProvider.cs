@@ -7,7 +7,6 @@ namespace _Project._Code.Locale.EdgeScrollCamera
         public float ZoomSpeed => _zoomSpeed;
         public float MinY => _minY;
         public float MaxY => _maxY;
-        public Transform Root => transform;
         public float MoveSpeed => _moveSpeed;
         public float EdgeSize => _edgeSize;
         public Vector2 XLimits => _xLimits;
@@ -23,7 +22,7 @@ namespace _Project._Code.Locale.EdgeScrollCamera
         [SerializeField] private float _zoomSpeed = 200f;
         [SerializeField] private float _minY = 10f;
         [SerializeField] private float _maxY = 80f;
-
+        
         private void Awake()
         {
             _xLimits = new Vector2(LimitsMin.position.x, LimitsMax.position.x);
