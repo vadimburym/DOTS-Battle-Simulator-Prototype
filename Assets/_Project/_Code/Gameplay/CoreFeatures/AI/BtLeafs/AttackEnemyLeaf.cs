@@ -18,7 +18,7 @@ namespace _Project._Code.Gameplay.CoreFeatures.AI.BtLeafs
                 LeafId = (byte)LeafId_BtContext.AttackEnemy,
             };
         }
-        
+
         public static NodeStatus OnTick(
             ref Entity agent,
             in LeafData leafData,
@@ -32,7 +32,7 @@ namespace _Project._Code.Gameplay.CoreFeatures.AI.BtLeafs
                 return NodeStatus.Failure;
             if (leafContext.EyeSensorLookup[agent].DetectedEntity != lookUp[leafState.StateEntity].Target)
                 return NodeStatus.Failure;
-                
+
             return NodeStatus.Running;
         }
 
@@ -44,7 +44,7 @@ namespace _Project._Code.Gameplay.CoreFeatures.AI.BtLeafs
             int sortKey)
         {
             var enemy = leafContext.EyeSensorLookup[agent].DetectedEntity;
-            
+
             var ecb = leafContext.Ecb;
             var entity = ecb.CreateEntity(sortKey);
             ecb.AddComponent<AttackState>(sortKey, entity, new AttackState {
@@ -57,7 +57,7 @@ namespace _Project._Code.Gameplay.CoreFeatures.AI.BtLeafs
                 Value = entity
             });
             ecb.SetComponentEnabled<SeeToDetectedTag>(sortKey, agent, true);
-            
+
             AnimatorUtils.PlayAnimation(
                 renderer: leafContext.RenderEntityLookup[agent].Value,
                 animationId: AnimationId.Attack,

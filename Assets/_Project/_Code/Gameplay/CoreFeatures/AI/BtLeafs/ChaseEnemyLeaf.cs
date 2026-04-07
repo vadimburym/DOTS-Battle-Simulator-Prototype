@@ -18,7 +18,7 @@ namespace _Project._Code.Gameplay.CoreFeatures.AI.BtLeafs
                 LeafId = (byte)LeafId_BtContext.ChaseEnemy,
             };
         }
-        
+
         public static NodeStatus OnTick(
             ref Entity agent,
             in LeafData leafData,
@@ -45,7 +45,7 @@ namespace _Project._Code.Gameplay.CoreFeatures.AI.BtLeafs
             int sortKey)
         {
             var enemy = leafContext.EyeSensorLookup[agent].DetectedEntity;
-            
+
             var ecb = leafContext.Ecb;
             var random = leafContext.Random;
             var entity = ecb.CreateEntity(sortKey);

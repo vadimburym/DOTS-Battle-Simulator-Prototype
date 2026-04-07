@@ -12,7 +12,7 @@ namespace _Project._Code.Gameplay.CoreFeatures.AI.BtLeafs
     public struct IsMovingLeaf : ILeaf
     {
         [SerializeField] private byte _isMoving;
-        
+
         public LeafData GetCompiledData()
         {
             return new LeafData {
@@ -20,12 +20,12 @@ namespace _Project._Code.Gameplay.CoreFeatures.AI.BtLeafs
                 Byte0 = _isMoving,
             };
         }
-        
+
         public static NodeStatus OnTick(ref Entity agent, in LeafData leafData, ref LeafStateElement leafState, in BtContext leafContext)
         {
             return leafContext.IsMovingTagLookup[agent].IsMoving == leafData.Byte0 ? NodeStatus.Success : NodeStatus.Failure;
         }
-        
+
         public static void OnEnter(ref Entity agent, in LeafData leafData, ref LeafStateElement leafState, in BtContext leafContext) { }
         public static void OnExit(ref Entity agent, in LeafData leafData, ref LeafStateElement leafState, in BtContext leafContext) { }
         public static void OnAbort(ref Entity agent, in LeafData leafData, ref LeafStateElement leafState, in BtContext leafContext) { }

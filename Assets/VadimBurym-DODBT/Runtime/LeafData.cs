@@ -5,6 +5,7 @@
 // See LICENSE file in the project root for full license information.
 
 using System;
+using Unity.Collections;
 
 namespace VadimBurym.DodBehaviourTree
 {
@@ -15,5 +16,6 @@ namespace VadimBurym.DodBehaviourTree
         public int Int0;
         public float Float0;
         public byte Byte0;
+        public FixedList32Bytes<byte> Bytes;
     }
 }

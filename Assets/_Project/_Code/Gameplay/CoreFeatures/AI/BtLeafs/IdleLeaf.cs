@@ -17,7 +17,7 @@ namespace _Project._Code.Gameplay.CoreFeatures.AI.BtLeafs
                 LeafId = (byte)LeafId_BtContext.Idle,
             };
         }
-        
+
         public static NodeStatus OnTick(
             ref Entity agent,
             in LeafData leafData,
@@ -26,7 +26,7 @@ namespace _Project._Code.Gameplay.CoreFeatures.AI.BtLeafs
         {
             return NodeStatus.Running;
         }
-        
+
         public static void OnEnter(
             ref Entity agent,
             in LeafData leafData,
@@ -40,7 +40,7 @@ namespace _Project._Code.Gameplay.CoreFeatures.AI.BtLeafs
                 ecb: leafContext.Ecb,
                 sortKey: sortKey);
         }
-        
+
         public static void OnExit(
             ref Entity agent,
             in LeafData leafData,
@@ -48,7 +48,7 @@ namespace _Project._Code.Gameplay.CoreFeatures.AI.BtLeafs
             in BtContext leafContext,
             int sortKey)
         {
-            
+
         }
 
         public static void OnAbort(
@@ -58,7 +58,7 @@ namespace _Project._Code.Gameplay.CoreFeatures.AI.BtLeafs
             in BtContext leafContext,
             int sortKey)
         {
-            
+
         }
     }
 }

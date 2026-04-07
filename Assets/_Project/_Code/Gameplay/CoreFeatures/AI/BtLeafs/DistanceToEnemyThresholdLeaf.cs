@@ -21,10 +21,10 @@ namespace _Project._Code.Gameplay.CoreFeatures.AI.BtLeafs
             Greater = 3,
             Equal = 4,
         }
-        
+
         [SerializeField] private float _threshold;
         [SerializeField] private ComparisonId _comparison;
-        
+
         public LeafData GetCompiledData()
         {
             return new LeafData {
@@ -33,7 +33,7 @@ namespace _Project._Code.Gameplay.CoreFeatures.AI.BtLeafs
                 Byte0 = (byte)_comparison,
             };
         }
-        
+
         public static NodeStatus OnTick(ref Entity agent, in LeafData leafData, ref LeafStateElement leafState, in BtContext leafContext)
         {
             //TODO: now - GREEN, refactoring: вынести логику в сенсор
@@ -52,7 +52,7 @@ namespace _Project._Code.Gameplay.CoreFeatures.AI.BtLeafs
             };
             return comparison ? NodeStatus.Success : NodeStatus.Failure;
         }
-        
+
         public static void OnEnter(ref Entity agent, in LeafData leafData, ref LeafStateElement leafState, in BtContext leafContext) { }
         public static void OnExit(ref Entity agent, in LeafData leafData, ref LeafStateElement leafState, in BtContext leafContext) { }
         public static void OnAbort(ref Entity agent, in LeafData leafData, ref LeafStateElement leafState, in BtContext leafContext) { }

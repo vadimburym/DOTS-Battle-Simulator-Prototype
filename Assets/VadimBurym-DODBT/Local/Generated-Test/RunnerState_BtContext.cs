@@ -4,7 +4,7 @@ using Unity.Entities;
 
 namespace VadimBurym.DodBehaviourTree.Generated
 {
-    public ref struct LeafState_BtContext
+    public ref struct RunnerState_BtContext
     {
         public Entity Agent;
         [ReadOnly] public LeafData Data;

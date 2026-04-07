@@ -14,7 +14,7 @@ namespace VadimBurym.DodBehaviourTree
         private const byte Success = 2;
         private const byte Running = 3;
         private const byte None = 0xFF;
-        
+
         [MethodImpl(MethodImplOptions.AggressiveInlining)]
         public static void AbortSelector(
             ref FixedList4096Bytes<int> stack,
@@ -28,7 +28,7 @@ namespace VadimBurym.DodBehaviourTree
             stack.Add(selectorData.FirstChild + nodeState.MemoryCursor);
             nodeState.MemoryCursor = None;
         }
-        
+
         [MethodImpl(MethodImplOptions.AggressiveInlining)]
         public static void AbortSequence(
             ref FixedList4096Bytes<int> stack,
@@ -42,7 +42,7 @@ namespace VadimBurym.DodBehaviourTree
             stack.Add(sequenceData.FirstChild + nodeState.MemoryCursor);
             nodeState.MemoryCursor = None;
         }
-        
+
         [MethodImpl(MethodImplOptions.AggressiveInlining)]
         public static void AbortMemorySequence(
             ref FixedList4096Bytes<int> stack,
@@ -56,7 +56,7 @@ namespace VadimBurym.DodBehaviourTree
             stack.Add(memorySequenceData.FirstChild + nodeState.MemoryCursor);
             nodeState.MemoryCursor = memorySequenceData.ResetOnAbort != 0 ? None : nodeState.MemoryCursor;
         }
-        
+
         [MethodImpl(MethodImplOptions.AggressiveInlining)]
         public static void AbortMemorySelector(
             ref FixedList4096Bytes<int> stack,
@@ -70,7 +70,7 @@ namespace VadimBurym.DodBehaviourTree
             stack.Add(memorySelectorData.FirstChild + nodeState.MemoryCursor);
             nodeState.MemoryCursor = memorySelectorData.ResetOnAbort != 0 ? None : nodeState.MemoryCursor;
         }
-        
+
         [MethodImpl(MethodImplOptions.AggressiveInlining)]
         public static void ExecuteSequence(
             ref int pc,
@@ -132,7 +132,7 @@ namespace VadimBurym.DodBehaviourTree
             pc = sequenceData.FirstChild + nodeState.Cursor;
             returning = false;
         }
-        
+
         [MethodImpl(MethodImplOptions.AggressiveInlining)]
         public static void ExecuteSelector(
             ref int pc,
@@ -176,7 +176,7 @@ namespace VadimBurym.DodBehaviourTree
                         }
                         nodeState.MemoryCursor = None;
                         nodeState.Cursor = None;
-         
+
                         returning = true;
                         pc = nodeData.ParentIndex;
                         return;
@@ -196,7 +196,7 @@ namespace VadimBurym.DodBehaviourTree
             pc = selectorData.FirstChild + nodeState.Cursor;
             returning = false;
         }
-        
+
         [MethodImpl(MethodImplOptions.AggressiveInlining)]
         public static void ExecuteMemorySequence(
             ref int pc,
@@ -243,7 +243,7 @@ namespace VadimBurym.DodBehaviourTree
             pc = memorySequenceData.FirstChild + nodeState.MemoryCursor;
             returning = false;
         }
-        
+
         [MethodImpl(MethodImplOptions.AggressiveInlining)]
         public static void ExecuteMemorySelector(
             ref int pc,
@@ -294,7 +294,7 @@ namespace VadimBurym.DodBehaviourTree
             pc = memorySelectorData.FirstChild + nodeState.MemoryCursor;
             returning = false;
         }
-        
+
         [MethodImpl(MethodImplOptions.AggressiveInlining)]
         public static void ExecuteParallel(
             ref int pc,
@@ -310,8 +310,8 @@ namespace VadimBurym.DodBehaviourTree
             if (!returning)
             {
                 nodeState.Cursor = 0;
-                nodeState.TmpA = 0;    
-                nodeState.TmpB = 0;        
+                nodeState.TmpA = 0;
+                nodeState.TmpB = 0;
             }
             else
             {
@@ -337,25 +337,29 @@ namespace VadimBurym.DodBehaviourTree
                 }
                 nodeState.Cursor++;
             }
-            var nextNodeState = nodeStates[parallelData.FirstChild + nodeState.Cursor];
-            while (nextNodeState.CachedStatus != Unknown && parallelData.CacheChildStatus == 1)
+
+            if (nodeState.Cursor < parallelData.ChildCount && parallelData.CacheChildStatus == 1)
             {
-                if (nextNodeState.CachedStatus == Success)
-                    nodeState.TmpA++;
-                else if (nextNodeState.CachedStatus == Failure)
-                    nodeState.TmpB++;
-                nodeState.Cursor++;
-                if (nodeState.Cursor >= parallelData.ChildCount)
-                    break;
-                nextNodeState = nodeStates[parallelData.FirstChild + nodeState.Cursor];
+                var nextNodeState = nodeStates[parallelData.FirstChild + nodeState.Cursor];
+                while (nextNodeState.CachedStatus != Unknown)
+                {
+                    if (nextNodeState.CachedStatus == Success)
+                        nodeState.TmpA++;
+                    else if (nextNodeState.CachedStatus == Failure)
+                        nodeState.TmpB++;
+                    nodeState.Cursor++;
+                    if (nodeState.Cursor >= parallelData.ChildCount)
+                        break;
+                    nextNodeState = nodeStates[parallelData.FirstChild + nodeState.Cursor];
+                }
             }
-            
+
             if (nodeState.Cursor >= parallelData.ChildCount)
             {
                 childStatus = NodeStatus.Running;
                 if (nodeState.TmpA >= parallelData.SuccessThreshold)
                     childStatus = NodeStatus.Success;
-                if (nodeState.TmpB >= parallelData.SuccessThreshold)
+                if (nodeState.TmpB >= parallelData.FailsThreshold)
                     childStatus = NodeStatus.Failure;
                 if (childStatus != NodeStatus.Running)
                 {
@@ -367,7 +371,7 @@ namespace VadimBurym.DodBehaviourTree
             pc = parallelData.FirstChild + nodeState.Cursor;
             returning = false;
         }
-        
+
         [MethodImpl(MethodImplOptions.AggressiveInlining)]
         public static void AbortParallel(
             ref FixedList4096Bytes<int> stack,

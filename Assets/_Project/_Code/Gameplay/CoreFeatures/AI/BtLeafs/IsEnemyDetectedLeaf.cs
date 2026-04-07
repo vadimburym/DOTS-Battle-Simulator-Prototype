@@ -17,14 +17,14 @@ namespace _Project._Code.Gameplay.CoreFeatures.AI.BtLeafs
                 LeafId = (byte)LeafId_BtContext.IsEnemyDetected,
             };
         }
-        
+
         public static NodeStatus OnTick(ref Entity agent, in LeafData leafData, ref LeafStateElement leafState, in BtContext leafContext)
         {
             var sensor = leafContext.EyeSensorLookup[agent];
             bool isEntityExist = leafContext.EntityInfoLookup.Exists(sensor.DetectedEntity);
             return sensor.IsDetected == 1 && isEntityExist ? NodeStatus.Success : NodeStatus.Failure;
         }
-        
+
         public static void OnEnter(ref Entity agent, in LeafData leafData, ref LeafStateElement leafState, in BtContext leafContext) { }
         public static void OnExit(ref Entity agent, in LeafData leafData, ref LeafStateElement leafState, in BtContext leafContext) { }
         public static void OnAbort(ref Entity agent, in LeafData leafData, ref LeafStateElement leafState, in BtContext leafContext) { }

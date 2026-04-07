@@ -1,59 +1,58 @@
-using _Project._Code.Gameplay.CoreFeatures.AI._Root;
-using Unity.Burst;
 using Unity.Collections;
 using Unity.Entities;
-using Random = Unity.Mathematics.Random;
+using Unity.Mathematics;
 
-namespace VadimBurym.DodBehaviourTree.Generated
+namespace VadimBurym.DodBehaviourTree.Tests
 {
-    public struct BTRunner_BtContext
+    internal struct BTRunner_TestContext
     {
         private const ushort None = 0xFFFF;
-        
+
         public NodeStatus Tick(
-            Entity entity,
             ref BehaviourTreeBlob blob,
             ref Random rng,
             DynamicBuffer<NodeStateElement> nodeStates,
-            DynamicBuffer<LeafStateElement> leafStates,
-            in BtContext leafContext,
-            int sortKey)
+            DynamicBuffer<RecordingLeafState> leafStates,
+            in TestContext leafContext)
         {
             var pc = blob.RootIndex;
             var childStatus = NodeStatus.Running;
-            bool returning = false;
-            
+            var returning = false;
+
             while (pc != None)
             {
                 var nodeData = blob.Nodes[pc];
                 var nodeStatePc = pc;
                 var nodeState = nodeStates[nodeStatePc];
                 ushort abortingNode = None;
+
                 switch (nodeData.Id)
                 {
                     case NodeId.Leaf:
                     {
                         var leafState = leafStates[nodeState.LeafStateIndex];
                         var leafData = blob.Leafs[nodeData.DataIndex];
-                        
+
                         if (leafState.IsEntered == 0)
                         {
-                            LeafTables_BtContext.EnterLeaf(leafData.LeafId, ref entity, in leafData, ref leafState, in leafContext, sortKey);
+                            LeafTables_TestContext.EnterLeaf(leafData.LeafId, in leafData, ref leafState, in leafContext);
                             leafState.IsEntered = 1;
                         }
-                        var status = LeafTables_BtContext.TickLeaf(leafData.LeafId, ref entity, in leafData, ref leafState, in leafContext, sortKey);
+
+                        var status = LeafTables_TestContext.TickLeaf(leafData.LeafId, in leafData, ref leafState, in leafContext);
                         if (status != NodeStatus.Running)
                         {
-                            LeafTables_BtContext.ExitLeaf(leafData.LeafId, ref entity, in leafData, ref leafState, in leafContext, sortKey);
+                            LeafTables_TestContext.ExitLeaf(leafData.LeafId, in leafData, ref leafState, in leafContext);
                             leafState.IsEntered = 0;
                         }
-                        
+
                         leafStates[nodeState.LeafStateIndex] = leafState;
                         childStatus = status;
                         returning = true;
                         pc = nodeData.ParentIndex;
                         break;
                     }
+
                     case NodeId.Sequence:
                     {
                         NodeExecutor.ExecuteSequence(
@@ -66,6 +65,7 @@ namespace VadimBurym.DodBehaviourTree.Generated
                             ref blob);
                         break;
                     }
+
                     case NodeId.Selector:
                     {
                         NodeExecutor.ExecuteSelector(
@@ -78,6 +78,7 @@ namespace VadimBurym.DodBehaviourTree.Generated
                             ref blob);
                         break;
                     }
+
                     case NodeId.MemorySequence:
                     {
                         NodeExecutor.ExecuteMemorySequence(
@@ -89,6 +90,7 @@ namespace VadimBurym.DodBehaviourTree.Generated
                             ref blob);
                         break;
                     }
+
                     case NodeId.MemorySelector:
                     {
                         NodeExecutor.ExecuteMemorySelector(
@@ -101,6 +103,7 @@ namespace VadimBurym.DodBehaviourTree.Generated
                             ref rng);
                         break;
                     }
+
                     case NodeId.Parallel:
                     {
                         NodeExecutor.ExecuteParallel(
@@ -114,6 +117,7 @@ namespace VadimBurym.DodBehaviourTree.Generated
                             ref nodeStates);
                         break;
                     }
+
                     default:
                     {
                         childStatus = NodeStatus.Failure;
@@ -122,32 +126,31 @@ namespace VadimBurym.DodBehaviourTree.Generated
                         break;
                     }
                 }
+
                 if (abortingNode != None)
-                    AbortSubtree(entity, ref blob, nodeStates, leafStates, abortingNode, leafContext, sortKey);
+                    AbortSubtree(ref blob, nodeStates, leafStates, abortingNode, leafContext);
+
                 nodeStates[nodeStatePc] = nodeState;
             }
+
             return childStatus;
         }
-        
+
         public void Abort(
-            Entity entity,
             ref BehaviourTreeBlob blob,
             DynamicBuffer<NodeStateElement> nodeStates,
-            DynamicBuffer<LeafStateElement> leafStates,
-            in BtContext leafContext,
-            int sortKey)
+            DynamicBuffer<RecordingLeafState> leafStates,
+            in TestContext leafContext)
         {
-            AbortSubtree(entity, ref blob, nodeStates, leafStates, (ushort)blob.RootIndex, leafContext, sortKey);
+            AbortSubtree(ref blob, nodeStates, leafStates, (ushort)blob.RootIndex, leafContext);
         }
-        
+
         private void AbortSubtree(
-            Entity entity,
             ref BehaviourTreeBlob blob,
             DynamicBuffer<NodeStateElement> nodeStates,
-            DynamicBuffer<LeafStateElement> leafStates,
+            DynamicBuffer<RecordingLeafState> leafStates,
             ushort root,
-            in BtContext leafContext,
-            int sortKey)
+            in TestContext leafContext)
         {
             FixedList4096Bytes<int> stack = default;
             stack.Add(root);
@@ -156,6 +159,7 @@ namespace VadimBurym.DodBehaviourTree.Generated
             {
                 var nodeIndex = stack[^1];
                 stack.RemoveAt(stack.Length - 1);
+
                 var nodeData = blob.Nodes[nodeIndex];
                 var nodeState = nodeStates[nodeIndex];
                 switch (nodeData.Id)
@@ -167,11 +171,13 @@ namespace VadimBurym.DodBehaviourTree.Generated
                         {
                             leafState.IsEntered = 0;
                             var leafData = blob.Leafs[nodeData.DataIndex];
-                            LeafTables_BtContext.AbortLeaf(leafData.LeafId, ref entity, in leafData, ref leafState, in leafContext, sortKey);
+                            LeafTables_TestContext.AbortLeaf(leafData.LeafId, in leafData, ref leafState, in leafContext);
                         }
+
                         leafStates[nodeState.LeafStateIndex] = leafState;
                         break;
                     }
+
                     case NodeId.Selector:
                     {
                         NodeExecutor.AbortSelector(
@@ -181,6 +187,7 @@ namespace VadimBurym.DodBehaviourTree.Generated
                             ref blob);
                         break;
                     }
+
                     case NodeId.Sequence:
                     {
                         NodeExecutor.AbortSequence(
@@ -190,6 +197,7 @@ namespace VadimBurym.DodBehaviourTree.Generated
                             ref blob);
                         break;
                     }
+
                     case NodeId.MemorySelector:
                     {
                         NodeExecutor.AbortMemorySelector(
@@ -199,6 +207,7 @@ namespace VadimBurym.DodBehaviourTree.Generated
                             ref blob);
                         break;
                     }
+
                     case NodeId.MemorySequence:
                     {
                         NodeExecutor.AbortMemorySequence(
@@ -208,6 +217,7 @@ namespace VadimBurym.DodBehaviourTree.Generated
                             ref blob);
                         break;
                     }
+
                     case NodeId.Parallel:
                     {
                         NodeExecutor.AbortParallel(
@@ -219,6 +229,7 @@ namespace VadimBurym.DodBehaviourTree.Generated
                         break;
                     }
                 }
+
                 nodeStates[nodeIndex] = nodeState;
             }
         }

@@ -14,7 +14,7 @@ namespace _Project._Code.Gameplay.CoreFeatures.AI.BtLeafs
     {
         [SerializeField] private int _debugInt;
         [SerializeField] private NodeStatus _debugStatus;
-        
+
         public LeafData GetCompiledData()
         {
             return new LeafData {
@@ -23,13 +23,13 @@ namespace _Project._Code.Gameplay.CoreFeatures.AI.BtLeafs
                 Byte0 = (byte)_debugStatus,
             };
         }
-        
+
         public static NodeStatus OnTick(ref Entity agent, in LeafData leafData, ref LeafStateElement leafState, in BtContext leafContext)
         {
             //Debug.Log($"{leafData.Int0}");
             return (NodeStatus)leafData.Byte0;
         }
-        
+
         public static void OnEnter(ref Entity agent, in LeafData leafData, ref LeafStateElement leafState, in BtContext leafContext) { }
         public static void OnExit(ref Entity agent, in LeafData leafData, ref LeafStateElement leafState, in BtContext leafContext) { }
         public static void OnAbort(ref Entity agent, in LeafData leafData, ref LeafStateElement leafState, in BtContext leafContext) { }

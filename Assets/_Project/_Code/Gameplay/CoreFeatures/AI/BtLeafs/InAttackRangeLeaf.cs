@@ -18,7 +18,7 @@ namespace _Project._Code.Gameplay.CoreFeatures.AI.BtLeafs
                 LeafId = (byte)LeafId_BtContext.InAttackRange,
             };
         }
-        
+
         public static NodeStatus OnTick(ref Entity agent, in LeafData leafData, ref LeafStateElement leafState, in BtContext leafContext)
         {
             //TODO: now - GREEN, refactoring: вынести логику в сенсор
@@ -30,7 +30,7 @@ namespace _Project._Code.Gameplay.CoreFeatures.AI.BtLeafs
             var threshold = leafContext.AttackStatsLookup[agent].AttackRangeCells;
             return BattlefieldGridUtils.CellDistanceChebyshev(agentCell, enemyCell) <= threshold ? NodeStatus.Success : NodeStatus.Failure;
         }
-        
+
         public static void OnEnter(ref Entity agent, in LeafData leafData, ref LeafStateElement leafState, in BtContext leafContext) { }
         public static void OnExit(ref Entity agent, in LeafData leafData, ref LeafStateElement leafState, in BtContext leafContext) { }
         public static void OnAbort(ref Entity agent, in LeafData leafData, ref LeafStateElement leafState, in BtContext leafContext) { }
