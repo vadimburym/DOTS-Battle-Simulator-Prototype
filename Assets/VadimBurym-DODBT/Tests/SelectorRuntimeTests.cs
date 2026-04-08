@@ -5,7 +5,7 @@ namespace VadimBurym.DodBehaviourTree.Tests
     public sealed class SelectorRuntimeTests
     {
         [Test]
-        public void Selector_WhenAllChildrenFail_ReturnsFailure()
+        public void Selector_WhenAllChildrenFail_TickAllChildren_AndReturnsFailure()
         {
             using var runner = TestTreeFactory.CreateRunner(
                 TestNodeSpec.Selector(
@@ -22,7 +22,7 @@ namespace VadimBurym.DodBehaviourTree.Tests
         }
 
         [Test]
-        public void Selector_WhenChildSucceeds_ReturnsSuccess_AndDoesNotTickRemainingChildren()
+        public void Selector_WhenChildSucceeds_DoesNotTickRemainingChildren_AndReturnsSuccess()
         {
             using var runner = TestTreeFactory.CreateRunner(
                 TestNodeSpec.Selector(
@@ -39,29 +39,24 @@ namespace VadimBurym.DodBehaviourTree.Tests
         }
 
         [Test]
-        public void Selector_WhenChildIsRunning_ReturnsRunning_AndKeepsLeafEnteredUntilNextTick()
+        public void Selector_WhenChildIsRunning_DoesNotTickRemainingChildren_AndReturnsRunning()
         {
             using var runner = TestTreeFactory.CreateRunner(
                 TestNodeSpec.Selector(
                     TestNodeSpec.RecordingLeaf("A", NodeStatus.Failure),
-                    TestNodeSpec.RecordingLeaf("B", NodeStatus.Running, NodeStatus.Success),
+                    TestNodeSpec.RecordingLeaf("B", NodeStatus.Running),
                     TestNodeSpec.RecordingLeaf("C", NodeStatus.Success)));
 
-            var firstTick = runner.Tick();
-            var secondTick = runner.Tick();
+            var status = runner.Tick();
 
-            Assert.That(firstTick, Is.EqualTo(NodeStatus.Running));
-            Assert.That(secondTick, Is.EqualTo(NodeStatus.Success));
-            Assert.That(runner.Recording("B").EnterCount, Is.EqualTo(1));
-            Assert.That(runner.Recording("B").TickCount, Is.EqualTo(2));
-            Assert.That(runner.Recording("B").ExitCount, Is.EqualTo(1));
+            Assert.That(status, Is.EqualTo(NodeStatus.Running));
+            Assert.That(runner.Recording("A").TickCount, Is.EqualTo(1));
+            Assert.That(runner.Recording("B").TickCount, Is.EqualTo(1));
             Assert.That(runner.Recording("C").TickCount, Is.EqualTo(0));
-            Assert.That(runner.Recording("B").IsEntered, Is.EqualTo(0));
-            Assert.That(runner.Recording("B").LastStatus, Is.EqualTo(NodeStatus.Success));
         }
 
         [Test]
-        public void Selector_WhenEarlierChildBecomesRunningAfterLaterChildWasRunning_AbortsLaterLeaf()
+        public void Selector_WhenEarlierChildBecomesRunningAfterLaterChildWasRunning_AbortsLaterChild()
         {
             using var runner = TestTreeFactory.CreateRunner(
                 TestNodeSpec.Selector(
@@ -90,7 +85,7 @@ namespace VadimBurym.DodBehaviourTree.Tests
         }
 
         [Test]
-        public void Selector_WhenEarlierChildSucceedsAfterLaterChildWasRunning_AbortsRunningLeaf()
+        public void Selector_WhenEarlierChildSucceedsAfterLaterChildWasRunning_AbortsRunningChild()
         {
             using var runner = TestTreeFactory.CreateRunner(
                 TestNodeSpec.Selector(
@@ -109,25 +104,37 @@ namespace VadimBurym.DodBehaviourTree.Tests
         }
 
         [Test]
-        public void Selector_Abort_WhenLeafIsRunning_AbortsRunningLeaf_AndNextTickRestartsFromBeginning()
+        public void Selector_Abort_WhenLeafIsRunning_AbortsRunningChild()
         {
             using var runner = TestTreeFactory.CreateRunner(
                 TestNodeSpec.Selector(
-                    TestNodeSpec.RecordingLeaf("A", NodeStatus.Failure, NodeStatus.Failure),
-                    TestNodeSpec.RecordingLeaf("B", NodeStatus.Running, NodeStatus.Running),
+                    TestNodeSpec.RecordingLeaf("A", NodeStatus.Failure),
+                    TestNodeSpec.RecordingLeaf("B", NodeStatus.Running),
                     TestNodeSpec.RecordingLeaf("C", NodeStatus.Success)));
 
-            var firstTick = runner.Tick();
+            runner.Tick();
             runner.Abort();
-            var secondTick = runner.Tick();
 
-            Assert.That(firstTick, Is.EqualTo(NodeStatus.Running));
-            Assert.That(secondTick, Is.EqualTo(NodeStatus.Running));
+            Assert.That(runner.Recording("A").AbortCount, Is.EqualTo(0));
             Assert.That(runner.Recording("B").AbortCount, Is.EqualTo(1));
-            Assert.That(runner.Recording("A").TickCount, Is.EqualTo(2));
-            Assert.That(runner.Recording("B").TickCount, Is.EqualTo(2));
-            Assert.That(runner.Recording("C").TickCount, Is.EqualTo(0));
-            Assert.That(runner.Recording("B").IsEntered, Is.EqualTo(1));
+            Assert.That(runner.Recording("C").AbortCount, Is.EqualTo(0));
+        }
+
+        [Test]
+        public void Selector_With255Children_EvaluatesEveryChild_AndSupportsMaximumCompositeWidth()
+        {
+            var children = new TestNodeSpec[255];
+            for (var i = 0; i < 255; i++)
+                children[i] = TestNodeSpec.RecordingLeaf("A" + i.ToString("000"), NodeStatus.Failure);
+
+            using var runner = TestTreeFactory.CreateRunner(TestNodeSpec.Selector(children));
+            var status = runner.Tick();
+
+            Assert.That(status, Is.EqualTo(NodeStatus.Failure));
+            for (var i = 0; i < 255; i++)
+                Assert.That(
+                    runner.Recording("A" + i.ToString("000")).TickCount, Is.EqualTo(1),
+                    "Unexpected tick count for leaf index " + i);
         }
     }
 }

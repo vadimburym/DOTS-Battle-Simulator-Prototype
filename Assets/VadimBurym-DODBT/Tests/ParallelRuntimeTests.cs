@@ -5,7 +5,7 @@ namespace VadimBurym.DodBehaviourTree.Tests
     public sealed class ParallelRuntimeTests
     {
         [Test]
-        public void Parallel_WhenAllChildrenSucceed_AndSuccessThresholdIsReached_ReturnsSuccess()
+        public void Parallel_WhenSuccessThresholdIsReached_ReturnsSuccess()
         {
             using var runner = TestTreeFactory.CreateRunner(
                 TestNodeSpec.Parallel(
@@ -22,6 +22,22 @@ namespace VadimBurym.DodBehaviourTree.Tests
             Assert.That(runner.Recording("A").TickCount, Is.EqualTo(1));
             Assert.That(runner.Recording("B").TickCount, Is.EqualTo(1));
             Assert.That(runner.Recording("C").TickCount, Is.EqualTo(1));
+        }
+
+        [Test]
+        public void Parallel_WhenFailsThresholdIsReached_ReturnsFailure()
+        {
+            using var runner = TestTreeFactory.CreateRunner(
+                TestNodeSpec.Parallel(
+                    3,
+                    1,
+                    false,
+                    TestNodeSpec.RecordingLeaf("A", NodeStatus.Success),
+                    TestNodeSpec.RecordingLeaf("B", NodeStatus.Failure),
+                    TestNodeSpec.RecordingLeaf("C", NodeStatus.Success)));
+
+            var status = runner.Tick();
+            Assert.That(status, Is.EqualTo(NodeStatus.Failure));
         }
 
         [Test]
@@ -111,22 +127,6 @@ namespace VadimBurym.DodBehaviourTree.Tests
             Assert.That(runner.Recording("B").TickCount, Is.EqualTo(2));
             Assert.That(runner.Recording("C").TickCount, Is.EqualTo(2));
             Assert.That(runner.Recording("B").AbortCount, Is.EqualTo(1));
-        }
-
-        [Test]
-        public void Parallel_WhenFailsThresholdIsReached_ReturnsFailure()
-        {
-            using var runner = TestTreeFactory.CreateRunner(
-                TestNodeSpec.Parallel(
-                    3,
-                    1,
-                    false,
-                    TestNodeSpec.RecordingLeaf("A", NodeStatus.Success),
-                    TestNodeSpec.RecordingLeaf("B", NodeStatus.Failure),
-                    TestNodeSpec.RecordingLeaf("C", NodeStatus.Success)));
-
-            var status = runner.Tick();
-            Assert.That(status, Is.EqualTo(NodeStatus.Failure));
         }
     }
 }

@@ -5,12 +5,88 @@ namespace VadimBurym.DodBehaviourTree.Tests
     public sealed class MemorySequenceRuntimeTests
     {
         [Test]
-        public void MemorySequence_WhenChildRunning_ResumesFromRememberedLeafOnNextTick()
+        public void MemorySequence_WhenAllChildrenSucceed_TickAllChildren_AndReturnsSuccess()
         {
             using var runner = TestTreeFactory.CreateRunner(
                 TestNodeSpec.MemorySequence(
-                    true,
-                    true,
+                    resetOnFailure: false,
+                    resetOnAbort: false,
+                    TestNodeSpec.RecordingLeaf("A", NodeStatus.Success),
+                    TestNodeSpec.RecordingLeaf("B", NodeStatus.Success),
+                    TestNodeSpec.RecordingLeaf("C", NodeStatus.Success)));
+
+            var status = runner.Tick();
+
+            Assert.That(status, Is.EqualTo(NodeStatus.Success));
+            Assert.That(runner.Recording("A").TickCount, Is.EqualTo(1));
+            Assert.That(runner.Recording("B").TickCount, Is.EqualTo(1));
+            Assert.That(runner.Recording("C").TickCount, Is.EqualTo(1));
+        }
+
+        [Test]
+        public void MemorySequence_WhenChildFails_DoesNotTickRemainingChildren_AndReturnsFailure()
+        {
+            using var runner = TestTreeFactory.CreateRunner(
+                TestNodeSpec.MemorySequence(
+                    resetOnFailure: false,
+                    resetOnAbort: false,
+                    TestNodeSpec.RecordingLeaf("A", NodeStatus.Success),
+                    TestNodeSpec.RecordingLeaf("B", NodeStatus.Failure),
+                    TestNodeSpec.RecordingLeaf("C", NodeStatus.Success)));
+
+            var status = runner.Tick();
+
+            Assert.That(status, Is.EqualTo(NodeStatus.Failure));
+            Assert.That(runner.Recording("A").TickCount, Is.EqualTo(1));
+            Assert.That(runner.Recording("B").TickCount, Is.EqualTo(1));
+            Assert.That(runner.Recording("C").TickCount, Is.EqualTo(0));
+        }
+
+        [Test]
+        public void MemorySequence_WhenChildIsRunning_DoesNotTickRemainingChildren_AndReturnsRunning()
+        {
+            using var runner = TestTreeFactory.CreateRunner(
+                TestNodeSpec.MemorySequence(
+                    resetOnFailure: false,
+                    resetOnAbort: false,
+                    TestNodeSpec.RecordingLeaf("A", NodeStatus.Success),
+                    TestNodeSpec.RecordingLeaf("B", NodeStatus.Running),
+                    TestNodeSpec.RecordingLeaf("C", NodeStatus.Success)));
+
+            var status = runner.Tick();
+
+            Assert.That(status, Is.EqualTo(NodeStatus.Running));
+            Assert.That(runner.Recording("A").TickCount, Is.EqualTo(1));
+            Assert.That(runner.Recording("B").TickCount, Is.EqualTo(1));
+            Assert.That(runner.Recording("C").TickCount, Is.EqualTo(0));
+        }
+
+        [Test]
+        public void MemorySequence_Abort_WhenLeafIsRunning_AbortsRunningChild()
+        {
+            using var runner = TestTreeFactory.CreateRunner(
+                TestNodeSpec.MemorySequence(
+                    resetOnFailure: false,
+                    resetOnAbort: false,
+                    TestNodeSpec.RecordingLeaf("A", NodeStatus.Success),
+                    TestNodeSpec.RecordingLeaf("B", NodeStatus.Running),
+                    TestNodeSpec.RecordingLeaf("C", NodeStatus.Success)));
+
+            runner.Tick();
+            runner.Abort();
+
+            Assert.That(runner.Recording("A").AbortCount, Is.EqualTo(0));
+            Assert.That(runner.Recording("B").AbortCount, Is.EqualTo(1));
+            Assert.That(runner.Recording("C").AbortCount, Is.EqualTo(0));
+        }
+
+        [Test]
+        public void MemorySequence_WhenChildRunning_ResumesFromRememberedChildOnNextTick()
+        {
+            using var runner = TestTreeFactory.CreateRunner(
+                TestNodeSpec.MemorySequence(
+                    false,
+                    false,
                     TestNodeSpec.RecordingLeaf("A", NodeStatus.Success),
                     TestNodeSpec.RecordingLeaf("B", NodeStatus.Running, NodeStatus.Success),
                     TestNodeSpec.RecordingLeaf("C", NodeStatus.Success)));
@@ -21,7 +97,6 @@ namespace VadimBurym.DodBehaviourTree.Tests
             Assert.That(firstTick, Is.EqualTo(NodeStatus.Running));
             Assert.That(secondTick, Is.EqualTo(NodeStatus.Success));
             Assert.That(runner.Recording("A").TickCount, Is.EqualTo(1));
-            Assert.That(runner.Recording("B").EnterCount, Is.EqualTo(1));
             Assert.That(runner.Recording("B").TickCount, Is.EqualTo(2));
             Assert.That(runner.Recording("C").TickCount, Is.EqualTo(1));
         }
@@ -32,7 +107,7 @@ namespace VadimBurym.DodBehaviourTree.Tests
             using var runner = TestTreeFactory.CreateRunner(
                 TestNodeSpec.MemorySequence(
                     true,
-                    true,
+                    false,
                     TestNodeSpec.RecordingLeaf("A", NodeStatus.Success, NodeStatus.Success),
                     TestNodeSpec.RecordingLeaf("B", NodeStatus.Failure, NodeStatus.Success),
                     TestNodeSpec.RecordingLeaf("C", NodeStatus.Success)));
@@ -53,7 +128,7 @@ namespace VadimBurym.DodBehaviourTree.Tests
             using var runner = TestTreeFactory.CreateRunner(
                 TestNodeSpec.MemorySequence(
                     false,
-                    true,
+                    false,
                     TestNodeSpec.RecordingLeaf("A", NodeStatus.Success),
                     TestNodeSpec.RecordingLeaf("B", NodeStatus.Failure, NodeStatus.Success),
                     TestNodeSpec.RecordingLeaf("C", NodeStatus.Success)));
