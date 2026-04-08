@@ -35,19 +35,28 @@ namespace VadimBurym.DodBehaviourTree.Generated
                         var leafState = leafStates[nodeState.LeafStateIndex];
                         var leafData = blob.Leafs[nodeData.DataIndex];
 
+                        var runnerState = new RunnerState_BtContext {
+                            Agent = entity,
+                            Context = leafContext,
+                            LeafData = leafData,
+                            LeafState = leafState,
+                            Random = rng,
+                            SortKey = sortKey
+                        };
+
                         if (leafState.IsEntered == 0)
                         {
-                            LeafTables_BtContext.EnterLeaf(leafData.LeafId, ref entity, in leafData, ref leafState, in leafContext, sortKey);
-                            leafState.IsEntered = 1;
+                            LeafTables_BtContext.EnterLeaf(leafData.LeafId, ref runnerState);
+                            runnerState.LeafState.IsEntered = 1;
                         }
-                        var status = LeafTables_BtContext.TickLeaf(leafData.LeafId, ref entity, in leafData, ref leafState, in leafContext, sortKey);
+                        var status = LeafTables_BtContext.TickLeaf(leafData.LeafId, ref runnerState);
                         if (status != NodeStatus.Running)
                         {
-                            LeafTables_BtContext.ExitLeaf(leafData.LeafId, ref entity, in leafData, ref leafState, in leafContext, sortKey);
-                            leafState.IsEntered = 0;
+                            LeafTables_BtContext.ExitLeaf(leafData.LeafId, ref runnerState);
+                            runnerState.LeafState.IsEntered = 0;
                         }
 
-                        leafStates[nodeState.LeafStateIndex] = leafState;
+                        leafStates[nodeState.LeafStateIndex] = runnerState.LeafState;
                         childStatus = status;
                         returning = true;
                         pc = nodeData.ParentIndex;
@@ -162,13 +171,23 @@ namespace VadimBurym.DodBehaviourTree.Generated
                     case NodeId.Leaf:
                     {
                         var leafState = leafStates[nodeState.LeafStateIndex];
+
                         if (leafState.IsEntered != 0)
                         {
                             leafState.IsEntered = 0;
                             var leafData = blob.Leafs[nodeData.DataIndex];
-                            LeafTables_BtContext.AbortLeaf(leafData.LeafId, ref entity, in leafData, ref leafState, in leafContext, sortKey);
+
+                            var runnerState = new RunnerState_BtContext {
+                                Agent = entity,
+                                Context = leafContext,
+                                LeafData = leafData,
+                                LeafState = leafState,
+                                SortKey = sortKey
+                            };
+
+                            LeafTables_BtContext.AbortLeaf(leafData.LeafId, ref runnerState);
+                            leafStates[nodeState.LeafStateIndex] = runnerState.LeafState;
                         }
-                        leafStates[nodeState.LeafStateIndex] = leafState;
                         break;
                     }
                     case NodeId.Selector:

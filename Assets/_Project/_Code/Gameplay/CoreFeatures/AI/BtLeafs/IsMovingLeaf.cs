@@ -1,9 +1,8 @@
 using System;
 using _Project._Code.Core.Keys;
-using _Project._Code.Gameplay.CoreFeatures.AI._Root;
-using Unity.Entities;
 using UnityEngine;
 using VadimBurym.DodBehaviourTree;
+using VadimBurym.DodBehaviourTree.Generated;
 
 namespace _Project._Code.Gameplay.CoreFeatures.AI.BtLeafs
 {
@@ -21,13 +20,13 @@ namespace _Project._Code.Gameplay.CoreFeatures.AI.BtLeafs
             };
         }
 
-        public static NodeStatus OnTick(ref Entity agent, in LeafData leafData, ref LeafStateElement leafState, in BtContext leafContext)
+        public static NodeStatus OnTick(ref RunnerState_BtContext state)
         {
-            return leafContext.IsMovingTagLookup[agent].IsMoving == leafData.Byte0 ? NodeStatus.Success : NodeStatus.Failure;
+            return state.Context.IsMovingTagLookup[state.Agent].IsMoving == state.LeafData.Byte0 ? NodeStatus.Success : NodeStatus.Failure;
         }
 
-        public static void OnEnter(ref Entity agent, in LeafData leafData, ref LeafStateElement leafState, in BtContext leafContext) { }
-        public static void OnExit(ref Entity agent, in LeafData leafData, ref LeafStateElement leafState, in BtContext leafContext) { }
-        public static void OnAbort(ref Entity agent, in LeafData leafData, ref LeafStateElement leafState, in BtContext leafContext) { }
+        public static void OnEnter(ref RunnerState_BtContext state) { }
+        public static void OnExit(ref RunnerState_BtContext state) { }
+        public static void OnAbort(ref RunnerState_BtContext state) { }
     }
 }

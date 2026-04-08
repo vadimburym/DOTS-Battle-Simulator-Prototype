@@ -3,6 +3,7 @@ using _Project._Code.Core.Keys;
 using _Project._Code.Gameplay.CoreFeatures.AI._Root;
 using Unity.Entities;
 using VadimBurym.DodBehaviourTree;
+using VadimBurym.DodBehaviourTree.Generated;
 using VATDots;
 
 namespace _Project._Code.Gameplay.CoreFeatures.AI.BtLeafs
@@ -18,47 +19,21 @@ namespace _Project._Code.Gameplay.CoreFeatures.AI.BtLeafs
             };
         }
 
-        public static NodeStatus OnTick(
-            ref Entity agent,
-            in LeafData leafData,
-            ref LeafStateElement leafState,
-            in BtContext leafContext)
+        public static NodeStatus OnTick(ref RunnerState_BtContext state)
         {
             return NodeStatus.Running;
         }
 
-        public static void OnEnter(
-            ref Entity agent,
-            in LeafData leafData,
-            ref LeafStateElement leafState,
-            in BtContext leafContext,
-            int sortKey)
+        public static void OnEnter(ref RunnerState_BtContext state)
         {
             AnimatorUtils.PlayAnimation(
-                renderer: leafContext.RenderEntityLookup[agent].Value,
+                renderer: state.Context.RenderEntityLookup[state.Agent].Value,
                 animationId: AnimationId.Idle,
-                ecb: leafContext.Ecb,
-                sortKey: sortKey);
+                ecb: state.Context.Ecb,
+                sortKey: state.SortKey);
         }
 
-        public static void OnExit(
-            ref Entity agent,
-            in LeafData leafData,
-            ref LeafStateElement leafState,
-            in BtContext leafContext,
-            int sortKey)
-        {
-
-        }
-
-        public static void OnAbort(
-            ref Entity agent,
-            in LeafData leafData,
-            ref LeafStateElement leafState,
-            in BtContext leafContext,
-            int sortKey)
-        {
-
-        }
+        public static void OnExit(ref RunnerState_BtContext state) { }
+        public static void OnAbort(ref RunnerState_BtContext state) { }
     }
 }

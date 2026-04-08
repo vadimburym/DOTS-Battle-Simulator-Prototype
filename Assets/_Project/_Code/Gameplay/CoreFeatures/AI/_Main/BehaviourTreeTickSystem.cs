@@ -85,7 +85,6 @@ namespace _Project._Code.Gameplay.CoreFeatures.Entities.AiSystems
             var context = new BtContext
             {
                 Ecb = ecb.AsParallelWriter(),
-                Random = _random,
                 EyeSensorLookup = _eyeSensorLookup,
                 LocalTransformLookup = _localTransformLookup,
                 AttackStatsLookup = _attackStatsLookup,

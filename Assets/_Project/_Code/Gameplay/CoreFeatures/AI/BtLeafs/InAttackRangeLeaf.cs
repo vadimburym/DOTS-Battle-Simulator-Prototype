@@ -1,10 +1,7 @@
 using System;
 using _Project._Code.Core.Keys;
-using _Project._Code.Gameplay.CoreFeatures.AI._Root;
-using Unity.Burst;
-using Unity.Entities;
-using Unity.Mathematics;
 using VadimBurym.DodBehaviourTree;
+using VadimBurym.DodBehaviourTree.Generated;
 
 namespace _Project._Code.Gameplay.CoreFeatures.AI.BtLeafs
 {
@@ -19,20 +16,20 @@ namespace _Project._Code.Gameplay.CoreFeatures.AI.BtLeafs
             };
         }
 
-        public static NodeStatus OnTick(ref Entity agent, in LeafData leafData, ref LeafStateElement leafState, in BtContext leafContext)
+        public static NodeStatus OnTick(ref RunnerState_BtContext state)
         {
             //TODO: now - GREEN, refactoring: вынести логику в сенсор
-            var enemy = leafContext.EyeSensorLookup[agent].DetectedEntity;
-            if (!leafContext.GridNavigationStateLookup.HasComponent(enemy))
+            var enemy = state.Context.EyeSensorLookup[state.Agent].DetectedEntity;
+            if (!state.Context.GridNavigationStateLookup.HasComponent(enemy))
                 return NodeStatus.Failure;
-            var agentCell = leafContext.GridNavigationStateLookup[agent].MovingCell;
-            var enemyCell = leafContext.GridNavigationStateLookup[enemy].MovingCell;
-            var threshold = leafContext.AttackStatsLookup[agent].AttackRangeCells;
+            var agentCell = state.Context.GridNavigationStateLookup[state.Agent].MovingCell;
+            var enemyCell = state.Context.GridNavigationStateLookup[enemy].MovingCell;
+            var threshold = state.Context.AttackStatsLookup[state.Agent].AttackRangeCells;
             return BattlefieldGridUtils.CellDistanceChebyshev(agentCell, enemyCell) <= threshold ? NodeStatus.Success : NodeStatus.Failure;
         }
 
-        public static void OnEnter(ref Entity agent, in LeafData leafData, ref LeafStateElement leafState, in BtContext leafContext) { }
-        public static void OnExit(ref Entity agent, in LeafData leafData, ref LeafStateElement leafState, in BtContext leafContext) { }
-        public static void OnAbort(ref Entity agent, in LeafData leafData, ref LeafStateElement leafState, in BtContext leafContext) { }
+        public static void OnEnter(ref RunnerState_BtContext state) { }
+        public static void OnExit(ref RunnerState_BtContext state) { }
+        public static void OnAbort(ref RunnerState_BtContext state) { }
     }
 }

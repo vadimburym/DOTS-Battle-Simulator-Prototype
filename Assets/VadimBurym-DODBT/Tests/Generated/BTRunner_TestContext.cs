@@ -33,20 +33,26 @@ namespace VadimBurym.DodBehaviourTree.Tests
                         var leafState = leafStates[nodeState.LeafStateIndex];
                         var leafData = blob.Leafs[nodeData.DataIndex];
 
+                        var runnerState = new RunnerState_TestContext {
+                            LeafState = leafState,
+                            LeafData = leafData,
+                            Context = leafContext
+                        };
+
                         if (leafState.IsEntered == 0)
                         {
-                            LeafTables_TestContext.EnterLeaf(leafData.LeafId, in leafData, ref leafState, in leafContext);
-                            leafState.IsEntered = 1;
+                            LeafTables_TestContext.EnterLeaf(leafData.LeafId, ref runnerState);
+                            runnerState.LeafState.IsEntered = 1;
                         }
 
-                        var status = LeafTables_TestContext.TickLeaf(leafData.LeafId, in leafData, ref leafState, in leafContext);
+                        var status = LeafTables_TestContext.TickLeaf(leafData.LeafId, ref runnerState);
                         if (status != NodeStatus.Running)
                         {
-                            LeafTables_TestContext.ExitLeaf(leafData.LeafId, in leafData, ref leafState, in leafContext);
-                            leafState.IsEntered = 0;
+                            LeafTables_TestContext.ExitLeaf(leafData.LeafId, ref runnerState);
+                            runnerState.LeafState.IsEntered = 0;
                         }
 
-                        leafStates[nodeState.LeafStateIndex] = leafState;
+                        leafStates[nodeState.LeafStateIndex] = runnerState.LeafState;
                         childStatus = status;
                         returning = true;
                         pc = nodeData.ParentIndex;
@@ -171,10 +177,16 @@ namespace VadimBurym.DodBehaviourTree.Tests
                         {
                             leafState.IsEntered = 0;
                             var leafData = blob.Leafs[nodeData.DataIndex];
-                            LeafTables_TestContext.AbortLeaf(leafData.LeafId, in leafData, ref leafState, in leafContext);
-                        }
 
-                        leafStates[nodeState.LeafStateIndex] = leafState;
+                            var runnerState = new RunnerState_TestContext {
+                                LeafState = leafState,
+                                LeafData = leafData,
+                                Context = leafContext
+                            };
+
+                            LeafTables_TestContext.AbortLeaf(leafData.LeafId, ref runnerState);
+                            leafStates[nodeState.LeafStateIndex] = runnerState.LeafState;
+                        }
                         break;
                     }
 

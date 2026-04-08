@@ -2,8 +2,8 @@ using System;
 using _Project._Code.Core.Keys;
 using _Project._Code.Gameplay.CoreFeatures.AI._Root;
 using _Project._Code.Gameplay.CoreFeatures.Entities.Components;
-using Unity.Entities;
 using VadimBurym.DodBehaviourTree;
+using VadimBurym.DodBehaviourTree.Generated;
 using VATDots;
 
 namespace _Project._Code.Gameplay.CoreFeatures.AI.BtLeafs
@@ -19,33 +19,27 @@ namespace _Project._Code.Gameplay.CoreFeatures.AI.BtLeafs
             };
         }
 
-        public static NodeStatus OnTick(
-            ref Entity agent,
-            in LeafData leafData,
-            ref LeafStateElement leafState,
-            in BtContext leafContext)
+        public static NodeStatus OnTick(ref RunnerState_BtContext state)
         {
-            var lookUp = leafContext.AttackStateLookup;
-            if (!lookUp.HasComponent(leafState.StateEntity))
+            var lookUp = state.Context.AttackStateLookup;
+            if (!lookUp.HasComponent(state.LeafState.StateEntity))
                 return NodeStatus.Running;
-            if (!leafContext.EntityInfoLookup.Exists(lookUp[leafState.StateEntity].Target))
+            if (!state.Context.EntityInfoLookup.Exists(lookUp[state.LeafState.StateEntity].Target))
                 return NodeStatus.Failure;
-            if (leafContext.EyeSensorLookup[agent].DetectedEntity != lookUp[leafState.StateEntity].Target)
+            if (state.Context.EyeSensorLookup[state.Agent].DetectedEntity != lookUp[state.LeafState.StateEntity].Target)
                 return NodeStatus.Failure;
 
             return NodeStatus.Running;
         }
 
-        public static void OnEnter(
-            ref Entity agent,
-            in LeafData leafData,
-            ref LeafStateElement leafState,
-            in BtContext leafContext,
-            int sortKey)
+        public static void OnEnter(ref RunnerState_BtContext state)
         {
-            var enemy = leafContext.EyeSensorLookup[agent].DetectedEntity;
+            var context = state.Context;
+            var agent = state.Agent;
+            var sortKey = state.SortKey;
+            var enemy = context.EyeSensorLookup[agent].DetectedEntity;
 
-            var ecb = leafContext.Ecb;
+            var ecb = context.Ecb;
             var entity = ecb.CreateEntity(sortKey);
             ecb.AddComponent<AttackState>(sortKey, entity, new AttackState {
                 Owner = agent,
@@ -53,40 +47,30 @@ namespace _Project._Code.Gameplay.CoreFeatures.AI.BtLeafs
             });
             ecb.AddComponent(sortKey, ecb.CreateEntity(sortKey), new LeafStateWriteRequest {
                 Entity = agent,
-                Index = leafState.BufferIndex,
+                Index = state.LeafState.BufferIndex,
                 Value = entity
             });
             ecb.SetComponentEnabled<SeeToDetectedTag>(sortKey, agent, true);
 
             AnimatorUtils.PlayAnimation(
-                renderer: leafContext.RenderEntityLookup[agent].Value,
+                renderer: context.RenderEntityLookup[agent].Value,
                 animationId: AnimationId.Attack,
                 ecb: ecb,
                 sortKey: sortKey);
         }
 
-        public static void OnExit(
-            ref Entity agent,
-            in LeafData leafData,
-            ref LeafStateElement leafState,
-            in BtContext leafContext,
-            int sortKey)
+        public static void OnExit(ref RunnerState_BtContext state)
         {
-            var ecb = leafContext.Ecb;
-            ecb.DestroyEntity(sortKey, leafState.StateEntity);
-            ecb.SetComponentEnabled<SeeToDetectedTag>(sortKey, agent, false);
+            var ecb = state.Context.Ecb;
+            ecb.DestroyEntity(state.SortKey, state.LeafState.StateEntity);
+            ecb.SetComponentEnabled<SeeToDetectedTag>(state.SortKey, state.Agent, false);
         }
 
-        public static void OnAbort(
-            ref Entity agent,
-            in LeafData leafData,
-            ref LeafStateElement leafState,
-            in BtContext leafContext,
-            int sortKey)
+        public static void OnAbort(ref RunnerState_BtContext state)
         {
-            var ecb = leafContext.Ecb;
-            ecb.DestroyEntity(sortKey, leafState.StateEntity);
-            ecb.SetComponentEnabled<SeeToDetectedTag>(sortKey, agent, false);
+            var ecb = state.Context.Ecb;
+            ecb.DestroyEntity(state.SortKey, state.LeafState.StateEntity);
+            ecb.SetComponentEnabled<SeeToDetectedTag>(state.SortKey, state.Agent, false);
         }
     }
 }

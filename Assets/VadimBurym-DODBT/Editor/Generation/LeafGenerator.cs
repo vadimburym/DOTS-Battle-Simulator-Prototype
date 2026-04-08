@@ -6,7 +6,6 @@ using System.Collections.Generic;
 using System.Reflection;
 using Unity.Entities;
 using UnityEditor;
-using UnityEditor.Compilation;
 using UnityEngine;
 
 namespace VadimBurym.DodBehaviourTree.Generator
@@ -17,7 +16,7 @@ namespace VadimBurym.DodBehaviourTree.Generator
         private static void Generate()
         {
             string folder = "Assets/VadimBurym-DODBT/Local/Generated";
-            
+
             if (AssetDatabase.IsValidFolder(folder))
             {
                 var guids = AssetDatabase.FindAssets("t:TextAsset", new[] { folder });
@@ -77,7 +76,7 @@ namespace VadimBurym.DodBehaviourTree.Generator
                     Debug.LogError($"{t.FullName}: LeafCodeGeneration has ID = 0xFF. You must assign a valid unique ID.");
                     continue;
                 }
-                
+
                 // Ищем методы OnTick, OnEnter, OnExit, OnAbort
                 var methods = new Dictionary<string, MethodInfo>();
                 string[] required = { "OnTick", "OnEnter", "OnExit", "OnAbort" };
@@ -121,21 +120,21 @@ namespace VadimBurym.DodBehaviourTree.Generator
                         Debug.LogError($"{t.FullName}.{name}: first parameter must be 'ref Entity'");
                         valid = false;
                     }
-                    
+
                     var p = ps[1];
                     if (!(p.ParameterType.IsByRef && p.IsIn && p.ParameterType.GetElementType() == typeof(LeafData)))
                     {
                         Debug.LogError($"{t.FullName}.{name}: second parameter must be 'in LeafData'");
                         valid = false;
                     }
-                    
+
                     var p2 = ps[2];
                     if (!(p2.ParameterType.IsByRef && !p2.IsIn && p2.ParameterType.GetElementType() == typeof(LeafStateElement)))
                     {
                         Debug.LogError($"{t.FullName}.{name}: third parameter must be 'ref LeafStateElement'");
                         valid = false;
                     }
-                    
+
                     var p3 = ps[3];
                     if (!(p3.ParameterType.IsByRef && p3.IsIn))
                     {

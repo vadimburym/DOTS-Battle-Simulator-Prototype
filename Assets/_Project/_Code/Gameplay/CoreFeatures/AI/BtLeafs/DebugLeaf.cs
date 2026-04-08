@@ -5,6 +5,7 @@ using Unity.Burst;
 using Unity.Entities;
 using UnityEngine;
 using VadimBurym.DodBehaviourTree;
+using VadimBurym.DodBehaviourTree.Generated;
 
 namespace _Project._Code.Gameplay.CoreFeatures.AI.BtLeafs
 {
@@ -24,14 +25,14 @@ namespace _Project._Code.Gameplay.CoreFeatures.AI.BtLeafs
             };
         }
 
-        public static NodeStatus OnTick(ref Entity agent, in LeafData leafData, ref LeafStateElement leafState, in BtContext leafContext)
+        public static NodeStatus OnTick(ref RunnerState_BtContext state)
         {
             //Debug.Log($"{leafData.Int0}");
-            return (NodeStatus)leafData.Byte0;
+            return (NodeStatus)state.LeafData.Byte0;
         }
 
-        public static void OnEnter(ref Entity agent, in LeafData leafData, ref LeafStateElement leafState, in BtContext leafContext) { }
-        public static void OnExit(ref Entity agent, in LeafData leafData, ref LeafStateElement leafState, in BtContext leafContext) { }
-        public static void OnAbort(ref Entity agent, in LeafData leafData, ref LeafStateElement leafState, in BtContext leafContext) { }
+        public static void OnEnter(ref RunnerState_BtContext state) { }
+        public static void OnExit(ref RunnerState_BtContext state) { }
+        public static void OnAbort(ref RunnerState_BtContext state) { }
     }
 }

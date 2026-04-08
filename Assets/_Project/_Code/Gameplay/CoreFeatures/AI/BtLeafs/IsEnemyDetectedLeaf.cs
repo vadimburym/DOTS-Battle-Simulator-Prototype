@@ -4,6 +4,7 @@ using _Project._Code.Gameplay.CoreFeatures.AI._Root;
 using Unity.Burst;
 using Unity.Entities;
 using VadimBurym.DodBehaviourTree;
+using VadimBurym.DodBehaviourTree.Generated;
 
 namespace _Project._Code.Gameplay.CoreFeatures.AI.BtLeafs
 {
@@ -18,15 +19,15 @@ namespace _Project._Code.Gameplay.CoreFeatures.AI.BtLeafs
             };
         }
 
-        public static NodeStatus OnTick(ref Entity agent, in LeafData leafData, ref LeafStateElement leafState, in BtContext leafContext)
+        public static NodeStatus OnTick(ref RunnerState_BtContext state)
         {
-            var sensor = leafContext.EyeSensorLookup[agent];
-            bool isEntityExist = leafContext.EntityInfoLookup.Exists(sensor.DetectedEntity);
+            var sensor = state.Context.EyeSensorLookup[state.Agent];
+            bool isEntityExist = state.Context.EntityInfoLookup.Exists(sensor.DetectedEntity);
             return sensor.IsDetected == 1 && isEntityExist ? NodeStatus.Success : NodeStatus.Failure;
         }
 
-        public static void OnEnter(ref Entity agent, in LeafData leafData, ref LeafStateElement leafState, in BtContext leafContext) { }
-        public static void OnExit(ref Entity agent, in LeafData leafData, ref LeafStateElement leafState, in BtContext leafContext) { }
-        public static void OnAbort(ref Entity agent, in LeafData leafData, ref LeafStateElement leafState, in BtContext leafContext) { }
+        public static void OnEnter(ref RunnerState_BtContext state) { }
+        public static void OnExit(ref RunnerState_BtContext state) { }
+        public static void OnAbort(ref RunnerState_BtContext state) { }
     }
 }
